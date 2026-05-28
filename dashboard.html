@@ -145,6 +145,7 @@
       transition: all 0.25s ease;
       white-space: nowrap;
     }
+    .mobile-text { display: none; }
     nav button.active {
       color: var(--text-main);
       background: rgba(255,255,255,0.06);
@@ -165,6 +166,8 @@
        1. TABLET & LAPTOP LAYOUTS & SCALING (Viewport <= 1180px)
        ========================================================================== */
     @media (max-width: 1180px) {
+      .desktop-text { display: none; }
+      .mobile-text { display: inline; }
       header {
         flex-wrap: wrap;
         padding: 1.25rem 2rem;
@@ -671,10 +674,22 @@
     </div>
   </div>
   <nav>
-    <button class="active" onclick="switchTab('explorer')">Scaffolding Explorer</button>
-    <button onclick="switchTab('playground')">Lab 10.1: Agent Playgrounds</button>
-    <button onclick="switchTab('swarm')">Lab 10.2: Swarm Pipeline</button>
-    <button onclick="switchTab('theory')">Lab 10.1: Reflections & Theory</button>
+    <button class="active" onclick="switchTab('explorer')">
+      <span class="desktop-text">Scaffolding Explorer</span>
+      <span class="mobile-text">Explorer</span>
+    </button>
+    <button onclick="switchTab('playground')">
+      <span class="desktop-text">Lab 10.1: Agent Playgrounds</span>
+      <span class="mobile-text">Lab 10.1</span>
+    </button>
+    <button onclick="switchTab('swarm')">
+      <span class="desktop-text">Lab 10.2: Swarm Pipeline</span>
+      <span class="mobile-text">Lab 10.2</span>
+    </button>
+    <button onclick="switchTab('theory')">
+      <span class="desktop-text">Lab 10.1: Reflections & Theory</span>
+      <span class="mobile-text">Theory</span>
+    </button>
   </nav>
 </header>
 
@@ -1709,6 +1724,7 @@ Return strictly valid JSON:
       if (myRunId === currentRunId) {
         setLoading(btn, false);
       }
+    }
   }
 
   // Initialize dynamic ASCII status billboard
