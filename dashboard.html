@@ -318,6 +318,8 @@
         /* Accessible touch target heights for inputs (>= 48px) */
         textarea,
         input[type="text"],
+        input[type="number"],
+        input[type="date"],
         select {
           padding: 0.85rem 1rem !important;
           font-size: 0.9rem !important;
@@ -605,6 +607,8 @@
 
       textarea,
       input[type="text"],
+      input[type="number"],
+      input[type="date"],
       select {
         background: rgba(0, 0, 0, 0.3);
         border: 1px solid var(--border-color);
@@ -619,6 +623,8 @@
       }
       textarea:focus,
       input[type="text"]:focus,
+      input[type="number"]:focus,
+      input[type="date"]:focus,
       select:focus {
         border-color: var(--primary);
         box-shadow: 0 0 12px rgba(147, 51, 234, 0.15);
@@ -1929,6 +1935,17 @@ Help me understand renewable energy options for homes.</textarea
               <div class="scaffold-section">
                 <h3 style="margin-bottom: 1rem">Vacation Inputs</h3>
                 <div class="form-group" style="margin-bottom: 1rem">
+                  <label>Agent Precision Strategy</label>
+                  <select id="travel-precision">
+                    <option value="standard" selected>
+                      Standard Reactive Agent (Basic Lab Coursework)
+                    </option>
+                    <option value="highprecision">
+                      High-Precision Autonomous Agentic AI (Advanced Variables)
+                    </option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem">
                   <label>Destination</label>
                   <input
                     type="text"
@@ -1946,6 +1963,62 @@ Help me understand renewable energy options for homes.</textarea
                     placeholder="e.g. Los Angeles (LAX)"
                   />
                 </div>
+
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem">
+                  <div class="form-group" style="flex: 1">
+                    <label>Depart Date</label>
+                    <input
+                      type="date"
+                      id="travel-start-date"
+                      value="2026-06-01"
+                    />
+                  </div>
+                  <div class="form-group" style="flex: 1">
+                    <label>Return Date</label>
+                    <input
+                      type="date"
+                      id="travel-end-date"
+                      value="2026-06-08"
+                    />
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem">
+                  <div class="form-group" style="flex: 1">
+                    <label>Adults</label>
+                    <input
+                      type="number"
+                      id="travel-adults"
+                      value="1"
+                      min="1"
+                      max="10"
+                    />
+                  </div>
+                  <div class="form-group" style="flex: 1">
+                    <label>Children</label>
+                    <input
+                      type="number"
+                      id="travel-children"
+                      value="0"
+                      min="0"
+                      max="10"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem">
+                  <label>Routing Strategy</label>
+                  <select id="travel-route">
+                    <option value="roundtrip" selected>
+                      Round-Trip Flight
+                    </option>
+                    <option value="oneway">One-Way Flight</option>
+                    <option value="skiplagging">
+                      SkipLagging Optimized (Hidden-City)
+                    </option>
+                  </select>
+                </div>
+
                 <div class="form-group" style="margin-bottom: 1rem">
                   <label>Style Preferred</label>
                   <select id="travel-style">
@@ -2589,31 +2662,90 @@ Implementing systematic evaluation checklists provides immediate observability b
         }
 
         // Swarm Fallbacks
+        let adults = 1;
+        const adultsMatch = user.match(/(\d+)\s*adults/i);
+        if (adultsMatch) adults = parseInt(adultsMatch[1]);
+
+        let children = 0;
+        const childrenMatch =
+          user.match(/(\d+)\s*children/i) || user.match(/(\d+)\s*child/i);
+        if (childrenMatch) children = parseInt(childrenMatch[1]);
+
+        let route = "roundtrip";
+        const routeMatch =
+          user.match(/routing strategy:\s*(\w+)/i) ||
+          user.match(/routing:\s*(\w+)/i) ||
+          user.match(/(skiplagging|oneway|roundtrip)/i);
+        if (routeMatch) route = routeMatch[1].toLowerCase();
+
+        let precision = "standard";
+        const precisionMatch =
+          user.match(/precision strategy:\s*(\w+)/i) ||
+          user.match(/precision:\s*(\w+)/i) ||
+          user.match(/(highprecision|standard)/i);
+        if (precisionMatch) precision = precisionMatch[1].toLowerCase();
+
+        let startDate = "2026-06-01";
+        let endDate = "2026-06-08";
+        const dateMatch = user.match(
+          /(\d{4}-\d{2}-\d{2})\s*to\s*(\d{4}-\d{2}-\d{2})/i,
+        );
+        if (dateMatch) {
+          startDate = dateMatch[1];
+          endDate = dateMatch[2];
+        }
+
+        const duration =
+          Math.max(
+            1,
+            Math.round(
+              (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24),
+            ),
+          ) || 7;
+        const passCount = adults + 0.7 * children;
+
         if (user.includes("logistics")) {
           const isLuxury = user.includes("luxury");
-          return JSON.stringify(
-            isLuxury
-              ? { flight: 1200, hotel: 1800, transit: 250 }
-              : { flight: 650, hotel: 350, transit: 60 },
+          const baseFlight = isLuxury ? 1000 : 500;
+          const routeMult =
+            route === "oneway" ? 0.55 : route === "skiplagging" ? 0.65 : 1.0;
+          const flightCost = Math.round(baseFlight * passCount * routeMult);
+
+          const rooms = Math.ceil((adults + children) / 2) || 1;
+          const baseRoom = isLuxury ? 350 : 80;
+          const hotelCost = rooms * duration * baseRoom;
+
+          const baseTransit = isLuxury ? 250 : 60;
+          const transitCost = Math.round(
+            baseTransit * (1 + 0.1 * (adults + children)),
           );
+
+          return JSON.stringify({
+            flight: flightCost,
+            hotel: hotelCost,
+            transit: transitCost,
+          });
         }
 
         if (user.includes("itinerary for")) {
           const isLuxury = user.includes("luxury") || user.includes("michelin");
+          const totalPeople = adults + children;
+          const familyFriendly =
+            children > 0 ? " (family-friendly spots optimized for kids)" : "";
           if (isLuxury) {
             return `<h4>Day 1: Premium Ingress & Luxury Check-in</h4>
-<p>Arrive via private first-class transfer. Check in to the penthouse suite at a five-star hotel. Evening fine-dining reservation.</p>
+<p>Arrive via private first-class transfer for ${totalPeople} guest${totalPeople > 1 ? "s" : ""}. Check in to five-star accommodations. Evening fine-dining reservations${familyFriendly}.</p>
 <h4>Day 2: Private Guided Cultural Tour & Michelin Dinner</h4>
-<p>Exclusive access to landmark museums with a dedicated historical docent. Dynamic 7-course Michelin-starred dinner experience.</p>
-<h4>Day 3: Scenic Retreat & Departure</h4>
-<p>Private luxury spa session overlooking panoramic city skylines. First-class lounge transfer for smooth egress.</p>`;
+<p>Exclusive access to landmarks with a private docent. Seven-course Michelin-starred dining custom-prepared for the group.</p>
+<h4>Day 3: Scenic Retreat & Egress</h4>
+<p>Luxury spa relaxation overlooking scenic vistas. Private airport lounge transfers for smooth egress.</p>`;
           } else {
-            return `<h4>Day 1: Budget Travel Ingress & Hostel Check-in</h4>
-<p>Arrive via standard transit. Check in to a budget-friendly cozy hostel. Evening self-guided neighborhood walking tour.</p>
-<h4>Day 2: Public Landmark Exploration & Street Food</h4>
-<p>Explore free local public museums and historic streets. Enjoy highly rated local street food markets.</p>
-<h4>Day 3: Local Parks & Departure</h4>
-<p>Relax at scenic local community gardens. Standard public transit return transfer.</p>`;
+            return `<h4>Day 1: Budget Travel Ingress & Cozy Lodging</h4>
+<p>Arrive via standard transit. Check in to highly-rated budget family hostel/guesthouse rooms. Self-guided neighborhood walking tour.</p>
+<h4>Day 2: Public Landmarks & Local Delicacies</h4>
+<p>Explore free local historic parks, streets, and community gardens${familyFriendly}. Dinner at famous street markets.</p>
+<h4>Day 3: Local Sights & Departure</h4>
+<p>Enjoy scenic public beaches or mountain viewpoints. Standard airport connection via local express line.</p>`;
           }
         }
 
@@ -2625,25 +2757,58 @@ Implementing systematic evaluation checklists provides immediate observability b
           const isLuxury =
             user.includes("luxury") ||
             user.includes("michelin") ||
-            user.includes("hotel: 1800");
+            user.includes("hotel: 1800") ||
+            (user.includes("hotel:") &&
+              parseFloat(user.match(/hotel:\s*(\d+)/)?.[1]) > 500);
+
           const budgetLimit =
             parseFloat(user.match(/max budget:\s*\$?(\d+)/i)?.[1]) || 1800;
-          const origTotal = isLuxury ? 4450 : 1310;
+
+          // Parse active costs passed in prompt
+          const flightVal =
+            parseFloat(user.match(/flight:\s*(\d+)/)?.[1]) ||
+            (isLuxury ? 1000 : 500);
+          const hotelVal =
+            parseFloat(user.match(/hotel:\s*(\d+)/)?.[1]) ||
+            (isLuxury ? 2450 : 560);
+          const transitVal =
+            parseFloat(user.match(/transit:\s*(\d+)/)?.[1]) ||
+            (isLuxury ? 300 : 70);
+
+          const baseDine = isLuxury ? 150 : 40;
+          const dineVal = Math.round(duration * baseDine * passCount);
+
+          const origTotal = flightVal + hotelVal + transitVal + dineVal;
           const auditPassed = origTotal <= budgetLimit;
 
+          // For sanitized fallback costs
+          const sanFlight = Math.round(
+            500 *
+              passCount *
+              (route === "oneway"
+                ? 0.55
+                : route === "skiplagging"
+                  ? 0.65
+                  : 1.0),
+          );
+          const sanRooms = Math.ceil((adults + children) / 2) || 1;
+          const sanHotel = sanRooms * duration * 80;
+          const sanTransit = Math.round(60 * (1 + 0.1 * (adults + children)));
+          const sanDine = Math.round(duration * 40 * passCount);
+
           return JSON.stringify({
-            flight: isLuxury ? 1200 : 650,
-            hotel: isLuxury ? 1800 : 350,
-            transit: isLuxury ? 250 : 60,
-            dine: isLuxury ? 1200 : 250,
+            flight: flightVal,
+            hotel: hotelVal,
+            transit: transitVal,
+            dine: dineVal,
             itinerary: isLuxury
-              ? `<h4>Day 1: Penthouse Ingress</h4><p>Stay at 5-star hotel.</p>`
-              : `<h4>Day 1: Hostel Ingress</h4><p>Stay at budget hostel.</p>`,
-            sanitized_flight: 650,
-            sanitized_hotel: 350,
-            sanitized_transit: 60,
-            sanitized_dine: 250,
-            sanitized_itinerary: `<h4>Day 1: Sanitized Ingress</h4><p>Public transit and budget hostel accommodations booked to preserve balance sheet parameters.</p>`,
+              ? `<h4>Day 1: Penthouse Ingress</h4><p>Luxury 5-star suite transfer.</p>`
+              : `<h4>Day 1: Guesthouse Ingress</h4><p>Cozy local guesthouse accommodations.</p>`,
+            sanitized_flight: sanFlight,
+            sanitized_hotel: sanHotel,
+            sanitized_transit: sanTransit,
+            sanitized_dine: sanDine,
+            sanitized_itinerary: `<h4>Day 1: Sanitized Ingress (${startDate})</h4><p>Public transit and budget boutique hostels booked for ${adults} adult${adults > 1 ? "s" : ""}${children > 0 ? " & " + children + " children" : ""}. Flight parameters set to ${route.toUpperCase()} option to preserve capital balance sheet parameters.</p>`,
             audit_passed: auditPassed,
           });
         }
@@ -3161,6 +3326,17 @@ Implementing systematic evaluation checklists provides immediate observability b
           parseFloat(document.getElementById("travel-budget").value) || 1800;
         const isLuxury = style === "luxury";
 
+        // Retrieve precision, traveler composition, trip dates, and routing
+        const precision = document.getElementById("travel-precision").value;
+        const adults =
+          parseInt(document.getElementById("travel-adults").value) || 1;
+        const children =
+          parseInt(document.getElementById("travel-children").value) || 0;
+        const route = document.getElementById("travel-route").value;
+        const startDate = document.getElementById("travel-start-date").value;
+        const endDate = document.getElementById("travel-end-date").value;
+        const isHighPrecision = precision === "highprecision";
+
         consoleEl.innerHTML = "";
         resultsEl.style.display = "none";
 
@@ -3198,6 +3374,36 @@ Implementing systematic evaluation checklists provides immediate observability b
             `   Destination: ${dest} | Departing: ${depart} | Style Preferred: ${style.toUpperCase()} | Budget Limit: $${budget}`,
             "#c084fc",
           );
+          addLog(
+            `   Precision Level: ${isHighPrecision ? "HIGH-PRECISION AUTONOMOUS AGENTIC AI" : "STANDARD REACTIVE AGENT"}`,
+            "#c084fc",
+          );
+          addLog(
+            `   Travelers: ${adults} Adult${adults > 1 ? "s" : ""}, ${children} Child${children !== 1 ? "ren" : ""} | Dates: ${startDate} to ${endDate} | Route: ${route.toUpperCase()}`,
+            "#c084fc",
+          );
+
+          if (isHighPrecision) {
+            const stayDuration =
+              Math.max(
+                1,
+                Math.round(
+                  (new Date(endDate) - new Date(startDate)) /
+                    (1000 * 60 * 60 * 24),
+                ),
+              ) || 7;
+            addLog(
+              `   [High-Precision Telemetry] Calculated trip stay duration: ${stayDuration} days. Group multiplier scale factor: ${(adults + 0.7 * children).toFixed(2)}.`,
+              "#c084fc",
+            );
+            if (route === "skiplagging") {
+              addLog(
+                "   ⚠️ [SkipLagging Warnings Activated] Airline policies dictate carry-on baggage only. Do not link status accounts.",
+                "#f59e0b",
+              );
+            }
+          }
+
           await pacedDelay("lab2", 600);
           if (myRunId !== currentRunId) return;
 
@@ -3212,11 +3418,11 @@ Implementing systematic evaluation checklists provides immediate observability b
           const logisticsBase = document
             .getElementById("prompt-override-logistics")
             .value.trim();
-          const logisticsPrompt = `${logisticsBase} Use ${isLuxury ? "high-end luxury (5-star hotels, premium flights)" : "standard economy (budget hotels, economy flights)"} standards. Return estimates for a trip to ${dest} departing from ${depart}.`;
+          const logisticsPrompt = `${logisticsBase} Use ${isLuxury ? "high-end luxury (5-star hotels, premium flights)" : "standard economy (budget hotels, economy flights)"} standards. Return estimates for a trip to ${dest} departing from ${depart} for ${adults} adults and ${children} children from ${startDate} to ${endDate} using ${route} flight strategy. Precision: ${precision}. Compute cost parameters factoring layover discounts or multi-leg hidden city SkipLagging factors if active.`;
 
           const logisticsResponse = await callGemini(
             logisticsPrompt,
-            `Estimate trip logistics to ${dest} departing from ${depart}`,
+            `Estimate trip logistics to ${dest} departing from ${depart} with ${adults} adults, ${children} children, ${route} route from ${startDate} to ${endDate}, precision: ${precision}`,
           );
           if (myRunId !== currentRunId) return;
 
@@ -3228,9 +3434,29 @@ Implementing systematic evaluation checklists provides immediate observability b
               "⚠️ JSON parsing failed on Logistics output. Using realistic fallback...",
               "#f59e0b",
             );
-            logisticsData = isLuxury
-              ? { flight: 1200, hotel: 1800, transit: 250 }
-              : { flight: 650, hotel: 350, transit: 60 };
+            // Dynamic high-fidelity local calculations
+            const baseFlight = isLuxury ? 1000 : 500;
+            const passCount = adults + 0.7 * children;
+            const routeMult =
+              route === "oneway" ? 0.55 : route === "skiplagging" ? 0.65 : 1.0;
+            const stayDuration =
+              Math.max(
+                1,
+                Math.round(
+                  (new Date(endDate) - new Date(startDate)) /
+                    (1000 * 60 * 60 * 24),
+                ),
+              ) || 7;
+            const rooms = Math.ceil((adults + children) / 2) || 1;
+            const baseRoom = isLuxury ? 350 : 80;
+
+            logisticsData = {
+              flight: Math.round(baseFlight * passCount * routeMult),
+              hotel: rooms * stayDuration * baseRoom,
+              transit: Math.round(
+                (isLuxury ? 250 : 60) * (1 + 0.1 * (adults + children)),
+              ),
+            };
           }
 
           addLog(`   Flight Estimate: $${logisticsData.flight}`);
@@ -3251,11 +3477,11 @@ Implementing systematic evaluation checklists provides immediate observability b
           const guideBase = document
             .getElementById("prompt-override-guide")
             .value.trim();
-          const guidePrompt = `${guideBase} Style: ${style}. Sights and dining in ${dest} departing from ${depart}.`;
+          const guidePrompt = `${guideBase} Style: ${style}. Sights and dining in ${dest} departing from ${depart} for ${adults} adults and ${children} children from ${startDate} to ${endDate}. Strategy: ${precision}. Design activities tailored to traveler ages and count.`;
 
           const itineraryHTML = await callGemini(
             guidePrompt,
-            `Create itinerary for ${dest}`,
+            `Create itinerary for ${dest} for ${adults} adults and ${children} children from ${startDate} to ${endDate}, precision: ${precision}`,
           );
           if (myRunId !== currentRunId) return;
           addLog(
@@ -3276,18 +3502,35 @@ Implementing systematic evaluation checklists provides immediate observability b
           const accountantBase = document
             .getElementById("prompt-override-budget")
             .value.trim();
+          const stayDuration =
+            Math.max(
+              1,
+              Math.round(
+                (new Date(endDate) - new Date(startDate)) /
+                  (1000 * 60 * 60 * 24),
+              ),
+            ) || 7;
+          const passCount = adults + 0.7 * children;
+          const estimatedDine = Math.round(
+            stayDuration * (isLuxury ? 150 : 40) * passCount,
+          );
+
           const accountantPrompt = `${accountantBase}
 Review travel plan parameters:
 Destination: ${dest}
 Departing From: ${depart}
+Travelers: ${adults} adults, ${children} children
+Dates: ${startDate} to ${endDate}
+Routing Strategy: ${route}
 Max Budget: $${budget}
+Precision Strategy: ${precision}
 Estimated Cost parameters:
 - flight: ${logisticsData.flight}
 - hotel: ${logisticsData.hotel}
 - transit: ${logisticsData.transit}
-Based on destination ${dest}, estimate a realistic dining and sight expense as 'dine' ($${isLuxury ? "1200" : "250"}).
+Based on destination ${dest} for ${adults} adults and ${children} children from ${startDate} to ${endDate}, estimate a realistic dining and sight expense as 'dine' ($${estimatedDine}).
 Calculate total = flight + hotel + transit + dine.
-Determine if total exceeds max budget ($${budget}). If it does, set 'audit_passed' to false, sanitize values to fit economy/hostel levels under $${budget}, and rewrite a sanitized HTML itinerary.
+Determine if total exceeds max budget ($${budget}). If it does, set 'audit_passed' to false, sanitize values to fit economy/hostel levels under $${budget}, and rewrite a sanitized HTML itinerary designed for ${adults} adults and ${children} children.
 Return strictly valid JSON:
 {
   "flight": number,
@@ -3305,7 +3548,7 @@ Return strictly valid JSON:
 
           const accountantResponse = await callGemini(
             accountantPrompt,
-            `Audit travel plan. Max Budget: ${budget}. Original Itinerary: ${itineraryHTML}`,
+            `Audit travel plan. Max Budget: ${budget}. Original Itinerary: ${itineraryHTML}. Strategy: ${precision}. Adults: ${adults}, Children: ${children}, Route: ${route}, Dates: ${startDate} to ${endDate}`,
           );
           if (myRunId !== currentRunId) return;
 
