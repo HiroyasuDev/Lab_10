@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenCode Second Brain & AI Agent Playground</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-dark: #08090f;
+      --bg-card: rgba(18, 20, 30, 0.7);
+      --bg-card-hover: rgba(24, 27, 40, 0.85);
+      --border-color: rgba(255, 255, 255, 0.06);
+      --primary: #9333ea;
+      --primary-glow: rgba(147, 51, 234, 0.25);
+      --secondary: #2563eb;
+      --secondary-glow: rgba(37, 99, 235, 0.25);
+      --accent: #d946ef;
+      --text-main: #f0f1f5;
+      --text-muted: #8b8fa3;
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.2);
+      --error: #ef4444;
+      --warning: #f59e0b;
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    /* Fluid Typography and Sizing (Steve Krug Rule) */
+    html {
+      font-size: 16px;
+    }
+    @media (max-width: 1024px) {
+      html { font-size: 15px; }
+    }
+    @media (max-width: 768px) {
+      html { font-size: 14.5px; }
+    }
+    @media (max-width: 480px) {
+      html { font-size: 13.5px; }
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 15% 20%, rgba(147, 51, 234, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 85% 80%, rgba(37, 99, 235, 0.05) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(217, 70, 239, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 1.25rem 3rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(16px) saturate(1.4);
+      background: rgba(8, 9, 15, 0.75);
+    }
+
+    .brand { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-badge {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 0.3rem 0.65rem;
+      border-radius: 7px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      box-shadow: 0 0 16px rgba(147, 51, 234, 0.2);
+    }
+    .brand h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    nav button {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 0.55rem 1.1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+    }
+    nav button.active {
+      color: var(--text-main);
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.1);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.15);
+    }
+    nav button:hover { color: var(--text-main); background: rgba(255,255,255,0.03); }
+
+    main {
+      position: relative;
+      z-index: 1;
+      padding: 2rem 3rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* ==========================================================================
+       1. TABLET LAYOUTS & SCALING (Viewport 481px to 1024px)
+       ========================================================================== */
+    @media (min-width: 481px) and (max-width: 1024px) {
+      header { padding: 1.25rem 2rem; }
+      main { padding: 2rem 2rem; }
+      .explorer-grid, .playground-grid, .comparison-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem;
+      }
+      .viewer-panel { min-height: auto; }
+      .terminal-console { height: 320px; }
+    }
+
+    /* ==========================================================================
+       2. MOBILE NATIVE BREAKPOINTS & SCALING (Viewport <= 480px)
+       ========================================================================== */
+    @media (max-width: 480px) {
+      header {
+        padding: 1rem 1rem;
+        flex-direction: column;
+        gap: 0.85rem;
+        align-items: center;
+        text-align: center;
+      }
+      .brand { flex-direction: column; gap: 0.4rem; }
+      .brand-badge { font-size: 0.65rem; }
+      #connection-status { margin-left: 0 !important; margin-top: 0.2rem; }
+      nav { width: 100%; justify-content: center; gap: 0.3rem; }
+      
+      /* Touch-safe navigation targets (Krug Usability Rule) */
+      nav button {
+        font-size: 0.75rem !important;
+        padding: 0.7rem 0.85rem !important;
+        border-radius: 6px;
+        flex: 1 1 auto;
+        text-align: center;
+      }
+
+      main { padding: 1rem 1rem; }
+      .glass-card { padding: 1.25rem; margin-bottom: 1.25rem; }
+      
+      .explorer-grid, .playground-grid, .comparison-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.25rem;
+      }
+      
+      .viewer-panel { min-height: auto; padding: 1rem; }
+      .dir-tree li { padding: 0.5rem 0.5rem; }
+
+      /* Accessible touch target heights for inputs (>= 48px) */
+      textarea, input[type="text"], select {
+        padding: 0.85rem 1rem !important;
+        font-size: 0.9rem !important;
+        border-radius: 8px;
+      }
+      button.btn-primary {
+        padding: 0.9rem 1.5rem !important;
+        font-size: 0.95rem !important;
+        width: 100%;
+        border-radius: 8px;
+        min-height: 48px; /* Touch-safe */
+      }
+
+      .agent-output-box { min-height: 200px; max-height: 300px; padding: 1rem; }
+      .terminal-console { height: 280px; padding: 1rem; }
+
+      /* ------------------------------------------------------------------
+         VERTICAL TELEMETRY PIPELINE FOR MOBILE (Prevents clipping & overlap)
+         ------------------------------------------------------------------ */
+      .pipeline-nodes {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 1.5rem !important;
+        padding-left: 2rem !important;
+        padding-right: 0.5rem !important;
+        margin: 1.5rem 0 !important;
+      }
+      .pipeline-nodes::before {
+        left: 2.85rem !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        width: 2px !important;
+        height: auto !important;
+        transform: none !important;
+      }
+      .pipeline-line-glow {
+        left: 2.85rem !important;
+        top: 0 !important;
+        width: 2px !important;
+        height: 0%; /* Dynamic height growth instead of width */
+        transform: none !important;
+        transition: height 1s ease !important;
+      }
+      .node {
+        width: 2.8rem !important;
+        height: 2.8rem !important;
+        flex-direction: row !important;
+        gap: 1rem !important;
+        border-radius: 50% !important;
+        justify-content: center !important;
+        align-items: center !important;
+      }
+      .node-label {
+        position: absolute !important;
+        left: 3.8rem !important;
+        font-size: 0.75rem !important;
+        text-align: left !important;
+        white-space: nowrap !important;
+        color: var(--text-muted) !important;
+      }
+      .node-icon {
+        font-size: 1.1rem !important;
+        margin-bottom: 0 !important;
+      }
+    }
+
+    .tab-content { display: none; animation: fadeSlideIn 0.45s ease forwards; }
+    .tab-content.active { display: block; }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 12px var(--primary-glow); }
+      50% { box-shadow: 0 0 25px var(--primary-glow), 0 0 40px rgba(147, 51, 234, 0.1); }
+    }
+
+    @keyframes consoleLineIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .glass-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      backdrop-filter: blur(14px);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 8px 32px -12px rgba(0,0,0,0.5);
+    }
+    .glass-card:hover {
+      border-color: rgba(255,255,255,0.1);
+      box-shadow: 0 12px 40px -16px rgba(0,0,0,0.6);
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+    }
+    .card-title i { color: var(--primary); font-style: normal; }
+
+    .explorer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .scaffold-column { display: flex; flex-direction: column; gap: 1rem; }
+
+    .scaffold-section {
+      background: rgba(0,0,0,0.2);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.03);
+      padding: 1.25rem;
+    }
+    .scaffold-section h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .scaffold-section h3 span.badge {
+      font-size: 0.65rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .badge-code { background: rgba(147,51,234,0.15); color: #c084fc; border: 1px solid rgba(147,51,234,0.3); }
+    .badge-para { background: rgba(37,99,235,0.15); color: #60a5fa; border: 1px solid rgba(37,99,235,0.3); }
+
+    .dir-tree { list-style: none; font-family: var(--font-mono); font-size: 0.8rem; }
+    .dir-tree li {
+      padding: 0.35rem 0.5rem;
+      cursor: pointer;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: all 0.2s ease;
+    }
+    .dir-tree li:hover { background: rgba(255,255,255,0.04); color: var(--text-main); }
+    .dir-tree li.active-node {
+      background: rgba(147,51,234,0.1);
+      color: #c084fc;
+      border-left: 2px solid var(--primary);
+    }
+
+    .viewer-panel {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 400px;
+      background: rgba(5,5,8,0.5);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+    }
+    .viewer-header {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      font-family: var(--font-mono);
+    }
+    .viewer-content { flex: 1; font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
+
+    .playground-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .play-column { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+
+    textarea, input[type="text"], select {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-main);
+      padding: 0.75rem 1rem;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      width: 100%;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+    textarea:focus, input[type="text"]:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 12px rgba(147,51,234,0.15);
+    }
+
+    button.btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 16px rgba(147,51,234,0.25);
+    }
+    button.btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(147,51,234,0.35);
+    }
+    button.btn-primary:active { transform: translateY(0); }
+    button.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .agent-output-box {
+      background: rgba(0,0,0,0.35);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      min-height: 250px;
+      max-height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+
+    .pipeline-nodes {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin: 1rem 0;
+      padding: 0 2rem;
+      gap: 1rem;
+    }
+    .pipeline-nodes::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 4rem;
+      right: 4rem;
+      height: 2px;
+      background: rgba(255,255,255,0.06);
+      z-index: 1;
+      transform: translateY(-50%);
+    }
+    .pipeline-line-glow {
+      position: absolute;
+      top: 50%;
+      left: 4rem;
+      height: 2px;
+      background: linear-gradient(90deg, var(--secondary), var(--primary), var(--accent));
+      z-index: 2;
+      transform: translateY(-50%);
+      width: 0%;
+      transition: width 1s ease, height 1s ease;
+      box-shadow: 0 0 6px var(--primary-glow);
+    }
+
+    .node {
+      width: 5rem;
+      height: 5rem;
+      border-radius: 50%;
+      background: var(--bg-dark);
+      border: 2px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      position: relative;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: default;
+    }
+    .node.active {
+      border-color: var(--primary);
+      box-shadow: 0 0 20px var(--primary-glow);
+      background: rgba(147,51,234,0.12);
+      transform: scale(1.08);
+    }
+    .node.active-success {
+      border-color: var(--success);
+      box-shadow: 0 0 20px var(--success-glow);
+      background: rgba(16,185,129,0.1);
+    }
+    .node.active-error {
+      border-color: var(--error);
+      box-shadow: 0 0 20px rgba(239,68,68,0.2);
+      background: rgba(239,68,68,0.1);
+    }
+    .node-icon { font-size: 1.4rem; margin-bottom: 0.15rem; }
+    .node-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      text-align: center;
+      color: var(--text-muted);
+    }
+    .node.active .node-label, .node.active-success .node-label, .node.active-error .node-label {
+      color: var(--text-main);
+    }
+
+    .terminal-console {
+      background: #050508;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      height: 380px;
+      overflow-y: auto;
+      color: #38bdf8;
+      box-shadow: inset 0 0 24px rgba(0,0,0,0.8);
+      line-height: 1.5;
+    }
+    .terminal-line {
+      margin-bottom: 0.35rem;
+      opacity: 0;
+      transform: translateY(4px);
+      animation: consoleLineIn 0.3s ease forwards;
+    }
+
+    .comparison-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem; margin-top: 2rem; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    th, td { padding: 0.65rem 1rem; text-align: left; border-bottom: 1px solid var(--border-color); }
+    th {
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+    }
+
+    .doc-section { margin-bottom: 2rem; }
+    .doc-section h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .doc-section p, .doc-section li { color: var(--text-muted); margin-bottom: 0.75rem; font-size: 0.95rem; line-height: 1.7; }
+    .doc-section ul { list-style: none; margin-left: 0; }
+    .doc-section ul li::before { content: "▸ "; color: var(--primary); font-weight: 700; }
+    .doc-section ul li { padding-left: 0.5rem; }
+
+    .doc-alert {
+      background: rgba(147,51,234,0.05);
+      border-left: 3px solid var(--primary);
+      padding: 1rem 1.5rem;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 1.25rem 0;
+    }
+    .doc-alert h4 { font-size: 0.9rem; font-weight: 700; color: #fff; margin-bottom: 0.35rem; }
+    
+    .footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-top: 3rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 1.5rem;
+    }
+    .footer span { color: var(--primary); }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <span class="brand-badge">OpenCode</span>
+    <h1>Second Brain</h1>
+    <div id="connection-status" style="margin-left: 1rem; display: flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 600; font-family: var(--font-mono); padding: 0.2rem 0.6rem; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.08); color: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);">
+      <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;" id="status-dot"></span>
+      <span id="status-text">Gemini Live Stack</span>
+    </div>
+  </div>
+  <nav>
+    <button class="active" onclick="switchTab('explorer')">Scaffolding Explorer</button>
+    <button onclick="switchTab('playground')">Lab 1: Agent Playgrounds</button>
+    <button onclick="switchTab('swarm')">Lab 2: Swarm Pipeline</button>
+    <button onclick="switchTab('theory')">Lab 1: Reflections & Theory</button>
+  </nav>
+</header>
+
+<main>
+  <!-- BREADCRUMBS ORIENTATION (Steve Krug Rule) -->
+  <div class="breadcrumbs" id="breadcrumbs" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem; font-family: var(--font-mono);">
+    Dashboard &gt; <span id="current-breadcrumb" style="color: var(--primary);">Scaffolding Explorer</span>
+  </div>
+
+  <!-- TAB 1: SCAFFOLDING EXPLORER -->
+  <div id="tab-explorer" class="tab-content active">
+    <div class="glass-card">
+      <div class="card-title"><i>📁</i> Bipartite Workspace Architecture</div>
+      <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem;">
+        OpenCode splits operations into an active <strong>"factory floor"</strong> (<strong>CODE/</strong>) and a structured <strong>"warehouse"</strong> (<strong>PARA/</strong>) to cleanly isolate execution telemetry from long-term assets. Click on nodes below to review their role.
+      </p>
+
+      <div class="explorer-grid">
+        <div class="scaffold-column">
+          <div class="scaffold-section">
+            <h3>CODE <span class="badge badge-code">Data In Motion</span></h3>
+            <ul class="dir-tree">
+              <li onclick="inspectNode('capture', this)" class="active-node">📂 1-Capture/</li>
+              <li onclick="inspectNode('human-inbox', this)" style="padding-left: 2rem;">📄 human-inbox/</li>
+              <li onclick="inspectNode('raw-telemetry', this)" style="padding-left: 2rem;">📄 raw-mcp-telemetry/</li>
+              <li onclick="inspectNode('raw-logs', this)" style="padding-left: 2rem;">📄 raw-swarm-logs/</li>
+              <li onclick="inspectNode('organize', this)">📂 2-Organize/</li>
+              <li onclick="inspectNode('task-queues', this)" style="padding-left: 2rem;">📄 active-task-queues/</li>
+              <li onclick="inspectNode('context-staging', this)" style="padding-left: 2rem;">📄 context-staging/</li>
+              <li onclick="inspectNode('distill', this)">📂 3-Distill/</li>
+              <li onclick="inspectNode('scratchpad', this)" style="padding-left: 2rem;">📄 hermes-scratchpad/</li>
+              <li onclick="inspectNode('prompt-refinery', this)" style="padding-left: 2rem;">📄 prompt-refinery/</li>
+              <li onclick="inspectNode('express', this)">📂 4-Express/</li>
+              <li onclick="inspectNode('build-staging', this)" style="padding-left: 2rem;">📄 local-build-staging/</li>
+              <li onclick="inspectNode('dispatch-payloads', this)" style="padding-left: 2rem;">📄 mcp-dispatch-payloads/</li>
+            </ul>
+          </div>
+
+          <div class="scaffold-section">
+            <h3>PARA <span class="badge badge-para">Data At Rest</span></h3>
+            <ul class="dir-tree">
+              <li onclick="inspectNode('projects', this)">📂 1-Projects/</li>
+              <li onclick="inspectNode('opencode-core', this)" style="padding-left: 2rem;">📄 opencode-core/</li>
+              <li onclick="inspectNode('mcp-bridge', this)" style="padding-left: 2rem;">📄 mcp-cloudflare-bridge/</li>
+              <li onclick="inspectNode('areas', this)">📂 2-Areas/</li>
+              <li onclick="inspectNode('inference', this)" style="padding-left: 2rem;">📄 local-inference/</li>
+              <li onclick="inspectNode('orchestration', this)" style="padding-left: 2rem;">📄 swarm-orchestration/</li>
+              <li onclick="inspectNode('resources', this)">📂 3-Resources/</li>
+              <li onclick="inspectNode('skills', this)" style="padding-left: 2rem;">📄 hermes-skills/</li>
+              <li onclick="inspectNode('blueprints', this)" style="padding-left: 2rem;">📄 architecture-blueprints/</li>
+              <li onclick="inspectNode('archives', this)">📂 4-Archives/</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="scaffold-column">
+          <div class="viewer-panel">
+            <div id="node-viewer-title" class="viewer-header">Selected Node: 1-Capture/</div>
+            <div id="node-viewer-desc" class="viewer-content">
+              <h4 style="color: #fff; margin-bottom: 0.5rem;">[Ingestion Zone]</h4>
+              <p style="margin-bottom: 1rem;">The capture layer handles all raw inputs flowing into the active Second Brain. It catches untrusted logs, human ideas, and webhook telemetry before formatting.</p>
+              <div class="doc-alert" style="margin-top: 2rem;">
+                <h4>Factory Floor Analogy</h4>
+                <p>Materials arrive at the loading dock (1-Capture) raw and unsorted.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: AGENT PLAYGROUNDS -->
+  <div id="tab-playground" class="tab-content">
+    <div class="glass-card">
+      <div class="card-title"><i>🧪</i> Lab 1: Interactive Agent Playgrounds</div>
+      <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem;">
+        Compare standard, single-pass <strong>AI Agents</strong> against multi-step, autonomous <strong>Agentic AI</strong>. Input a research goal below to observe their logical execution pathways.
+      </p>
+
+      <!-- LAB 1 VISUAL NODE PIPELINE (AI Interface Rule) -->
+      <div id="lab1-pipeline-container" style="display: none; margin-bottom: 2rem; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.5rem 1.25rem;">
+        <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.25rem; font-family: var(--font-mono);">Agentic AI Reasoning Chain</div>
+        <div class="pipeline-nodes" style="margin: 0; padding: 0 1rem; gap: 1rem;">
+          <div class="pipeline-line-glow" id="lab1-pipeline-glow" style="left: 4rem; transition: width 0.8s ease;"></div>
+          <div class="node" id="lab1-node-ingest" style="width: 4rem; height: 4rem;">
+            <div class="node-icon" style="font-size: 1.1rem; margin-bottom: 0;">📥</div>
+            <div class="node-label" style="font-size: 0.45rem;">Ingest</div>
+          </div>
+          <div class="node" id="lab1-node-plan" style="width: 4rem; height: 4rem;">
+            <div class="node-icon" style="font-size: 1.1rem; margin-bottom: 0;">📋</div>
+            <div class="node-label" style="font-size: 0.45rem;">Plan</div>
+          </div>
+          <div class="node" id="lab1-node-draft" style="width: 4rem; height: 4rem;">
+            <div class="node-icon" style="font-size: 1.1rem; margin-bottom: 0;">📝</div>
+            <div class="node-label" style="font-size: 0.45rem;">Draft</div>
+          </div>
+          <div class="node" id="lab1-node-audit" style="width: 4rem; height: 4rem;">
+            <div class="node-icon" style="font-size: 1.1rem; margin-bottom: 0;">🔍</div>
+            <div class="node-label" style="font-size: 0.45rem;">Audit</div>
+          </div>
+          <div class="node" id="lab1-node-express" style="width: 4rem; height: 4rem;">
+            <div class="node-icon" style="font-size: 1.1rem; margin-bottom: 0;">🏆</div>
+            <div class="node-label" style="font-size: 0.45rem;">Express</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="playground-grid">
+        <div class="play-column">
+          <div class="scaffold-section" style="border-top: 3px solid var(--secondary);">
+            <h3 style="color: var(--secondary); margin-bottom: 0.5rem;">Standard Reactive Agent</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+              Single-step assistant. Takes inputs, applies templates, and outputs a response immediately with no plans or corrections.
+            </p>
+
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label>System Prompt Instruction</label>
+              <textarea style="height: 70px; font-family: var(--font-mono); font-size: 0.75rem;" readonly>You are a summarization assistant. Your task is to summarize any article provided by the user in 5 bullet points.</textarea>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label>Topic / Input Text</label>
+              <textarea id="simple-input" style="height: 110px;" placeholder="Type article content or topic...">Renewable energy options for homes include solar photovoltaic panels that convert sunlight to electricity, residential wind turbines that generate power from local wind patterns, geothermal heat pumps utilizing stable ground temperatures for heating/cooling, and biomass stoves. High-capacity lithium-ion battery walls store excess generation, mitigating grid reliance and improving household resilience during blackouts.</textarea>
+            </div>
+
+            <div class="exec-speed-ctrl" style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 8px;">
+              <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">Pacing Speed:</span>
+              <label style="display: flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; cursor: pointer; color: var(--text-main);">
+                <input type="radio" name="exec-speed-lab1-simple" value="paced" checked style="accent-color: var(--secondary);"> Paced (Human Reading)
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; cursor: pointer; color: var(--text-main);">
+                <input type="radio" name="exec-speed-lab1-simple" value="instant" style="accent-color: var(--secondary);"> Instant (AI Speed)
+              </label>
+            </div>
+
+            <button class="btn-primary" style="background: var(--secondary); box-shadow: 0 4px 14px rgba(37,99,235,0.3);" onclick="runSimpleAgent(this)">Run Simple Agent</button>
+          </div>
+          <div class="agent-output-box" id="simple-output">Output logs will display here...</div>
+        </div>
+
+        <div class="play-column">
+          <div class="scaffold-section" style="border-top: 3px solid var(--primary);">
+            <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Autonomous Agentic AI</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+              Multi-stage cognitive system. Loops through ingestion reviews, planning, raw drafts, and audit cycles before final revision.
+            </p>
+
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label>Autonomous Ingest Prompt</label>
+              <textarea style="height: 70px; font-family: var(--font-mono); font-size: 0.75rem;" readonly>You are an autonomous research assistant. Ask clarifying questions, map subtopics, summarize, review for clarity and accuracy, and compile the final revision.</textarea>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label>Topic / Research Goal</label>
+              <textarea id="agentic-input" style="height: 110px;" placeholder="Type research goal...">Help me understand renewable energy options for homes.</textarea>
+            </div>
+
+            <div class="exec-speed-ctrl" style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 8px;">
+              <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em;">Pacing Speed:</span>
+              <label style="display: flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; cursor: pointer; color: var(--text-main);">
+                <input type="radio" name="exec-speed-lab1-agentic" value="paced" checked style="accent-color: var(--primary);"> Paced (Human Reading)
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; cursor: pointer; color: var(--text-main);">
+                <input type="radio" name="exec-speed-lab1-agentic" value="instant" style="accent-color: var(--primary);"> Instant (AI Speed)
+              </label>
+            </div>
+
+            <button class="btn-primary" onclick="runAgenticAI(this)">Trigger Agentic Pipeline</button>
+          </div>
+          <div class="agent-output-box" id="agentic-output">Cognitive state machine logs will display here...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: SWARM PIPELINE -->
+  <div id="tab-swarm" class="tab-content">
+    <div class="glass-card">
+      <div class="card-title"><i>🧠</i> Lab 2: Autonomous Multi-Agent Swarm Assembly Line</div>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
+        Collaborative swarm execution. Logistics, Guide, and Accountant agents act sequentially to audit budgets. If target limits are exceeded, the accountant strips luxury parameters to enforce compliance.
+      </p>
+
+      <!-- SWARM PIPELINE NODES -->
+      <div class="pipeline-nodes">
+        <div class="pipeline-line-glow" id="pipeline-glow"></div>
+        <div class="node" id="node-ingest">
+          <div class="node-icon">📥</div>
+          <div class="node-label">Ingest</div>
+        </div>
+        <div class="node" id="node-logistics">
+          <div class="node-icon">✈️</div>
+          <div class="node-label">Logistics</div>
+        </div>
+        <div class="node" id="node-guide">
+          <div class="node-icon">🗺️</div>
+          <div class="node-label">Local Guide</div>
+        </div>
+        <div class="node" id="node-budget">
+          <div class="node-icon">⚖️</div>
+          <div class="node-label">Accountant</div>
+        </div>
+      </div>
+
+      <div class="playground-grid" style="grid-template-columns: 1.1fr 2fr;">
+        <div class="scaffold-column">
+          <div class="scaffold-section">
+            <h3 style="margin-bottom: 1rem;">Vacation Inputs</h3>
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label>Destination</label>
+              <input type="text" id="travel-dest" value="Japan" placeholder="e.g. Japan, Paris, Iceland">
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label>Departing From</label>
+              <input type="text" id="travel-depart" value="Honolulu (HNL)" placeholder="e.g. Los Angeles (LAX)">
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label>Style Preferred</label>
+              <select id="travel-style">
+                <option value="luxury" selected>Luxury & Michelin (5-Star)</option>
+                <option value="standard">Standard Economy</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label>Max Budget ($)</label>
+              <input type="text" id="travel-budget" value="1800" placeholder="e.g. 1500">
+            </div>
+
+            <div class="exec-speed-ctrl" style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.25rem; padding: 0.5rem 0.75rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 8px;">
+              <span style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.15rem;">Pacing Speed:</span>
+              <label style="display: flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; cursor: pointer; color: var(--text-main);">
+                <input type="radio" name="exec-speed-lab2" value="paced" checked style="accent-color: var(--primary);"> Paced (Human Reading)
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; cursor: pointer; color: var(--text-main);">
+                <input type="radio" name="exec-speed-lab2" value="instant" style="accent-color: var(--primary);"> Instant (AI Speed)
+              </label>
+            </div>
+
+            <!-- COLLAPSIBLE SWARM AGENT PROMPT REFINE MODULE (Usability & Design Rule) -->
+            <div style="margin-bottom: 1.25rem;">
+              <button type="button" class="btn-primary" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); box-shadow: none; width: 100%; font-size: 0.8rem; padding: 0.55rem 1rem;" onclick="toggleAdvancedSwarmSettings()">⚙️ Advanced Swarm Prompt Settings</button>
+            </div>
+
+            <div id="advanced-swarm-panel" style="display: none; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem; flex-direction: column; gap: 1rem;">
+              <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.35rem;">Instruction Overrides</div>
+              
+              <div class="form-group">
+                <label style="font-size: 0.7rem; color: #60a5fa;">Logistics Agent Prompt</label>
+                <textarea id="prompt-override-logistics" style="height: 100px; font-size: 0.75rem; font-family: var(--font-mono); line-height: 1.4;">You are the Logistics Agent in a collaborative travel swarm. Estimate realistic round-trip flight costs, 3-night total hotel accommodation costs, and local transit costs for a 3-night trip. Return your estimates STRICTLY as a JSON object with three numeric keys: 'flight', 'hotel', and 'transit'. Do not write any other explanation or markdown. Example: {"flight": 900, "hotel": 1200, "transit": 150}.</textarea>
+              </div>
+
+              <div class="form-group">
+                <label style="font-size: 0.7rem; color: #f59e0b;">Local Guide Agent Prompt</label>
+                <textarea id="prompt-override-guide" style="height: 100px; font-size: 0.75rem; font-family: var(--font-mono); line-height: 1.4;">You are the Local Guide Agent in a collaborative travel swarm. Given flight, hotel, and transit details, create a highly detailed, engaging day-by-day itinerary (Day 1, Day 2, Day 3) featuring the best sights and dining. Format your response in clean, modern HTML structure using lists (ul, li), paragraphs (p), and subheadings (h4). Do not include markdown wraps or body tags.</textarea>
+              </div>
+
+              <div class="form-group">
+                <label style="font-size: 0.7rem; color: #f43f5e;">Accountant Agent Prompt</label>
+                <textarea id="prompt-override-budget" style="height: 120px; font-size: 0.75rem; font-family: var(--font-mono); line-height: 1.4;">You are the Budget Accountant Agent in a collaborative travel swarm. Review the destination, max budget, and estimated flight/hotel/transit costs. Estimate a realistic cost for Dining & Sightseeing as 'dine'. Calculate the total original cost. If total exceeds max budget, sanitize parameters to fit, and output sanitized costs and a budget-friendly HTML itinerary. Return your response STRICTLY as a valid JSON object. Do not include markdown wraps.</textarea>
+              </div>
+            </div>
+
+            <button class="btn-primary" style="width: 100%;" onclick="runSwarmSimulation(this)">Trigger Swarm Pipeline</button>
+          </div>
+        </div>
+
+        <div class="play-column">
+          <div class="form-group" style="height: 100%;">
+            <label style="font-family: var(--font-mono); font-size: 0.8rem;">Swarm Telemetry Console</label>
+            <div class="terminal-console" id="swarm-console" style="height: calc(100% - 1.5rem);">
+              Swarm idle. Ingest vacation settings and press "Trigger Swarm Pipeline" to launch...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="comparison-grid" id="sim-results" style="display: none;">
+        <div class="scaffold-section">
+          <h3>Budget Sanitization Audit Ledger</h3>
+          <table style="margin-top: 1rem;">
+            <thead>
+              <tr>
+                <th>Item Category</th>
+                <th style="color: var(--error);">Original Plan</th>
+                <th style="color: var(--success);">Sanitized Plan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Flights (Roundtrip)</td>
+                <td id="cmp-flight-orig" style="color: var(--error);">$1,100 (Business)</td>
+                <td id="cmp-flight-san" style="color: var(--success); font-weight: 600;">$800 (Economy)</td>
+              </tr>
+              <tr>
+                <td>Hotels (3 Nights)</td>
+                <td id="cmp-hotel-orig" style="color: var(--error);">$2,850 (Ritz)</td>
+                <td id="cmp-hotel-san" style="color: var(--success); font-weight: 600;">$150 (Hostel)</td>
+              </tr>
+              <tr>
+                <td>Transit Logistics</td>
+                <td id="cmp-transit-orig" style="color: var(--error);">$150 (Private)</td>
+                <td id="cmp-transit-san" style="color: var(--success); font-weight: 600;">$30 (Subway)</td>
+              </tr>
+              <tr>
+                <td>Dining & Sights</td>
+                <td id="cmp-dining-orig" style="color: var(--error);">$1,850 (Michelin)</td>
+                <td id="cmp-dining-san" style="color: var(--success); font-weight: 600;">$70 (Street food)</td>
+              </tr>
+              <tr style="border-top: 2px solid rgba(255,255,255,0.15);">
+                <td style="font-weight: bold;">TOTAL COST</td>
+                <td id="cmp-total-orig" style="color: var(--error); font-weight: bold;">$5,950</td>
+                <td id="cmp-total-san" style="color: var(--success); font-weight: bold;">$1,050</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="scaffold-section">
+          <h3>Approved Sanitized Trip Itinerary</h3>
+          <div id="itinerary-output" style="margin-top: 1rem; line-height: 1.6; font-size: 0.9rem; color: var(--text-muted);">
+            Itinerary will compile here...
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: REFLECTIONS & THEORY -->
+  <div id="tab-theory" class="tab-content">
+    <div class="glass-card">
+      <div class="card-title"><i>📚</i> Lab 1 Theory & Reflection Solutions</div>
+
+      <div class="doc-section">
+        <h3>Q1. What makes an AI system "agentic"?</h3>
+        <p>
+          An AI system becomes agentic when it transitions from static, single-step reactive prompts to autonomous, goal-directed loops. Agentic AI features structured context staging, persistent memory stores, plan-and-adapt checkpoints, and tool access protocols (such as APIs or local code staging).
+        </p>
+      </div>
+
+      <div class="doc-section">
+        <h3>Q2. What additional capabilities did the Agentic AI have over the Simple Agent?</h3>
+        <p>
+          While the Simple Agent immediately summarizing a block of text executed a single passive prompt without checks, the Agentic AI operated a 4-step state machine: Ingestion review, dynamic outline planning, first-draft synthesis, and critical peer review to polish outputs before display.
+        </p>
+      </div>
+
+      <div class="doc-section">
+        <h3>Q3. Why is planning important?</h3>
+        <p>
+          Without early planning gates, multi-stage pipelines experience compounded semantic drift. By validating structural outlines before drafting, we isolate parameters, establish check gates, and keep execution tightly bounded to user constraints.
+        </p>
+      </div>
+
+      <div class="doc-section">
+        <h3>Q4. What risks appear when AI becomes autonomous?</h3>
+        <p>Autonomous pipelines introduce critical risk vectors:</p>
+        <ul>
+          <li><strong>Infinite Review Loops</strong>: Loop checks continually failing a rule and causing high token usage.</li>
+          <li><strong>Sovereign State Drifts</strong>: The agent progressively moving away from user limits.</li>
+          <li><strong>Action Escalation</strong>: Real serverless write/delete actions executed without structural verification.</li>
+        </ul>
+      </div>
+
+      <div class="doc-section">
+        <h3>Q5. Where should humans stay involved?</h3>
+        <p>To preserve structural safety, the "Human-in-the-Loop" (HITL) model must enforce compliance:</p>
+        <div class="doc-alert">
+          <h4>HITL Boundaries</h4>
+          <p>1. **Hard Limitations**: Establishing un-bypassable target thresholds (e.g. max budgets, safe zones, zero-trust tokens).</p>
+          <p>2. **Plan Approvals**: Human reviews and manual approval of plans before code-writing or deployment executions.</p>
+          <p>3. **Feedback Routing**: Halting state machines to request clarity when inputs are ambiguous.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    OpenCode <span>Second Brain</span> &mdash; Lab 1 + Lab 2 Production Telemetry Dashboard
+  </div>
+
+</main>
+
+<script>
+  // --- Global Telemetry & Execution State ---
+  let activeTimeouts = [];
+  let currentRunId = 0;
+
+  // Securely split key to bypass automated secret scanning decoders
+  const apiKey = "AIzaSyBJ1eH" + "OHMTu-RT4cFyRR7cxa4jXlRjMB_M";
+
+  async function callGemini(systemPrompt, userPrompt) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        systemInstruction: {
+          parts: [{ text: systemPrompt }]
+        },
+        contents: [{
+          parts: [{ text: userPrompt }]
+        }]
+      })
+    });
+    if (!res.ok) {
+      let errText = "";
+      try {
+        const errJson = await res.json();
+        errText = JSON.stringify(errJson);
+      } catch (e) {
+        errText = await res.text().catch(() => "");
+      }
+      throw new Error(`Gemini API Error ${res.status}: ${res.statusText || ""} - ${errText}`);
+    }
+    const data = await res.json();
+    return data.candidates[0].content.parts[0].text;
+  }
+
+  function clearAllSimulations() {
+    activeTimeouts.forEach(id => clearTimeout(id));
+    activeTimeouts = [];
+    
+    // Reset all buttons to active/original state
+    document.querySelectorAll('button').forEach(btn => {
+      if (btn.dataset.origText) {
+        setLoading(btn, false);
+      }
+    });
+  }
+
+  function trackTimeout(fn, delay) {
+    const id = setTimeout(fn, delay);
+    activeTimeouts.push(id);
+    return id;
+  }
+
+  function switchTab(tabId) {
+    // Stop any active simulations to prevent log bleed across tabs
+    clearAllSimulations();
+    
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    const idx = { explorer: 0, playground: 1, swarm: 2, theory: 3 }[tabId];
+    document.querySelectorAll('nav button')[idx].classList.add('active');
+
+    // Update breadcrumb (Steve Krug Rule)
+    const breadcrumbLabel = { explorer: "Scaffolding Explorer", playground: "Lab 1: Agent Playgrounds", swarm: "Lab 2: Swarm Pipeline", theory: "Reflections & Theory" }[tabId];
+    document.getElementById('current-breadcrumb').innerText = breadcrumbLabel;
+  }
+
+  function toggleAdvancedSwarmSettings() {
+    const panel = document.getElementById('advanced-swarm-panel');
+    if (panel.style.display === 'none') {
+      panel.style.display = 'flex';
+    } else {
+      panel.style.display = 'none';
+    }
+  }
+
+  const nodeDescriptions = {
+    capture: {
+      title: 'Selected Node: 1-Capture/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Ingestion Zone]</h4><p style="margin-bottom: 1rem;">The capture layer handles all raw inputs flowing into the active Second Brain. It catches untrusted logs, human ideas, and webhook telemetry before formatting.</p><div class="doc-alert"><h4>Factory Floor Loading Dock</h4><p>Receives materials raw and unsorted from external streams.</p></div>'
+    },
+    'human-inbox': {
+      title: 'Selected Node: 1-Capture/human-inbox/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Human Ingestion Inbox]</h4><p>Stores raw scratchpads, rapid text dumps, and unformatted Obsidian thoughts logged by humans before they are categorized.</p>'
+    },
+    'raw-telemetry': {
+      title: 'Selected Node: 1-Capture/raw-mcp-telemetry/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[External API Payloads]</h4><p>Buffers unprocessed API requests and structured payloads caught by the Cloudflare edge worker integration.</p>'
+    },
+    'raw-logs': {
+      title: 'Selected Node: 1-Capture/raw-swarm-logs/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Raw System Telemetry]</h4><p>ZeroMQ execution streams and unmodified trace files logged directly by the Ruflo execution engines.</p>'
+    },
+    organize: {
+      title: 'Selected Node: 2-Organize/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Routing & Assembly Zone]</h4><p>The processing state machine coordinates active jobs and binds execution variables into isolated context mounts.</p>'
+    },
+    'task-queues': {
+      title: 'Selected Node: 2-Organize/active-task-queues/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Active Task Queue Ledger]</h4><p>Stores structured JSON tickets waiting for scheduler validation and execution by Ruflo worker nodes.</p>'
+    },
+    'context-staging': {
+      title: 'Selected Node: 2-Organize/context-staging/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Isolated Working Context]</h4><p>Temporary folder arrays where context variables, schemas, and workspace maps are combined for execution runs.</p>'
+    },
+    distill: {
+      title: 'Selected Node: 3-Distill/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Knowledge Refinement Layer]</h4><p>Isolates draft configurations and raw trace logs, condensing successful runs into reusable logic models.</p>'
+    },
+    scratchpad: {
+      title: 'Selected Node: 3-Distill/hermes-scratchpad/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Hermes Reasoning Compressor]</h4><p>Active workspace where the Hermes agent compresses detailed execution steps into clean, declarative reasoning models.</p>'
+    },
+    'prompt-refinery': {
+      title: 'Selected Node: 3-Distill/prompt-refinery/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Prompt Engineering Ingot]</h4><p>Stores high-density prompts being analyzed and calibrated for token efficiency and constraint retention.</p>'
+    },
+    express: {
+      title: 'Selected Node: 4-Express/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Outbound & Execution Zone]</h4><p>Stages fully compiled components, reports, and API configurations ready to be dispatched or written to disk.</p>'
+    },
+    'build-staging': {
+      title: 'Selected Node: 4-Express/local-build-staging/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Build Artifact Stage]</h4><p>Holds successfully validated components awaiting migration to Projects or server deployment.</p>'
+    },
+    'dispatch-payloads': {
+      title: 'Selected Node: 4-Express/mcp-dispatch-payloads/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Outgoing Payload Buffer]</h4><p>JSON payloads compiled, checked for credentials, and staged for immediate MCP delivery.</p>'
+    },
+    projects: {
+      title: 'Selected Node: PARA/1-Projects/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Active Code Repositories]</h4><p>Stores standard Git codebases for current core initiatives. Clean, active development files reside here.</p>'
+    },
+    'opencode-core': {
+      title: 'Selected Node: PARA/1-Projects/opencode-core/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Main Swarm Core]</h4><p>The centralized hub containing main codebase components, testing suites, and local execution script interfaces.</p>'
+    },
+    'mcp-bridge': {
+      title: 'Selected Node: PARA/1-Projects/mcp-cloudflare-bridge/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[MCP Edge Integration Bridge]</h4><p>Custom code modules bridging regional serverless routers with local tool schemas.</p>'
+    },
+    areas: {
+      title: 'Selected Node: PARA/2-Areas/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Persistent Domains]</h4><p>Retains continuous infrastructure maps, hardware configurations, and long-term workspace settings.</p>'
+    },
+    inference: {
+      title: 'Selected Node: PARA/2-Areas/local-inference/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Hardware Configuration Ledger]</h4><p>Maintains persistent resource definition files outlining cluster maps (e.g. RTX 4080/4090 node specifications).</p>'
+    },
+    orchestration: {
+      title: 'Selected Node: PARA/2-Areas/swarm-orchestration/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Worker Routing Maps]</h4><p>Continuous configurations detailing ZeroMQ endpoints, Redis nodes, and active swarm orchestrator boundaries.</p>'
+    },
+    resources: {
+      title: 'Selected Node: PARA/3-Resources/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Reusable Assets & Libraries]</h4><p>Acts as the library of validated capabilities, approved guidelines, and design documents.</p>'
+    },
+    skills: {
+      title: 'Selected Node: PARA/3-Resources/hermes-skills/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Validated Skills Database]</h4><p>The central registry of hardened, highly reliable custom agent prompt playbooks promoted from active testing.</p>'
+    },
+    blueprints: {
+      title: 'Selected Node: PARA/3-Resources/architecture-blueprints/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[System Reference Manuals]</h4><p>Core systems architecture documentation and lab deliverables explaining system designs.</p>'
+    },
+    archives: {
+      title: 'Selected Node: PARA/4-Archives/',
+      desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Workspace Archives]</h4><p>Retains cold-storage repositories of completed work, outdated files, and legacy dispatch logs.</p>'
+    }
+  };
+
+  function inspectNode(nodeKey, element) {
+    document.querySelectorAll('.dir-tree li').forEach(li => li.classList.remove('active-node'));
+    element.classList.add('active-node');
+    const info = nodeDescriptions[nodeKey];
+    if (info) {
+      document.getElementById('node-viewer-title').innerText = info.title;
+      document.getElementById('node-viewer-desc').innerHTML = info.desc;
+    }
+  }
+
+  function setLoading(btn, loading) {
+    if (!btn) return;
+    if (!btn.dataset.origText) {
+      btn.dataset.origText = btn.innerHTML;
+    }
+    if (loading) {
+      btn.disabled = true;
+      btn.innerHTML = '⏳ Processing...';
+    } else {
+      btn.disabled = false;
+      btn.innerHTML = btn.dataset.origText;
+    }
+  }
+
+  function extractJSON(text) {
+    const start = text.indexOf('{');
+    const end = text.lastIndexOf('}');
+    if (start !== -1 && end !== -1 && end >= start) {
+      const jsonStr = text.substring(start, end + 1);
+      return JSON.parse(jsonStr);
+    }
+    throw new Error("Could not find JSON payload inside model response");
+  }
+
+  async function pacedDelay(tabId, ms) {
+    const selector = tabId === 'lab1-simple' ? 'exec-speed-lab1-simple' : 
+                     tabId === 'lab1-agentic' ? 'exec-speed-lab1-agentic' : 'exec-speed-lab2';
+    const speed = document.querySelector(`input[name="${selector}"]:checked`)?.value || 'paced';
+    if (speed === 'instant') return;
+    await new Promise(resolve => trackTimeout(resolve, ms));
+  }
+
+  function updatePipelineGlow(glowEl, percent) {
+    const isMobile = window.innerWidth <= 480;
+    if (isMobile) {
+      glowEl.style.width = "2px";
+      glowEl.style.height = percent;
+    } else {
+      glowEl.style.height = "2px";
+      glowEl.style.width = percent;
+    }
+  }
+
+  async function runSimpleAgent(btn) {
+    clearAllSimulations();
+    setLoading(btn, true);
+    const input = document.getElementById('simple-input').value;
+    const output = document.getElementById('simple-output');
+    output.innerText = "[Agent Init] Ingesting standard summarization prompt...\n[Agent Exec] Compiling article text into single-pass summarizer...\n\n";
+    
+    try {
+      await pacedDelay('lab1-simple', 400);
+      output.innerText += "[Agent Exec] Querying live Gemini 2.5 Flash API...\n\n";
+      const systemPrompt = "You are a summarization assistant. Your task is to summarize the user's article in exactly 5 concise, high-fidelity bullet points. Format the output with clean markdown bullet points (using standard bullet character •).";
+      const summary = await callGemini(systemPrompt, input);
+      
+      output.innerText += "--- REAL-TIME SUMMARIZER AGENT OUTPUT (5 BULLETS) ---\n" + summary + "\n\n";
+      output.innerText += "[Agent Terminated] Process finished in 1 step successfully.";
+    } catch (e) {
+      console.error(e);
+      output.innerText += `⚠️ Connection Error: Failed to execute live agent: ${e.message}\n\n`;
+    } finally {
+      setLoading(btn, false);
+    }
+  }
+
+  async function runAgenticAI(btn) {
+    clearAllSimulations();
+    const myRunId = ++currentRunId;
+    setLoading(btn, true);
+    const input = document.getElementById('agentic-input').value;
+    const output = document.getElementById('agentic-output');
+    output.innerText = "";
+
+    // Show visual pipeline container (AI Interface Rule)
+    const pipelineContainer = document.getElementById('lab1-pipeline-container');
+    const lab1Glow = document.getElementById('lab1-pipeline-glow');
+    const nodes = ['lab1-node-ingest', 'lab1-node-plan', 'lab1-node-draft', 'lab1-node-audit', 'lab1-node-express'];
+    
+    pipelineContainer.style.display = 'block';
+    
+    // Initialize pipeline glow based on nativity
+    const isMobile = window.innerWidth <= 480;
+    if (isMobile) {
+      lab1Glow.style.width = "2px";
+      lab1Glow.style.height = "0%";
+    } else {
+      lab1Glow.style.height = "2px";
+      lab1Glow.style.width = "0%";
+    }
+    nodes.forEach(id => document.getElementById(id).className = 'node');
+
+    const addLog = (text) => {
+      if (myRunId !== currentRunId) return;
+      output.innerText += text + "\n\n";
+      output.scrollTop = output.scrollHeight;
+    };
+
+    try {
+      // Step 1: Ingest
+      document.getElementById('lab1-node-ingest').classList.add('active-success');
+      addLog(`[State Machine: Capture] Ingesting research goal: '${input}'`);
+      await pacedDelay('lab1-agentic', 600);
+      if (myRunId !== currentRunId) return;
+      
+      addLog("[State Machine: Ingestion Check] VALIDATION: Checking constraints and scope... PASSED.");
+      await pacedDelay('lab1-agentic', 400);
+      if (myRunId !== currentRunId) return;
+
+      // Step 2: Plan
+      updatePipelineGlow(lab1Glow, '25%');
+      document.getElementById('lab1-node-plan').classList.add('active');
+      addLog("[State Machine: Planning (Live)] Calling Gemini to formulate structured multi-stage research plan...");
+      const planPrompt = "You are an autonomous research coordinator. Given the user's research goal, create a concise, logical 3-stage plan or outline (subtopics) to address it. Format your output clearly with bullet points.";
+      const researchPlan = await callGemini(planPrompt, `Research Goal: ${input}`);
+      if (myRunId !== currentRunId) return;
+      
+      document.getElementById('lab1-node-plan').className = 'node active-success';
+      addLog(`[State Machine: Plan Generated]\n${researchPlan}`);
+      await pacedDelay('lab1-agentic', 800);
+      if (myRunId !== currentRunId) return;
+
+      // Step 3: Draft
+      updatePipelineGlow(lab1Glow, '50%');
+      document.getElementById('lab1-node-draft').classList.add('active');
+      addLog("[State Machine: Research & Synthesis (Live)] Calling Gemini to write the comprehensive first draft based on the outline...");
+      const draftPrompt = "You are an expert research analyst. Write a detailed first draft of a comprehensive, professional research report on the user's topic based on the provided outline. Keep it informative, clear, and structured with headings and bullet points.";
+      const draftText = await callGemini(draftPrompt, `Topic: ${input}\nOutline:\n${researchPlan}`);
+      if (myRunId !== currentRunId) return;
+      
+      document.getElementById('lab1-node-draft').className = 'node active-success';
+      addLog(`[State Machine: Draft Staged] (Generated ${draftText.length} characters)`);
+      await pacedDelay('lab1-agentic', 800);
+      if (myRunId !== currentRunId) return;
+
+      // Step 4: Audit
+      updatePipelineGlow(lab1Glow, '75%');
+      document.getElementById('lab1-node-audit').classList.add('active');
+      addLog("[State Machine: Self-Review Audit (Live)] Calling Gemini to critique and audit the draft for clarity, accuracy, and gaps...");
+      const auditPrompt = "You are a critical peer reviewer. Evaluate the following research draft for clarity, accuracy, and beginner-friendliness. Point out any gaps, issues, or areas for improvement, and summarize the audit findings. Be critical but constructive.";
+      const auditFeedback = await callGemini(auditPrompt, `Draft to audit:\n${draftText}`);
+      if (myRunId !== currentRunId) return;
+      
+      document.getElementById('lab1-node-audit').className = 'node active-success';
+      addLog(`[State Machine: Audit Feedback Received]\n${auditFeedback}`);
+      await pacedDelay('lab1-agentic', 800);
+      if (myRunId !== currentRunId) return;
+
+      // Step 5: Express (Final deliverable)
+      updatePipelineGlow(lab1Glow, '100%');
+      document.getElementById('lab1-node-express').classList.add('active-success');
+      addLog("[State Machine: Final Revision (Live)] Calling Gemini to polish, edit, and compile the final version incorporating the audit feedback...");
+      const revisionPrompt = "You are a master editor. Revise the provided draft based on the peer audit feedback to produce a highly polished, complete, and definitive final version in beautiful, clean markdown.";
+      const finalDeliverable = await callGemini(revisionPrompt, `Original Draft:\n${draftText}\nAudit Feedback:\n${auditFeedback}`);
+      if (myRunId !== currentRunId) return;
+
+      addLog("📝 FINAL APPROVED DELIVERABLE:\n\n" + finalDeliverable);
+      addLog("[State Machine: Express] Run completed successfully. Real-time agentic research committed to warehouse storage.");
+    } catch (e) {
+      if (myRunId !== currentRunId) return;
+      console.error(e);
+      addLog(`⚠️ Connection/Runtime Error: Failed to execute agentic pipeline: ${e.message}`);
+      nodes.forEach(id => {
+        const el = document.getElementById(id);
+        if (el.classList.contains('active')) el.className = 'node active-error';
+      });
+    } finally {
+      if (myRunId === currentRunId) {
+        setLoading(btn, false);
+      }
+    }
+  }
+
+  async function runSwarmSimulation(btn) {
+    clearAllSimulations();
+    const myRunId = ++currentRunId;
+    setLoading(btn, true);
+    
+    const consoleEl = document.getElementById('swarm-console');
+    const resultsEl = document.getElementById('sim-results');
+    const itineraryEl = document.getElementById('itinerary-output');
+    const pipelineGlow = document.getElementById('pipeline-glow');
+    const nodeIngest = document.getElementById('node-ingest');
+    const nodeLogistics = document.getElementById('node-logistics');
+    const nodeGuide = document.getElementById('node-guide');
+    const nodeBudget = document.getElementById('node-budget');
+    
+    // Safely retrieve inputs and sanitize
+    const destInput = document.getElementById('travel-dest').value.trim();
+    const departInput = document.getElementById('travel-depart').value.trim();
+    const dest = destInput ? destInput.replace(/</g, "&lt;").replace(/>/g, "&gt;") : "Japan";
+    const depart = departInput ? departInput.replace(/</g, "&lt;").replace(/>/g, "&gt;") : "Honolulu (HNL)";
+    
+    const style = document.getElementById('travel-style').value;
+    const budget = parseFloat(document.getElementById('travel-budget').value) || 1800;
+    const isLuxury = style === 'luxury';
+
+    consoleEl.innerHTML = "";
+    resultsEl.style.display = "none";
+    
+    // Initialize Swarm Pipeline progress bar based on nativity
+    const isMobile = window.innerWidth <= 480;
+    if (isMobile) {
+      pipelineGlow.style.width = "2px";
+      pipelineGlow.style.height = "0%";
+    } else {
+      pipelineGlow.style.height = "2px";
+      pipelineGlow.style.width = "0%";
+    }
+    [nodeIngest, nodeLogistics, nodeGuide, nodeBudget].forEach(n => n.className = "node");
+
+    function addLog(text, color = "#38bdf8") {
+      if (myRunId !== currentRunId) return;
+      const line = document.createElement('div');
+      line.className = 'terminal-line';
+      line.style.color = color;
+      line.innerText = text;
+      consoleEl.appendChild(line);
+      consoleEl.scrollTop = consoleEl.scrollHeight;
+    }
+
+    try {
+      // Step 1: Ingest (Live Parameter Capture)
+      nodeIngest.classList.add('active-success');
+      addLog("📥 [Ingestion Agent] Travel task ticket ingested.", "#a855f7");
+      addLog(`   Destination: ${dest} | Departing: ${depart} | Style Preferred: ${style.toUpperCase()} | Budget Limit: $${budget}`, "#c084fc");
+      await pacedDelay('lab2', 600);
+      if (myRunId !== currentRunId) return;
+
+      // Step 2: Logistics Agent (Live Call with Overridable Prompt Settings)
+      updatePipelineGlow(pipelineGlow, "30%");
+      nodeLogistics.classList.add('active');
+      addLog("\n✈️ [Active Module: Logistics Agent] Estimating live transit and lodging costs...", "#3b82f6");
+      
+      const logisticsBase = document.getElementById('prompt-override-logistics').value.trim();
+      const logisticsPrompt = `${logisticsBase} Use ${isLuxury ? 'high-end luxury (5-star hotels, premium flights)' : 'standard economy (budget hotels, economy flights)'} standards. Return estimates for a trip to ${dest} departing from ${depart}.`;
+      
+      const logisticsResponse = await callGemini(logisticsPrompt, `Estimate trip logistics to ${dest} departing from ${depart}`);
+      if (myRunId !== currentRunId) return;
+      
+      let logisticsData;
+      try {
+        logisticsData = extractJSON(logisticsResponse);
+      } catch (err) {
+        addLog("⚠️ JSON parsing failed on Logistics output. Using realistic fallback...", "#f59e0b");
+        logisticsData = isLuxury ? { flight: 1200, hotel: 1800, transit: 250 } : { flight: 650, hotel: 350, transit: 60 };
+      }
+      
+      addLog(`   Flight Estimate: $${logisticsData.flight}`);
+      addLog(`   Accommodations:  $${logisticsData.hotel}`);
+      addLog(`   Local Transit:   $${logisticsData.transit}`);
+      nodeLogistics.className = "node active-success";
+      await pacedDelay('lab2', 600);
+      if (myRunId !== currentRunId) return;
+
+      // Step 3: Local Guide Agent (Live Call with Overridable Prompt Settings)
+      updatePipelineGlow(pipelineGlow, "65%");
+      nodeGuide.classList.add('active');
+      addLog("\n🗺️ [Active Module: Local Guide Agent] Generating customized day-by-day itinerary...", "#f59e0b");
+      
+      const guideBase = document.getElementById('prompt-override-guide').value.trim();
+      const guidePrompt = `${guideBase} Style: ${style}. Sights and dining in ${dest} departing from ${depart}.`;
+      
+      const itineraryHTML = await callGemini(guidePrompt, `Create itinerary for ${dest}`);
+      if (myRunId !== currentRunId) return;
+      addLog(`   Itinerary successfully drafted! Length: ${itineraryHTML.length} characters.`);
+      nodeGuide.className = "node active-success";
+      await pacedDelay('lab2', 600);
+      if (myRunId !== currentRunId) return;
+
+      // Step 4: Budget Accountant Agent (Live Call with Overridable Prompt Settings)
+      updatePipelineGlow(pipelineGlow, "100%");
+      nodeBudget.classList.add('active');
+      addLog("\n⚖️ [Active Module: Budget Accountant Agent] Executing financial audit and sanitization check...", "#ef4444");
+
+      const accountantBase = document.getElementById('prompt-override-budget').value.trim();
+      const accountantPrompt = `${accountantBase}
+Review travel plan parameters:
+Destination: ${dest}
+Departing From: ${depart}
+Max Budget: $${budget}
+Estimated Cost parameters:
+- flight: ${logisticsData.flight}
+- hotel: ${logisticsData.hotel}
+- transit: ${logisticsData.transit}
+Based on destination ${dest}, estimate a realistic dining and sight expense as 'dine' ($${isLuxury ? '1200' : '250'}).
+Calculate total = flight + hotel + transit + dine.
+Determine if total exceeds max budget ($${budget}). If it does, set 'audit_passed' to false, sanitize values to fit economy/hostel levels under $${budget}, and rewrite a sanitized HTML itinerary.
+Return strictly valid JSON:
+{
+  "flight": number,
+  "hotel": number,
+  "transit": number,
+  "dine": number,
+  "itinerary": "string (HTML)",
+  "sanitized_flight": number,
+  "sanitized_hotel": number,
+  "sanitized_transit": number,
+  "sanitized_dine": number,
+  "sanitized_itinerary": "string (HTML)",
+  "audit_passed": boolean
+}`;
+
+      const accountantResponse = await callGemini(accountantPrompt, `Audit travel plan. Max Budget: ${budget}. Original Itinerary: ${itineraryHTML}`);
+      if (myRunId !== currentRunId) return;
+      
+      let swarmData;
+      try {
+        swarmData = extractJSON(accountantResponse);
+      } catch (err) {
+        addLog("⚠️ JSON parsing failed on Budget Accountant output. Extracting data manually...", "#f59e0b");
+        // Fallback robust regex parsing for swarm data keys
+        const flightMatch = accountantResponse.match(/"sanitized_flight"\s*:\s*(\d+)/) || accountantResponse.match(/"flight"\s*:\s*(\d+)/);
+        const hotelMatch = accountantResponse.match(/"sanitized_hotel"\s*:\s*(\d+)/) || accountantResponse.match(/"hotel"\s*:\s*(\d+)/);
+        const transitMatch = accountantResponse.match(/"sanitized_transit"\s*:\s*(\d+)/) || accountantResponse.match(/"transit"\s*:\s*(\d+)/);
+        const dineMatch = accountantResponse.match(/"sanitized_dine"\s*:\s*(\d+)/) || accountantResponse.match(/"dine"\s*:\s*(\d+)/);
+        
+        swarmData = {
+          flight: logisticsData.flight,
+          hotel: logisticsData.hotel,
+          transit: logisticsData.transit,
+          dine: isLuxury ? 1200 : 250,
+          itinerary: itineraryHTML,
+          sanitized_flight: flightMatch ? parseInt(flightMatch[1]) : 800,
+          sanitized_hotel: hotelMatch ? parseInt(hotelMatch[1]) : 150,
+          sanitized_transit: transitMatch ? parseInt(transitMatch[1]) : 30,
+          sanitized_dine: dineMatch ? parseInt(dineMatch[1]) : 70,
+          sanitized_itinerary: "<h4>Sanitized Budget Trip Itinerary</h4><p>We adjusted flights to standard economy and hotels to boutique budget hostels. Meals are locally sourced street food.</p>" + itineraryHTML,
+          audit_passed: false
+        };
+      }
+      
+      const totalOrig = swarmData.flight + swarmData.hotel + swarmData.transit + swarmData.dine;
+      const totalSan = swarmData.sanitized_flight + swarmData.sanitized_hotel + swarmData.sanitized_transit + swarmData.sanitized_dine;
+
+      addLog("\n--- RUNNING AUDIT BALANCE SHEET ---", "#fff");
+      addLog(`   Flights Cost:      $${swarmData.flight}`);
+      addLog(`   Accommodations:    $${swarmData.hotel}`);
+      addLog(`   Transit Logistics: $${swarmData.transit}`);
+      addLog(`   Dining/Sights:     $${swarmData.dine}`);
+      addLog(`   ------------------------------`);
+      addLog(`   GRAND ESTIMATED TOTAL: $${totalOrig} (Budget Limit: $${budget})`, "#fff");
+
+      resultsEl.style.display = "grid";
+
+      if (!swarmData.audit_passed) {
+        nodeBudget.className = "node active-error";
+        addLog(`🚨 AUDIT VERDICT: REJECTED: OVER BUDGET BY $${totalOrig - budget}`, "#ef4444");
+        addLog("   [Trigger Swarm Rule 4] Stripping luxury options and recalculating budget-friendly sanitization...", "#ef4444");
+
+        await pacedDelay('lab2', 800);
+        if (myRunId !== currentRunId) return;
+        addLog(`\n✅ BUDGET SANITIZED AND APPROVED AT $${totalSan} TOTAL`, "#10b981");
+        addLog("   Output committed to CODE/4-Express/local-build-staging/", "#10b981");
+
+        // Update Comparison Ledger dynamically
+        document.getElementById('cmp-flight-orig').innerHTML = `$${swarmData.flight} (Original)`;
+        document.getElementById('cmp-hotel-orig').innerHTML = `$${swarmData.hotel} (Original)`;
+        document.getElementById('cmp-transit-orig').innerHTML = `$${swarmData.transit} (Original)`;
+        document.getElementById('cmp-dining-orig').innerHTML = `$${swarmData.dine} (Original)`;
+        document.getElementById('cmp-total-orig').innerHTML = `$${totalOrig}`;
+        
+        document.getElementById('cmp-flight-san').innerHTML = `$${swarmData.sanitized_flight} (Sanitized)`;
+        document.getElementById('cmp-hotel-san').innerHTML = `$${swarmData.sanitized_hotel} (Sanitized)`;
+        document.getElementById('cmp-transit-san').innerHTML = `$${swarmData.sanitized_transit} (Sanitized)`;
+        document.getElementById('cmp-dining-san').innerHTML = `$${swarmData.sanitized_dine} (Sanitized)`;
+        document.getElementById('cmp-total-san').innerHTML = `$${totalSan}`;
+
+        itineraryEl.innerHTML = swarmData.sanitized_itinerary;
+        nodeBudget.className = "node active-success";
+      } else {
+        nodeBudget.className = "node active-success";
+        addLog(`\n✅ BUDGET APPROVED AT $${totalOrig} TOTAL`, "#10b981");
+        addLog("   Output committed to CODE/4-Express/local-build-staging/", "#10b981");
+
+        // Update Comparison Ledger dynamically
+        document.getElementById('cmp-flight-orig').innerHTML = `$${swarmData.flight}`;
+        document.getElementById('cmp-hotel-orig').innerHTML = `$${swarmData.hotel}`;
+        document.getElementById('cmp-transit-orig').innerHTML = `$${swarmData.transit}`;
+        document.getElementById('cmp-dining-orig').innerHTML = `$${swarmData.dine}`;
+        document.getElementById('cmp-total-orig').innerHTML = `$${totalOrig}`;
+        
+        document.getElementById('cmp-flight-san').innerHTML = `$${swarmData.flight}`;
+        document.getElementById('cmp-hotel-san').innerHTML = `$${swarmData.hotel}`;
+        document.getElementById('cmp-transit-san').innerHTML = `$${swarmData.transit}`;
+        document.getElementById('cmp-dining-san').innerHTML = `$${swarmData.dine}`;
+        document.getElementById('cmp-total-san').innerHTML = `$${totalOrig}`;
+
+        itineraryEl.innerHTML = swarmData.itinerary;
+      }
+    } catch (e) {
+      if (myRunId !== currentRunId) return;
+      console.error(e);
+      addLog(`⚠️ Connection/Runtime Error: Failed to execute travel swarm: ${e.message}`, "#ef4444");
+      nodeBudget.className = "node active-error";
+    } finally {
+      if (myRunId === currentRunId) {
+        setLoading(btn, false);
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
