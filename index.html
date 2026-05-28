@@ -2883,35 +2883,92 @@ You are the Budget Accountant Agent in a collaborative travel swarm. Review the 
             </div>
           </div>
 
-          <h2 style="color: var(--primary); margin: 2.5rem 0 1.25rem 0; font-size: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; letter-spacing: 0.02em; text-transform: uppercase;">
+          <h2
+            style="
+              color: var(--primary);
+              margin: 2.5rem 0 1.25rem 0;
+              font-size: 1.25rem;
+              border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+              padding-bottom: 0.5rem;
+              letter-spacing: 0.02em;
+              text-transform: uppercase;
+            "
+          >
             Lab 10.2: Swarm & Multi-Agent Orchestration Theory
           </h2>
 
           <div class="doc-section">
-            <h3>Q6. What distinguishes a Multi-Agent Swarm from a single multi-stage Agentic Pipeline?</h3>
+            <h3>
+              Q6. What distinguishes a Multi-Agent Swarm from a single
+              multi-stage Agentic Pipeline?
+            </h3>
             <p>
-              While a single agentic pipeline executes sequentially in a linear state machine (Ingest → Plan → Draft → Audit → Express), a Multi-Agent Swarm distributes tasks among independent, highly specialized role-based actors (e.g. Ingestion, Logistics, Local Guide, Accountant). In a swarm, each agent maintains its own localized system instructions, parameters, and operational boundaries, passing structured data payloads sequentially or in parallel. This role separation prevents context window bloating and allows modular tuning of individual models.
+              While a single agentic pipeline executes sequentially in a linear
+              state machine (Ingest → Plan → Draft → Audit → Express), a
+              Multi-Agent Swarm distributes tasks among independent, highly
+              specialized role-based actors (e.g. Ingestion, Logistics, Local
+              Guide, Accountant). In a swarm, each agent maintains its own
+              localized system instructions, parameters, and operational
+              boundaries, passing structured data payloads sequentially or in
+              parallel. This role separation prevents context window bloating
+              and allows modular tuning of individual models.
             </p>
           </div>
 
           <div class="doc-section">
-            <h3>Q7. How does the "Sequential Sanitizer/Auditor" pattern enforce budget/policy compliance?</h3>
+            <h3>
+              Q7. How does the "Sequential Sanitizer/Auditor" pattern enforce
+              budget/policy compliance?
+            </h3>
             <p>
-              In Lab 10.2, the Swarm Travel Pipeline implements a sequential sanitization gate: the Accountant Agent acts as a budget compliance auditor. After the Logistics and Local Guide agents produce their idealized travel details, the Accountant inspects the combined financial balance sheet. If the total estimate exceeds the user-defined cap, the Accountant automatically recalculates costs, scales down luxury parameters (such as switching from 5-star hotels to budget lodging or from private transfers to subway systems), and outputs a sanitized, verified itinerary that strictly adheres to the hard safety threshold.
+              In Lab 10.2, the Swarm Travel Pipeline implements a sequential
+              sanitization gate: the Accountant Agent acts as a budget
+              compliance auditor. After the Logistics and Local Guide agents
+              produce their idealized travel details, the Accountant inspects
+              the combined financial balance sheet. If the total estimate
+              exceeds the user-defined cap, the Accountant automatically
+              recalculates costs, scales down luxury parameters (such as
+              switching from 5-star hotels to budget lodging or from private
+              transfers to subway systems), and outputs a sanitized, verified
+              itinerary that strictly adheres to the hard safety threshold.
             </p>
           </div>
 
           <div class="doc-section">
-            <h3>Q8. What are the key tradeoffs between Parallel vs. Sequential multi-agent coordination?</h3>
+            <h3>
+              Q8. What are the key tradeoffs between Parallel vs. Sequential
+              multi-agent coordination?
+            </h3>
             <p>
-              Sequential coordination (used in our travel swarm) allows each agent to build upon the refined output of the preceding agent, minimizing hallucination risks and preserving dependency logic. However, it introduces cumulative latency, as each agent must wait for the prior step to complete. Parallel coordination executes multiple calls simultaneously (e.g., querying separate airlines or booking engines in parallel), reducing total execution time, but requires a complex "synthesizer" or "aggregator" agent to merge disparate, unstructured schemas and resolve conflicting inputs.
+              Sequential coordination (used in our travel swarm) allows each
+              agent to build upon the refined output of the preceding agent,
+              minimizing hallucination risks and preserving dependency logic.
+              However, it introduces cumulative latency, as each agent must wait
+              for the prior step to complete. Parallel coordination executes
+              multiple calls simultaneously (e.g., querying separate airlines or
+              booking engines in parallel), reducing total execution time, but
+              requires a complex "synthesizer" or "aggregator" agent to merge
+              disparate, unstructured schemas and resolve conflicting inputs.
             </p>
           </div>
 
           <div class="doc-section">
-            <h3>Q9. How does a Bipartite Workspace Architecture (PARA/CODE) prevent untrusted LLM write operations?</h3>
+            <h3>
+              Q9. How does a Bipartite Workspace Architecture (PARA/CODE)
+              prevent untrusted LLM write operations?
+            </h3>
             <p>
-              A bipartite architecture establishes a strict security boundary by partitioning active "factory floor" operations (the <code>CODE/</code> directory where temporary captures and transient runs occur) from the structured "warehouse" (the <code>PARA/</code> directory where long-term assets reside). The AI agents are restricted to write, draft, and modify files only within active <code>CODE/</code> paths. Long-term storage files in <code>PARA/</code> remain read-only during autonomous run loops. They are only updated through human-approved promotions, effectively preventing rogue LLM writes from corrupting historical, verified backups.
+              A bipartite architecture establishes a strict security boundary by
+              partitioning active "factory floor" operations (the
+              <code>CODE/</code> directory where temporary captures and
+              transient runs occur) from the structured "warehouse" (the
+              <code>PARA/</code> directory where long-term assets reside). The
+              AI agents are restricted to write, draft, and modify files only
+              within active <code>CODE/</code> paths. Long-term storage files in
+              <code>PARA/</code> remain read-only during autonomous run loops.
+              They are only updated through human-approved promotions,
+              effectively preventing rogue LLM writes from corrupting
+              historical, verified backups.
             </p>
           </div>
         </div>
@@ -2924,1599 +2981,1599 @@ You are the Budget Accountant Agent in a collaborative travel swarm. Review the 
     </main>
 
     <script>
-      // --- Global Telemetry & Execution State ---
-      let activeTimeouts = [];
-      let currentRunId = 0;
+            // --- Global Telemetry & Execution State ---
+            let activeTimeouts = [];
+            let currentRunId = 0;
 
-      let runCounters = {
-        simple: 0,
-        agentic: 0,
-        swarm: 0,
-      };
+            let runCounters = {
+              simple: 0,
+              agentic: 0,
+              swarm: 0,
+            };
 
-      function updateHUD(type, status, module, isError = false) {
-        const dot = document.getElementById(`${type}-hud-dot`);
-        const statusEl = document.getElementById(`${type}-hud-status`);
-        const runEl = document.getElementById(`${type}-hud-run`);
-        const moduleEl = document.getElementById(`${type}-hud-module`);
+            function updateHUD(type, status, module, isError = false) {
+              const dot = document.getElementById(`${type}-hud-dot`);
+              const statusEl = document.getElementById(`${type}-hud-status`);
+              const runEl = document.getElementById(`${type}-hud-run`);
+              const moduleEl = document.getElementById(`${type}-hud-module`);
 
-        if (status === "RUNNING") {
-          if (dot) {
-            dot.style.background = "var(--warning)";
-            dot.style.boxShadow = "0 0 6px var(--warning)";
-          }
-          if (statusEl) {
-            statusEl.innerText = "RUNNING";
-            statusEl.style.color = "var(--warning)";
-          }
-        } else if (status === "SUCCESS" || status === "COMPLETED") {
-          if (dot) {
-            dot.style.background = "var(--success)";
-            dot.style.boxShadow = "0 0 6px var(--success)";
-          }
-          if (statusEl) {
-            statusEl.innerText = "SUCCESS";
-            statusEl.style.color = "var(--success)";
-          }
-        } else if (status === "ERROR" || isError) {
-          if (dot) {
-            dot.style.background = "var(--error)";
-            dot.style.boxShadow = "0 0 6px var(--error)";
-          }
-          if (statusEl) {
-            statusEl.innerText = "ERROR";
-            statusEl.style.color = "var(--error)";
-          }
-        } else {
-          if (dot) {
-            dot.style.background = "var(--text-muted)";
-            dot.style.boxShadow = "none";
-          }
-          if (statusEl) {
-            statusEl.innerText = "IDLE";
-            statusEl.style.color = "var(--text-muted)";
-          }
-        }
+              if (status === "RUNNING") {
+                if (dot) {
+                  dot.style.background = "var(--warning)";
+                  dot.style.boxShadow = "0 0 6px var(--warning)";
+                }
+                if (statusEl) {
+                  statusEl.innerText = "RUNNING";
+                  statusEl.style.color = "var(--warning)";
+                }
+              } else if (status === "SUCCESS" || status === "COMPLETED") {
+                if (dot) {
+                  dot.style.background = "var(--success)";
+                  dot.style.boxShadow = "0 0 6px var(--success)";
+                }
+                if (statusEl) {
+                  statusEl.innerText = "SUCCESS";
+                  statusEl.style.color = "var(--success)";
+                }
+              } else if (status === "ERROR" || isError) {
+                if (dot) {
+                  dot.style.background = "var(--error)";
+                  dot.style.boxShadow = "0 0 6px var(--error)";
+                }
+                if (statusEl) {
+                  statusEl.innerText = "ERROR";
+                  statusEl.style.color = "var(--error)";
+                }
+              } else {
+                if (dot) {
+                  dot.style.background = "var(--text-muted)";
+                  dot.style.boxShadow = "none";
+                }
+                if (statusEl) {
+                  statusEl.innerText = "IDLE";
+                  statusEl.style.color = "var(--text-muted)";
+                }
+              }
 
-        if (runEl) {
-          runEl.innerText = `#${runCounters[type]}`;
-        }
-        if (moduleEl) {
-          moduleEl.innerText = module.toUpperCase();
-        }
-      }
-
-      function expandAllExplorer() {
-        document
-          .querySelectorAll(".dir-tree li.tree-child")
-          .forEach((child) => {
-            child.style.display = "flex";
-          });
-        document
-          .querySelectorAll(".dir-tree li .folder-caret")
-          .forEach((caret) => {
-            caret.innerText = "▼";
-          });
-      }
-
-      function collapseAllExplorer() {
-        document
-          .querySelectorAll(".dir-tree li.tree-child")
-          .forEach((child) => {
-            child.style.display = "none";
-          });
-        document
-          .querySelectorAll(".dir-tree li .folder-caret")
-          .forEach((caret) => {
-            caret.innerText = "▶";
-          });
-      }
-
-      const apiKey = "AIzaSyBJ1eH" + "OHMTu-RT4cFyRR7cxa4jXlRjMB_M";
-      let isUsingSimulation = false;
-      let lastErrorMsg = "";
-      let lastCallWasCustom = false;
-
-      function getSimulationFallback(systemPrompt, userPrompt) {
-        const sys = (systemPrompt || "").toLowerCase();
-        const user = (userPrompt || "").toLowerCase();
-
-        if (sys.includes("summarize") || sys.includes("summarization")) {
-          if (
-            user.includes("renewable") ||
-            user.includes("energy") ||
-            user.includes("solar")
-          ) {
-            return `• Solar photovoltaic panels convert solar radiation directly into household electrical power.
-• Small-scale wind turbines harness local airflow to generate supplementary off-grid energy.
-• Geothermal heat pumps leverage constant subsurface ground temperatures for high-efficiency heating and cooling.
-• Wood and pellet biomass stoves provide highly efficient localized space heating solutions.
-• Modern lithium-ion home battery storage systems capture excess power to maintain energy resilience during outages.`;
-          }
-          return `• Analyzed the primary input narrative to extract core thematic concepts.
-• Categorized essential data divisions into logical, structured components.
-• Outlined critical supporting facts and operational parameter constraints.
-• Synthesized overall technical dependencies for optimal understanding.
-• Formatted the final response into clean, high-fidelity Markdown bullet points.`;
-        }
-
-        if (
-          sys.includes("research coordinator") ||
-          sys.includes("structured multi-stage research plan")
-        ) {
-          if (
-            user.includes("renewable") ||
-            user.includes("energy") ||
-            user.includes("solar")
-          ) {
-            return `Stage 1: Resource Auditing and Feasibility Studies
-  - Analyze local solar irradiation indices, wind velocities, and geothermal profiles.
-  - Assess spatial requirements for battery storage, biomass stoves, and heat pump loops.
-
-Stage 2: Technical Component Evaluation
-  - Compare grid-tied vs. off-grid solar microinverter architectures.
-  - Evaluate closed-loop vs. open-loop ground-source geothermal heat exchange options.
-
-Stage 3: Financial Optimization & Egress Plan
-  - Calculate net metering returns, tax credits, and initial capex amortizations.
-  - Design a scalable backup transition path to isolate households during utility failures.`;
-          }
-          if (
-            user.includes("state") ||
-            user.includes("telemetry") ||
-            user.includes("agent")
-          ) {
-            return `Stage 1: Core Definitions and Background Study
-  - Define primary terms and establish historical context of agentic telemetry.
-  - Survey existing literature and identify key research milestones in state-tracking.
-
-Stage 2: Comparative Architecture and Technical Analysis
-  - Map components side-by-side to compare performance under active load.
-  - Identify strengths, vulnerabilities, and edge cases in standard agent stacks.
-
-Stage 3: Recommended Action Plan and Integration Path
-  - Formulate phase-by-phase migration and deployment checklist.
-  - Establish verification metrics to ensure long-term stability.`;
-          }
-          // Generic Topic Fallback
-          const topic =
-            user
-              .replace(/topic:\s*/i, "")
-              .replace(/Outline:[\s\S]*/i, "")
-              .trim() || "Requested Topic";
-          return `Stage 1: Core Background & Fundamentals of ${topic}
-  - Outline key definitions, primary parameters, and operational boundaries.
-  - Identify primary literature sources and industry standard references.
-
-Stage 2: Advanced Analysis & Structural Framework
-  - Analyze side-by-side component architectures and performance tradeoffs.
-  - Identify primary challenges, operational bottlenecks, and vulnerability vectors.
-
-Stage 3: Actionable Implementation & Verification Roadmap
-  - Define a phase-by-phase implementation plan and deployment guidelines.
-  - Establish strict quality metrics and continuous monitoring protocols.`;
-        }
-
-        if (
-          sys.includes("research analyst") ||
-          sys.includes("detailed first draft")
-        ) {
-          if (
-            user.includes("renewable") ||
-            user.includes("energy") ||
-            user.includes("solar")
-          ) {
-            return `# Detailed Research Draft: Household Renewable Energy Integration
-
-## 1. Executive Summary
-This draft analyzes the integration of residential renewable energy generation and storage systems. Modern households require a multi-faceted approach combining solar, wind, geothermal, and biomass options with high-capacity batteries to maximize self-reliance and reduce utility costs.
-
-## 2. Deep Component Analysis
-Our initial technical synthesis reveals high efficacy across five distinct generation and storage modalities:
-- **Solar Photovoltaics**: Closed-loop monocrystalline silicon panels yield a 22% conversion efficiency, providing standard household power.
-- **Wind Generation**: Small-scale vertical-axis turbines generate auxiliary electricity under local turbulent airflow conditions.
-- **Geothermal Heat Exchange**: Closed-loop horizontal ground heat pumps leverage stable subterranean temperatures for energy-efficient climate control.
-- **Biomass Combustion**: Clean-burning wood pellet stoves offer localized, high-efficiency space heating solutions.
-- **Lithium-Ion Storage**: Residential battery walls manage household load shifts, storing excess midday solar generation to eliminate peak-rate reliance.
-
-## 3. Operational Implementation
-Calculated capex payback periods range from 6 to 9 years depending on state-level net metering regulations and local federal tax incentives.`;
-          }
-          if (
-            user.includes("state") ||
-            user.includes("telemetry") ||
-            user.includes("agent")
-          ) {
-            return `# Comprehensive Research Report & Synthesis
-
-## 1. Executive Summary
-This report analyzes architectural state-tracking paradigms and dynamic telemetry models within agentic software stacks. Modern AI workflows demand highly coordinated, resilient distributed agent layers that communicate state cleanly.
-
-## 2. Technical Framework and Analysis
-Our investigation indicates that relational data binding combined with isolated workspace segments yields the highest throughput and lowest memory leak profile:
-- **Telemetry Pipelines**: In-line mathematical bounds prevent visual clipping.
-- **State Synchronization**: Branch parity maintains deployment sanity.
-- **Resource Recovery**: Graceful degradation handles key rate-limits seamlessly.
-
-## 3. Findings & Synthesis
-The synthesis phase indicates that retro-fitting existing legacy architectures with simple glassmorphic dashboards boosts developer observability by up to 47%.`;
-          }
-          // Generic Topic Fallback
-          const topic =
-            user.match(/topic:\s*([^\n]+)/i)?.[1] || "Requested Topic";
-          return `# Comprehensive Research Draft: ${topic}
-
-## 1. Executive Summary
-This preliminary draft explores the core principles, operational requirements, and strategic value of ${topic}. Implementing structured frameworks inside this domain ensures high reliability and optimized performance characteristics.
-
-## 2. System Architecture & Technical Deep-Dive
-A rigorous analysis of this topic reveals several key structural components:
-- **Core Parameters**: Stable configurations and parameter normalization prevent execution drift.
-- **Operational Integration**: Orchestrating elements sequentially improves system efficiency.
-- **Resource Allocation**: Optimal load management mitigates typical performance bottlenecks.
-
-## 3. Preliminary Conclusions
-Initial findings indicate that applying continuous validation loops and strict quality control standards within the domain of ${topic} significantly enhances final output quality.`;
-        }
-
-        if (
-          sys.includes("peer reviewer") ||
-          sys.includes("critique and audit the draft")
-        ) {
-          if (
-            user.includes("renewable") ||
-            user.includes("energy") ||
-            user.includes("solar")
-          ) {
-            return `### Peer Review Audit Feedback: Renewable Energy Draft
-
-- **Clarity & Structure (Score: 9/10)**: The layout is clear, detailing solar, wind, geothermal, biomass, and batteries. Adding a comparative efficiency table would improve immediate readability for beginners.
-- **Technical Gaps (Score: 8/10)**: The solar monocrystalline panel metrics are highly accurate, but the draft lacks detail regarding vertical-axis vs. horizontal-axis wind turbine efficiency differences under moderate wind velocities.
-- **Verification Plan (Score: 8/10)**: Standard amortization math is sound. Including a step-by-step household energy audit outline would provide a concrete verification checklist for homeowners.`;
-          }
-          if (
-            user.includes("state") ||
-            user.includes("telemetry") ||
-            user.includes("agent")
-          ) {
-            return `### Peer Review Audit Feedback
-
-- **Clarity & Structure (Score: 9/10)**: The layout is highly intuitive, using clear headers and logical progressions. Adding a brief glossary of custom terms could improve accessibility for beginners.
-- **Technical Gaps (Score: 8/10)**: The analysis of the memory leak profile is solid, but could benefit from a short paragraph detailing the exact profiling tools used.
-- **Verification Plan (Score: 9/10)**: Standard unit testing covers the core path cleanly. Recommending regular automated layout tests will prevent future styling regressions.`;
-          }
-          // Generic Topic Fallback
-          return `### Peer Review Audit Feedback
-
-- **Clarity & Structure (Score: 9/10)**: The document structure is highly logical, with distinct headers and bullet points. Incorporating a comparative visual diagram would make it even easier to navigate.
-- **Technical Gaps (Score: 8/10)**: The core concepts are presented clearly, but the draft lacks a detailed exploration of edge-case failure modes and standard mitigation strategies.
-- **Verification Plan (Score: 8/10)**: The preliminary findings are encouraging. Adding concrete, measurable performance metrics will enable rigorous post-implementation audits.`;
-        }
-
-        if (
-          sys.includes("master editor") ||
-          sys.includes("polish, edit, and compile the final version")
-        ) {
-          if (
-            user.includes("renewable") ||
-            user.includes("energy") ||
-            user.includes("solar")
-          ) {
-            return `# Polished Synthesis: Residential Renewable Energy Systems
-
-## Executive Summary
-This polished, comprehensive report synthesizes technical integration strategies for home-scale renewable energy generation and storage. Achieving carbon neutrality and grid independence requires orchestrating solar, wind, geothermal, and biomass systems into a unified grid.
-
-## Technical Framework & Comparative Analysis
-Rigorous system auditing demonstrates that combining monocrystalline solar panels with vertical-axis wind turbines and lithium-ion batteries provides maximum grid resilience:
-- **Solar Photovoltaics**: Monocrystalline arrays yield 22% conversion efficiency, functioning as the primary generation engine.
-- **Wind Generation**: Vertical-axis wind turbines harvest turbulent residential air currents, producing constant supplementary output.
-- **Geothermal Heat Exchange**: Closed-loop horizontal loops exchange ground heat with a 400% coefficient of performance for efficient climate control.
-- **Biomass Space Heating**: Automated pellet-combustion stoves offer localized heating with thermal efficiency ratings exceeding 85%.
-- **Lithium-Ion Storage**: High-capacity battery walls buffer load shifts, eliminating utility dependence during peak-tariff windows.
-
-## Definitive Recommendations & Energy Audit Path
-Homeowners should execute a systematic energy audit utilizing a thermal imaging leak analysis. Closed-loop ground heat systems combined with solar arrays yield the highest financial returns and maximum household resilience.`;
-          }
-          if (
-            user.includes("state") ||
-            user.includes("telemetry") ||
-            user.includes("agent")
-          ) {
-            return `# Polished Synthesis: State-Tracking & Telemetry in Agentic Stacks
-
-## Executive Summary
-This polished report synthesizes architectural state-tracking paradigms and telemetry models inside modern agentic software stacks. Modern AI workflows rely on highly coordinated, resilient distributed layers.
-
-## Technical Framework & Implementation Analysis
-Detailed profiling reveals that combining relational data binding with isolated workspaces produces optimal performance and stability:
-- **Telemetry Channels**: In-line width calculations resolve border clipping bugs on all horizontal viewports.
-- **Sync & Staging**: Dynamic Git remote tags ensure parity across production pipelines.
-- **Fail-Safe Ingress**: Local mock generators ensure complete run success when Google's Generative API experiences quota exhaustion.
-
-## Definitive Verdict & Recommendations
-Integrating retro-glowing status boards improves visual diagnostic speed. Sticking to strict native CSS units ensures responsive layout scaling from desktop to mobile screens.`;
-          }
-          // Generic Topic Fallback
-          const topic =
-            user.match(/Topic:\s*([^\n]+)/i)?.[1] || "Requested Topic";
-          return `# Polished Synthesis: Deep Analysis of ${topic}
-
-## Executive Summary
-This definitive report presents a highly polished, comprehensive synthesis of ${topic}. Achieving operational excellence inside this domain requires a methodical approach combining continuous audit loops with resource-optimized configurations.
-
-## Technical Framework & Implementation Guidelines
-Audit findings demonstrate that applying rigorous, standardized parameter validation drastically limits performance degradation:
-- **Parameter Normalization**: Standardizing input metrics prevents execution drift.
-- **Sequential Orchestration**: Organizing operational elements linearly optimizes system throughput.
-- **Fault-Tolerant Allocation**: Implementing fail-safe resource pathways guarantees continuous execution.
-
-## Strategic Verdict & Actionable Roadmap
-Implementing systematic evaluation checklists provides immediate observability benefits. Organizations should adopt automated validation tools to maintain long-term stability and high output quality.`;
-        }
-
-        // Swarm Fallbacks
-        let adults = 1;
-        const adultsMatch = user.match(/(\d+)\s*adults/i);
-        if (adultsMatch) adults = parseInt(adultsMatch[1]);
-
-        let children = 0;
-        const childrenMatch =
-          user.match(/(\d+)\s*children/i) || user.match(/(\d+)\s*child/i);
-        if (childrenMatch) children = parseInt(childrenMatch[1]);
-
-        let route = "roundtrip";
-        const routeMatch =
-          user.match(/routing strategy:\s*(\w+)/i) ||
-          user.match(/routing:\s*(\w+)/i) ||
-          user.match(/(skiplagging|oneway|roundtrip)/i);
-        if (routeMatch) route = routeMatch[1].toLowerCase();
-
-        let precision = "standard";
-        const precisionMatch =
-          user.match(/precision strategy:\s*(\w+)/i) ||
-          user.match(/precision:\s*(\w+)/i) ||
-          user.match(/(highprecision|standard)/i);
-        if (precisionMatch) precision = precisionMatch[1].toLowerCase();
-
-        let startDate = "2026-06-01";
-        let endDate = "2026-06-08";
-        const dateMatch = user.match(
-          /(\d{4}-\d{2}-\d{2})\s*to\s*(\d{4}-\d{2}-\d{2})/i,
-        );
-        if (dateMatch) {
-          startDate = dateMatch[1];
-          endDate = dateMatch[2];
-        }
-
-        const duration =
-          Math.max(
-            1,
-            Math.round(
-              (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24),
-            ),
-          ) || 7;
-        const passCount = adults + 0.7 * children;
-
-        if (user.includes("logistics")) {
-          const isLuxury = user.includes("luxury");
-          const baseFlight = isLuxury ? 1000 : 500;
-          const routeMult =
-            route === "oneway" ? 0.55 : route === "skiplagging" ? 0.65 : 1.0;
-          const flightCost = Math.round(baseFlight * passCount * routeMult);
-
-          const rooms = Math.ceil((adults + children) / 2) || 1;
-          const baseRoom = isLuxury ? 350 : 80;
-          const hotelCost = rooms * duration * baseRoom;
-
-          const baseTransit = isLuxury ? 250 : 60;
-          const transitCost = Math.round(
-            baseTransit * (1 + 0.1 * (adults + children)),
-          );
-
-          return JSON.stringify({
-            flight: flightCost,
-            hotel: hotelCost,
-            transit: transitCost,
-          });
-        }
-
-        if (user.includes("itinerary for")) {
-          const isLuxury = user.includes("luxury") || user.includes("michelin");
-          const totalPeople = adults + children;
-          const familyFriendly =
-            children > 0 ? " (family-friendly spots optimized for kids)" : "";
-          if (isLuxury) {
-            return `<h4>Day 1: Premium Ingress & Luxury Check-in</h4>
-<p>Arrive via private first-class transfer for ${totalPeople} guest${totalPeople > 1 ? "s" : ""}. Check in to five-star accommodations. Evening fine-dining reservations${familyFriendly}.</p>
-<h4>Day 2: Private Guided Cultural Tour & Michelin Dinner</h4>
-<p>Exclusive access to landmarks with a private docent. Seven-course Michelin-starred dining custom-prepared for the group.</p>
-<h4>Day 3: Scenic Retreat & Egress</h4>
-<p>Luxury spa relaxation overlooking scenic vistas. Private airport lounge transfers for smooth egress.</p>`;
-          } else {
-            return `<h4>Day 1: Budget Travel Ingress & Cozy Lodging</h4>
-<p>Arrive via standard transit. Check in to highly-rated budget family hostel/guesthouse rooms. Self-guided neighborhood walking tour.</p>
-<h4>Day 2: Public Landmarks & Local Delicacies</h4>
-<p>Explore free local historic parks, streets, and community gardens${familyFriendly}. Dinner at famous street markets.</p>
-<h4>Day 3: Local Sights & Departure</h4>
-<p>Enjoy scenic public beaches or mountain viewpoints. Standard airport connection via local express line.</p>`;
-          }
-        }
-
-        if (
-          sys.includes("critical peer reviewer") ||
-          sys.includes("budget accountant") ||
-          sys.includes("audit travel plan")
-        ) {
-          const isLuxury =
-            user.includes("luxury") ||
-            user.includes("michelin") ||
-            user.includes("hotel: 1800") ||
-            (user.includes("hotel:") &&
-              parseFloat(user.match(/hotel:\s*(\d+)/)?.[1]) > 500);
-
-          const budgetLimit =
-            parseFloat(user.match(/max budget:\s*\$?(\d+)/i)?.[1]) || 1800;
-
-          // Parse active costs passed in prompt
-          const flightVal =
-            parseFloat(user.match(/flight:\s*(\d+)/)?.[1]) ||
-            (isLuxury ? 1000 : 500);
-          const hotelVal =
-            parseFloat(user.match(/hotel:\s*(\d+)/)?.[1]) ||
-            (isLuxury ? 2450 : 560);
-          const transitVal =
-            parseFloat(user.match(/transit:\s*(\d+)/)?.[1]) ||
-            (isLuxury ? 300 : 70);
-
-          const baseDine = isLuxury ? 150 : 40;
-          const dineVal = Math.round(duration * baseDine * passCount);
-
-          const origTotal = flightVal + hotelVal + transitVal + dineVal;
-          const auditPassed = origTotal <= budgetLimit;
-
-          // For sanitized fallback costs
-          const sanFlight = Math.round(
-            500 *
-              passCount *
-              (route === "oneway"
-                ? 0.55
-                : route === "skiplagging"
-                  ? 0.65
-                  : 1.0),
-          );
-          const sanRooms = Math.ceil((adults + children) / 2) || 1;
-          const sanHotel = sanRooms * duration * 80;
-          const sanTransit = Math.round(60 * (1 + 0.1 * (adults + children)));
-          const sanDine = Math.round(duration * 40 * passCount);
-
-          return JSON.stringify({
-            flight: flightVal,
-            hotel: hotelVal,
-            transit: transitVal,
-            dine: dineVal,
-            itinerary: isLuxury
-              ? `<h4>Day 1: Penthouse Ingress</h4><p>Luxury 5-star suite transfer.</p>`
-              : `<h4>Day 1: Guesthouse Ingress</h4><p>Cozy local guesthouse accommodations.</p>`,
-            sanitized_flight: sanFlight,
-            sanitized_hotel: sanHotel,
-            sanitized_transit: sanTransit,
-            sanitized_dine: sanDine,
-            sanitized_itinerary: `<h4>Day 1: Sanitized Ingress (${startDate})</h4><p>Public transit and budget boutique hostels booked for ${adults} adult${adults > 1 ? "s" : ""}${children > 0 ? " & " + children + " children" : ""}. Flight parameters set to ${route.toUpperCase()} option to preserve capital balance sheet parameters.</p>`,
-            audit_passed: auditPassed,
-          });
-        }
-
-        return "Local high-fidelity simulation content completed successfully.";
-      }
-
-      async function callGemini(systemPrompt, userPrompt) {
-        try {
-          const customKeyInput = document.getElementById("custom-api-key");
-          const userKey = customKeyInput ? customKeyInput.value.trim() : localStorage.getItem("lapaki_api_key");
-          const activeKey = userKey && userKey !== "" ? userKey : ("AIzaSyBJ1eH" + "OHMTu-RT4cFyRR7cxa4jXlRjMB_M");
-          lastCallWasCustom = userKey && userKey !== "";
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${activeKey}`;
-          const res = await fetch(url, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              systemInstruction: {
-                parts: [{ text: systemPrompt }],
-              },
-              contents: [
-                {
-                  parts: [{ text: userPrompt }],
-                },
-              ],
-            }),
-          });
-          if (!res.ok) {
-            let errText = "";
-            try {
-              const errJson = await res.json();
-              errText = JSON.stringify(errJson);
-            } catch (e) {
-              errText = await res.text().catch(() => "");
+              if (runEl) {
+                runEl.innerText = `#${runCounters[type]}`;
+              }
+              if (moduleEl) {
+                moduleEl.innerText = module.toUpperCase();
+              }
             }
-            throw new Error(
-              `Gemini API Error ${res.status}: ${res.statusText || ""} - ${errText}`,
-            );
-          }
-          const data = await res.json();
-          isUsingSimulation = false;
-          return data.candidates[0].content.parts[0].text;
-        } catch (err) {
-          isUsingSimulation = true;
-          lastErrorMsg = err.message || "";
-          console.warn(
-            "Gemini API call failed, using high-fidelity local simulation fallback:",
-            err,
-          );
-          return getSimulationFallback(systemPrompt, userPrompt);
-        }
-      }
 
-      function clearAllSimulations() {
-        activeTimeouts.forEach((id) => clearTimeout(id));
-        activeTimeouts = [];
+            function expandAllExplorer() {
+              document
+                .querySelectorAll(".dir-tree li.tree-child")
+                .forEach((child) => {
+                  child.style.display = "flex";
+                });
+              document
+                .querySelectorAll(".dir-tree li .folder-caret")
+                .forEach((caret) => {
+                  caret.innerText = "▼";
+                });
+            }
 
-        // Reset all buttons to active/original state
-        document.querySelectorAll("button").forEach((btn) => {
-          if (btn.dataset.origText) {
-            setLoading(btn, false);
-          }
-        });
-      }
+            function collapseAllExplorer() {
+              document
+                .querySelectorAll(".dir-tree li.tree-child")
+                .forEach((child) => {
+                  child.style.display = "none";
+                });
+              document
+                .querySelectorAll(".dir-tree li .folder-caret")
+                .forEach((caret) => {
+                  caret.innerText = "▶";
+                });
+            }
 
-      function trackTimeout(fn, delay) {
-        const id = setTimeout(fn, delay);
-        activeTimeouts.push(id);
-        return id;
-      }
+            const apiKey = "AIzaSyBJ1eH" + "OHMTu-RT4cFyRR7cxa4jXlRjMB_M";
+            let isUsingSimulation = false;
+            let lastErrorMsg = "";
+            let lastCallWasCustom = false;
 
-      function switchTab(tabId) {
-        // Stop any active simulations to prevent log bleed across tabs
-        clearAllSimulations();
+            function getSimulationFallback(systemPrompt, userPrompt) {
+              const sys = (systemPrompt || "").toLowerCase();
+              const user = (userPrompt || "").toLowerCase();
 
-        const currentActive = document.querySelector(".tab-content.active");
-        const nextActive = document.getElementById("tab-" + tabId);
+              if (sys.includes("summarize") || sys.includes("summarization")) {
+                if (
+                  user.includes("renewable") ||
+                  user.includes("energy") ||
+                  user.includes("solar")
+                ) {
+                  return `• Solar photovoltaic panels convert solar radiation directly into household electrical power.
+      • Small-scale wind turbines harness local airflow to generate supplementary off-grid energy.
+      • Geothermal heat pumps leverage constant subsurface ground temperatures for high-efficiency heating and cooling.
+      • Wood and pellet biomass stoves provide highly efficient localized space heating solutions.
+      • Modern lithium-ion home battery storage systems capture excess power to maintain energy resilience during outages.`;
+                }
+                return `• Analyzed the primary input narrative to extract core thematic concepts.
+      • Categorized essential data divisions into logical, structured components.
+      • Outlined critical supporting facts and operational parameter constraints.
+      • Synthesized overall technical dependencies for optimal understanding.
+      • Formatted the final response into clean, high-fidelity Markdown bullet points.`;
+              }
 
-        if (currentActive === nextActive) return;
+              if (
+                sys.includes("research coordinator") ||
+                sys.includes("structured multi-stage research plan")
+              ) {
+                if (
+                  user.includes("renewable") ||
+                  user.includes("energy") ||
+                  user.includes("solar")
+                ) {
+                  return `Stage 1: Resource Auditing and Feasibility Studies
+        - Analyze local solar irradiation indices, wind velocities, and geothermal profiles.
+        - Assess spatial requirements for battery storage, biomass stoves, and heat pump loops.
 
-        // Update nav button highlight immediately (Steve Krug Rule: instant visual feedback)
-        document
-          .querySelectorAll("nav button")
-          .forEach((btn) => btn.classList.remove("active"));
-        const idx = { explorer: 0, playground: 1, swarm: 2, theory: 3 }[tabId];
-        document.querySelectorAll("nav button")[idx].classList.add("active");
+      Stage 2: Technical Component Evaluation
+        - Compare grid-tied vs. off-grid solar microinverter architectures.
+        - Evaluate closed-loop vs. open-loop ground-source geothermal heat exchange options.
 
-        // Update breadcrumb immediately (Steve Krug Rule)
-        const breadcrumbLabel = {
-          explorer: "Scaffolding Explorer",
-          playground: "Lab 10.1: Agent Playgrounds",
-          swarm: "Lab 10.2: Swarm Pipeline",
-          theory: "Reflections & Theory",
-        }[tabId];
-        document.getElementById("current-breadcrumb").innerText =
-          breadcrumbLabel;
+      Stage 3: Financial Optimization & Egress Plan
+        - Calculate net metering returns, tax credits, and initial capex amortizations.
+        - Design a scalable backup transition path to isolate households during utility failures.`;
+                }
+                if (
+                  user.includes("state") ||
+                  user.includes("telemetry") ||
+                  user.includes("agent")
+                ) {
+                  return `Stage 1: Core Definitions and Background Study
+        - Define primary terms and establish historical context of agentic telemetry.
+        - Survey existing literature and identify key research milestones in state-tracking.
 
-        // Update URL hash without causing viewport jump
-        if (window.location.hash !== "#" + tabId) {
-          history.replaceState(null, null, "#" + tabId);
-        }
+      Stage 2: Comparative Architecture and Technical Analysis
+        - Map components side-by-side to compare performance under active load.
+        - Identify strengths, vulnerabilities, and edge cases in standard agent stacks.
 
-        if (currentActive) {
-          currentActive.classList.add("leaving");
-          currentActive.classList.remove("active");
+      Stage 3: Recommended Action Plan and Integration Path
+        - Formulate phase-by-phase migration and deployment checklist.
+        - Establish verification metrics to ensure long-term stability.`;
+                }
+                // Generic Topic Fallback
+                const topic =
+                  user
+                    .replace(/topic:\s*/i, "")
+                    .replace(/Outline:[\s\S]*/i, "")
+                    .trim() || "Requested Topic";
+                return `Stage 1: Core Background & Fundamentals of ${topic}
+        - Outline key definitions, primary parameters, and operational boundaries.
+        - Identify primary literature sources and industry standard references.
 
-          currentActive.addEventListener(
-            "animationend",
-            () => {
-              currentActive.classList.remove("leaving");
-              nextActive.classList.add("active");
-            },
-            { once: true },
-          );
-        } else {
-          nextActive.classList.add("active");
-        }
-      }
+      Stage 2: Advanced Analysis & Structural Framework
+        - Analyze side-by-side component architectures and performance tradeoffs.
+        - Identify primary challenges, operational bottlenecks, and vulnerability vectors.
 
-      function handleRouting() {
-        const hash = decodeURIComponent(
-          window.location.hash || "",
-        ).toLowerCase();
-        if (!hash) return;
+      Stage 3: Actionable Implementation & Verification Roadmap
+        - Define a phase-by-phase implementation plan and deployment guidelines.
+        - Establish strict quality metrics and continuous monitoring protocols.`;
+              }
 
-        if (
-          hash.includes("playground") ||
-          hash.includes("10.1") ||
-          hash.includes("agent-playgrounds")
-        ) {
-          switchTab("playground");
-        } else if (
-          hash.includes("swarm") ||
-          hash.includes("10.2") ||
-          hash.includes("swarm-pipeline")
-        ) {
-          switchTab("swarm");
-        } else if (
-          hash.includes("theory") ||
-          hash.includes("reflections") ||
-          hash.includes("solution")
-        ) {
-          switchTab("theory");
-        } else if (hash.includes("explorer")) {
-          switchTab("explorer");
-        }
-      }
+              if (
+                sys.includes("research analyst") ||
+                sys.includes("detailed first draft")
+              ) {
+                if (
+                  user.includes("renewable") ||
+                  user.includes("energy") ||
+                  user.includes("solar")
+                ) {
+                  return `# Detailed Research Draft: Household Renewable Energy Integration
 
-      window.addEventListener("hashchange", handleRouting);
-      window.addEventListener("DOMContentLoaded", handleRouting);
-      // Execute immediately to cover already loaded states
-      handleRouting();
+      ## 1. Executive Summary
+      This draft analyzes the integration of residential renewable energy generation and storage systems. Modern households require a multi-faceted approach combining solar, wind, geothermal, and biomass options with high-capacity batteries to maximize self-reliance and reduce utility costs.
 
-      function toggleAdvancedSwarmSettings() {
-        const panel = document.getElementById("advanced-swarm-panel");
-        if (panel.style.display === "none") {
-          panel.style.display = "flex";
-        } else {
-          panel.style.display = "none";
-        }
-      }
+      ## 2. Deep Component Analysis
+      Our initial technical synthesis reveals high efficacy across five distinct generation and storage modalities:
+      - **Solar Photovoltaics**: Closed-loop monocrystalline silicon panels yield a 22% conversion efficiency, providing standard household power.
+      - **Wind Generation**: Small-scale vertical-axis turbines generate auxiliary electricity under local turbulent airflow conditions.
+      - **Geothermal Heat Exchange**: Closed-loop horizontal ground heat pumps leverage stable subterranean temperatures for energy-efficient climate control.
+      - **Biomass Combustion**: Clean-burning wood pellet stoves offer localized, high-efficiency space heating solutions.
+      - **Lithium-Ion Storage**: Residential battery walls manage household load shifts, storing excess midday solar generation to eliminate peak-rate reliance.
 
-      const nodeDescriptions = {
-        capture: {
-          title: "Selected Node: 1-Capture/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Ingestion Zone]</h4><p style="margin-bottom: 1rem;">The capture layer handles all raw inputs flowing into the active Second Brain. It catches untrusted logs, human ideas, and webhook telemetry before formatting.</p><div class="doc-alert"><h4>Factory Floor Loading Dock</h4><p>Receives materials raw and unsorted from external streams.</p></div>',
-        },
-        "human-inbox": {
-          title: "Selected Node: 1-Capture/human-inbox/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Human Ingestion Inbox]</h4><p>Stores raw scratchpads, rapid text dumps, and unformatted Obsidian thoughts logged by humans before they are categorized.</p>',
-        },
-        "raw-telemetry": {
-          title: "Selected Node: 1-Capture/raw-mcp-telemetry/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[External API Payloads]</h4><p>Buffers unprocessed API requests and structured payloads caught by the Cloudflare edge worker integration.</p>',
-        },
-        "raw-logs": {
-          title: "Selected Node: 1-Capture/raw-swarm-logs/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Raw System Telemetry]</h4><p>ZeroMQ execution streams and unmodified trace files logged directly by the Ruflo execution engines.</p>',
-        },
-        organize: {
-          title: "Selected Node: 2-Organize/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Routing & Assembly Zone]</h4><p>The processing state machine coordinates active jobs and binds execution variables into isolated context mounts.</p>',
-        },
-        "task-queues": {
-          title: "Selected Node: 2-Organize/active-task-queues/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Active Task Queue Ledger]</h4><p>Stores structured JSON tickets waiting for scheduler validation and execution by Ruflo worker nodes.</p>',
-        },
-        "context-staging": {
-          title: "Selected Node: 2-Organize/context-staging/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Isolated Working Context]</h4><p>Temporary folder arrays where context variables, schemas, and workspace maps are combined for execution runs.</p>',
-        },
-        distill: {
-          title: "Selected Node: 3-Distill/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Knowledge Refinement Layer]</h4><p>Isolates draft configurations and raw trace logs, condensing successful runs into reusable logic models.</p>',
-        },
-        scratchpad: {
-          title: "Selected Node: 3-Distill/hermes-scratchpad/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Hermes Reasoning Compressor]</h4><p>Active workspace where the Hermes agent compresses detailed execution steps into clean, declarative reasoning models.</p>',
-        },
-        "prompt-refinery": {
-          title: "Selected Node: 3-Distill/prompt-refinery/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Prompt Engineering Ingot]</h4><p>Stores high-density prompts being analyzed and calibrated for token efficiency and constraint retention.</p>',
-        },
-        express: {
-          title: "Selected Node: 4-Express/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Outbound & Execution Zone]</h4><p>Stages fully compiled components, reports, and API configurations ready to be dispatched or written to disk.</p>',
-        },
-        "build-staging": {
-          title: "Selected Node: 4-Express/local-build-staging/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Build Artifact Stage]</h4><p>Holds successfully validated components awaiting migration to Projects or server deployment.</p>',
-        },
-        "dispatch-payloads": {
-          title: "Selected Node: 4-Express/mcp-dispatch-payloads/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Outgoing Payload Buffer]</h4><p>JSON payloads compiled, checked for credentials, and staged for immediate MCP delivery.</p>',
-        },
-        projects: {
-          title: "Selected Node: PARA/1-Projects/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Active Code Repositories]</h4><p>Stores standard Git codebases for current core initiatives. Clean, active development files reside here.</p>',
-        },
-        "lapaki-core": {
-          title: "Selected Node: PARA/1-Projects/lapaki-core/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Main Swarm Core]</h4><p>The centralized hub containing main codebase components, testing suites, and local execution script interfaces.</p>',
-        },
-        "mcp-bridge": {
-          title: "Selected Node: PARA/1-Projects/mcp-cloudflare-bridge/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[MCP Edge Integration Bridge]</h4><p>Custom code modules bridging regional serverless routers with local tool schemas.</p>',
-        },
-        areas: {
-          title: "Selected Node: PARA/2-Areas/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Persistent Domains]</h4><p>Retains continuous infrastructure maps, hardware configurations, and long-term workspace settings.</p>',
-        },
-        inference: {
-          title: "Selected Node: PARA/2-Areas/local-inference/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Hardware Configuration Ledger]</h4><p>Maintains persistent resource definition files outlining cluster maps (e.g. RTX 4080/4090 node specifications).</p>',
-        },
-        orchestration: {
-          title: "Selected Node: PARA/2-Areas/swarm-orchestration/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Worker Routing Maps]</h4><p>Continuous configurations detailing ZeroMQ endpoints, Redis nodes, and active swarm orchestrator boundaries.</p>',
-        },
-        resources: {
-          title: "Selected Node: PARA/3-Resources/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Reusable Assets & Libraries]</h4><p>Acts as the library of validated capabilities, approved guidelines, and design documents.</p>',
-        },
-        skills: {
-          title: "Selected Node: PARA/3-Resources/hermes-skills/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Validated Skills Database]</h4><p>The central registry of hardened, highly reliable custom agent prompt playbooks promoted from active testing.</p>',
-        },
-        blueprints: {
-          title: "Selected Node: PARA/3-Resources/architecture-blueprints/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[System Reference Manuals]</h4><p>Core systems architecture documentation and lab deliverables explaining system designs.</p>',
-        },
-        archives: {
-          title: "Selected Node: PARA/4-Archives/",
-          desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Workspace Archives]</h4><p>Retains cold-storage repositories of completed work, outdated files, and legacy dispatch logs.</p>',
-        },
-      };
+      ## 3. Operational Implementation
+      Calculated capex payback periods range from 6 to 9 years depending on state-level net metering regulations and local federal tax incentives.`;
+                }
+                if (
+                  user.includes("state") ||
+                  user.includes("telemetry") ||
+                  user.includes("agent")
+                ) {
+                  return `# Comprehensive Research Report & Synthesis
 
-      function toggleFolder(parentId, parentEl) {
-        const children = document.querySelectorAll(
-          `.dir-tree li[data-parent="${parentId}"]`,
-        );
-        const caret = parentEl.querySelector(".folder-caret");
-        if (children.length === 0) return;
-        const isCollapsed = children[0].style.display === "none";
-        children.forEach((child) => {
-          child.style.display = isCollapsed ? "flex" : "none";
-        });
-        if (caret) {
-          caret.innerText = isCollapsed ? "▼" : "▶";
-        }
-      }
+      ## 1. Executive Summary
+      This report analyzes architectural state-tracking paradigms and dynamic telemetry models within agentic software stacks. Modern AI workflows demand highly coordinated, resilient distributed agent layers that communicate state cleanly.
 
-      function inspectNode(nodeKey, element) {
-        document
-          .querySelectorAll(".dir-tree li")
-          .forEach((li) => li.classList.remove("active-node"));
-        element.classList.add("active-node");
-        const info = nodeDescriptions[nodeKey];
-        if (info) {
-          document.getElementById("node-viewer-title").innerText = info.title;
-          document.getElementById("node-viewer-desc").innerHTML = info.desc;
-        }
-      }
+      ## 2. Technical Framework and Analysis
+      Our investigation indicates that relational data binding combined with isolated workspace segments yields the highest throughput and lowest memory leak profile:
+      - **Telemetry Pipelines**: In-line mathematical bounds prevent visual clipping.
+      - **State Synchronization**: Branch parity maintains deployment sanity.
+      - **Resource Recovery**: Graceful degradation handles key rate-limits seamlessly.
 
-      function setLoading(btn, loading) {
-        if (!btn) return;
-        if (!btn.dataset.origText) {
-          btn.dataset.origText = btn.innerHTML;
-        }
-        if (loading) {
-          btn.disabled = true;
-          btn.innerHTML = "⏳ Processing...";
-        } else {
-          btn.disabled = false;
-          btn.innerHTML = btn.dataset.origText;
-        }
-      }
+      ## 3. Findings & Synthesis
+      The synthesis phase indicates that retro-fitting existing legacy architectures with simple glassmorphic dashboards boosts developer observability by up to 47%.`;
+                }
+                // Generic Topic Fallback
+                const topic =
+                  user.match(/topic:\s*([^\n]+)/i)?.[1] || "Requested Topic";
+                return `# Comprehensive Research Draft: ${topic}
 
-      function extractJSON(text) {
-        const start = text.indexOf("{");
-        const end = text.lastIndexOf("}");
-        if (start !== -1 && end !== -1 && end >= start) {
-          const jsonStr = text.substring(start, end + 1);
-          return JSON.parse(jsonStr);
-        }
-        throw new Error("Could not find JSON payload inside model response");
-      }
+      ## 1. Executive Summary
+      This preliminary draft explores the core principles, operational requirements, and strategic value of ${topic}. Implementing structured frameworks inside this domain ensures high reliability and optimized performance characteristics.
 
-      async function pacedDelay(tabId, ms) {
-        const selector =
-          tabId === "lab1-simple"
-            ? "exec-speed-lab1-simple"
-            : tabId === "lab1-agentic"
-              ? "exec-speed-lab1-agentic"
-              : "exec-speed-lab2";
-        const speed =
-          document.querySelector(`input[name="${selector}"]:checked`)?.value ||
-          "paced";
-        if (speed === "instant") return;
-        await new Promise((resolve) => trackTimeout(resolve, ms));
-      }
+      ## 2. System Architecture & Technical Deep-Dive
+      A rigorous analysis of this topic reveals several key structural components:
+      - **Core Parameters**: Stable configurations and parameter normalization prevent execution drift.
+      - **Operational Integration**: Orchestrating elements sequentially improves system efficiency.
+      - **Resource Allocation**: Optimal load management mitigates typical performance bottlenecks.
 
-      function updatePipelineGlow(glowEl, percent) {
-        const isMobile = window.innerWidth <= 580;
-        if (isMobile) {
-          glowEl.style.width = "2px";
-          glowEl.style.height = percent;
-        } else {
-          glowEl.style.height = "2px";
-          const num = parseFloat(percent) || 0;
-          if (glowEl.id === "lab1-pipeline-glow") {
-            glowEl.style.width = `calc((100% - 6rem) * ${num} / 100)`;
-          } else {
-            glowEl.style.width = `calc((100% - 9rem) * ${num} / 100)`;
-          }
-        }
-      }
+      ## 3. Preliminary Conclusions
+      Initial findings indicate that applying continuous validation loops and strict quality control standards within the domain of ${topic} significantly enhances final output quality.`;
+              }
 
-      async function runSimpleAgent(btn) {
-        clearAllSimulations();
-        setLoading(btn, true);
-        runCounters.simple++;
-        updateHUD("simple", "RUNNING", "summarizer");
-        const input = document.getElementById("simple-input").value;
-        const output = document.getElementById("simple-output");
-        output.innerText =
-          "[Agent Init] Ingesting standard summarization prompt...\n[Agent Exec] Compiling article text into single-pass summarizer...\n\n";
+              if (
+                sys.includes("peer reviewer") ||
+                sys.includes("critique and audit the draft")
+              ) {
+                if (
+                  user.includes("renewable") ||
+                  user.includes("energy") ||
+                  user.includes("solar")
+                ) {
+                  return `### Peer Review Audit Feedback: Renewable Energy Draft
 
-        try {
-          await pacedDelay("lab1-simple", 400);
-          output.innerText +=
-            "[Agent Exec] Querying live Gemini 2.5 Flash API...\n";
-          
-          const systemPrompt =
-            "You are a summarization assistant. Your task is to summarize the user's article in exactly 5 concise, high-fidelity bullet points. Format the output with clean markdown bullet points (using standard bullet character •).";
-          const summary = await callGemini(systemPrompt, input);
+      - **Clarity & Structure (Score: 9/10)**: The layout is clear, detailing solar, wind, geothermal, biomass, and batteries. Adding a comparative efficiency table would improve immediate readability for beginners.
+      - **Technical Gaps (Score: 8/10)**: The solar monocrystalline panel metrics are highly accurate, but the draft lacks detail regarding vertical-axis vs. horizontal-axis wind turbine efficiency differences under moderate wind velocities.
+      - **Verification Plan (Score: 8/10)**: Standard amortization math is sound. Including a step-by-step household energy audit outline would provide a concrete verification checklist for homeowners.`;
+                }
+                if (
+                  user.includes("state") ||
+                  user.includes("telemetry") ||
+                  user.includes("agent")
+                ) {
+                  return `### Peer Review Audit Feedback
 
-          if (isUsingSimulation) {
-            output.innerText += `⚠️ [API Fallback Alert] Live Gemini API call failed or hit a rate limit (Error: ${lastErrorMsg.slice(0, 80)}). For safety and continuous operation, the system gracefully fell back to local high-fidelity simulated agent templates.\n`;
-            output.innerText += `💡 Tip: To bypass shared-quota rate limits and run actual live Gemini models, paste your personal Google AI Studio API Key into the 🔑 Key input field in the top header.\n\n`;
-          } else {
-            output.innerText += `✅ [Gemini Live Success] Successfully fetched response from Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.\n\n`;
-          }
+      - **Clarity & Structure (Score: 9/10)**: The layout is highly intuitive, using clear headers and logical progressions. Adding a brief glossary of custom terms could improve accessibility for beginners.
+      - **Technical Gaps (Score: 8/10)**: The analysis of the memory leak profile is solid, but could benefit from a short paragraph detailing the exact profiling tools used.
+      - **Verification Plan (Score: 9/10)**: Standard unit testing covers the core path cleanly. Recommending regular automated layout tests will prevent future styling regressions.`;
+                }
+                // Generic Topic Fallback
+                return `### Peer Review Audit Feedback
 
-          output.innerText +=
-            "--- REAL-TIME SUMMARIZER AGENT OUTPUT (5 BULLETS) ---\n" +
-            summary +
-            "\n\n";
-          output.innerText +=
-            "[Agent Terminated] Process finished in 1 step successfully.";
-          updateHUD("simple", "SUCCESS", "finished");
-        } catch (e) {
-          console.error(e);
-          output.innerText += `⚠️ Connection Error: Failed to execute live agent: ${e.message}\n\n`;
-          updateHUD("simple", "ERROR", "failed");
-        } finally {
-          setLoading(btn, false);
-        }
-      }
+      - **Clarity & Structure (Score: 9/10)**: The document structure is highly logical, with distinct headers and bullet points. Incorporating a comparative visual diagram would make it even easier to navigate.
+      - **Technical Gaps (Score: 8/10)**: The core concepts are presented clearly, but the draft lacks a detailed exploration of edge-case failure modes and standard mitigation strategies.
+      - **Verification Plan (Score: 8/10)**: The preliminary findings are encouraging. Adding concrete, measurable performance metrics will enable rigorous post-implementation audits.`;
+              }
 
-      async function runAgenticAI(btn) {
-        clearAllSimulations();
-        const myRunId = ++currentRunId;
-        setLoading(btn, true);
-        runCounters.agentic++;
-        updateHUD("agentic", "RUNNING", "ingest");
-        const input = document.getElementById("agentic-input").value;
-        const output = document.getElementById("agentic-output");
-        output.innerText = "";
+              if (
+                sys.includes("master editor") ||
+                sys.includes("polish, edit, and compile the final version")
+              ) {
+                if (
+                  user.includes("renewable") ||
+                  user.includes("energy") ||
+                  user.includes("solar")
+                ) {
+                  return `# Polished Synthesis: Residential Renewable Energy Systems
 
-        // Show visual pipeline container (AI Interface Rule)
-        const pipelineContainer = document.getElementById(
-          "lab1-pipeline-container",
-        );
-        const lab1Glow = document.getElementById("lab1-pipeline-glow");
-        const nodes = [
-          "lab1-node-ingest",
-          "lab1-node-plan",
-          "lab1-node-draft",
-          "lab1-node-audit",
-          "lab1-node-express",
-        ];
+      ## Executive Summary
+      This polished, comprehensive report synthesizes technical integration strategies for home-scale renewable energy generation and storage. Achieving carbon neutrality and grid independence requires orchestrating solar, wind, geothermal, and biomass systems into a unified grid.
 
-        pipelineContainer.style.display = "block";
+      ## Technical Framework & Comparative Analysis
+      Rigorous system auditing demonstrates that combining monocrystalline solar panels with vertical-axis wind turbines and lithium-ion batteries provides maximum grid resilience:
+      - **Solar Photovoltaics**: Monocrystalline arrays yield 22% conversion efficiency, functioning as the primary generation engine.
+      - **Wind Generation**: Vertical-axis wind turbines harvest turbulent residential air currents, producing constant supplementary output.
+      - **Geothermal Heat Exchange**: Closed-loop horizontal loops exchange ground heat with a 400% coefficient of performance for efficient climate control.
+      - **Biomass Space Heating**: Automated pellet-combustion stoves offer localized heating with thermal efficiency ratings exceeding 85%.
+      - **Lithium-Ion Storage**: High-capacity battery walls buffer load shifts, eliminating utility dependence during peak-tariff windows.
 
-        // Initialize pipeline glow based on nativity
-        const isMobile = window.innerWidth <= 580;
-        if (isMobile) {
-          lab1Glow.style.width = "2px";
-          lab1Glow.style.height = "0%";
-        } else {
-          lab1Glow.style.height = "2px";
-          lab1Glow.style.width = "0%";
-        }
-        nodes.forEach((id) => (document.getElementById(id).className = "node"));
+      ## Definitive Recommendations & Energy Audit Path
+      Homeowners should execute a systematic energy audit utilizing a thermal imaging leak analysis. Closed-loop ground heat systems combined with solar arrays yield the highest financial returns and maximum household resilience.`;
+                }
+                if (
+                  user.includes("state") ||
+                  user.includes("telemetry") ||
+                  user.includes("agent")
+                ) {
+                  return `# Polished Synthesis: State-Tracking & Telemetry in Agentic Stacks
 
-        const addLog = (text) => {
-          if (myRunId !== currentRunId) return;
-          output.innerText += text + "\n\n";
-          output.scrollTop = output.scrollHeight;
-        };
+      ## Executive Summary
+      This polished report synthesizes architectural state-tracking paradigms and telemetry models inside modern agentic software stacks. Modern AI workflows rely on highly coordinated, resilient distributed layers.
 
-        try {
-          // Step 1: Ingest
-          document
-            .getElementById("lab1-node-ingest")
-            .classList.add("active-success");
-          addLog(
-            `[State Machine: Capture] Ingesting research goal: '${input}'`,
-          );
-          await pacedDelay("lab1-agentic", 600);
-          if (myRunId !== currentRunId) return;
+      ## Technical Framework & Implementation Analysis
+      Detailed profiling reveals that combining relational data binding with isolated workspaces produces optimal performance and stability:
+      - **Telemetry Channels**: In-line width calculations resolve border clipping bugs on all horizontal viewports.
+      - **Sync & Staging**: Dynamic Git remote tags ensure parity across production pipelines.
+      - **Fail-Safe Ingress**: Local mock generators ensure complete run success when Google's Generative API experiences quota exhaustion.
 
-          addLog(
-            "[State Machine: Ingestion Check] VALIDATION: Checking constraints and scope... PASSED.",
-          );
-          await pacedDelay("lab1-agentic", 400);
-          if (myRunId !== currentRunId) return;
+      ## Definitive Verdict & Recommendations
+      Integrating retro-glowing status boards improves visual diagnostic speed. Sticking to strict native CSS units ensures responsive layout scaling from desktop to mobile screens.`;
+                }
+                // Generic Topic Fallback
+                const topic =
+                  user.match(/Topic:\s*([^\n]+)/i)?.[1] || "Requested Topic";
+                return `# Polished Synthesis: Deep Analysis of ${topic}
 
-          // Step 2: Plan
-          updateHUD("agentic", "RUNNING", "plan");
-          updatePipelineGlow(lab1Glow, "25%");
-          document.getElementById("lab1-node-plan").classList.add("active");
-          addLog(
-            "[State Machine: Planning (Live)] Calling Gemini to formulate structured multi-stage research plan...",
-          );
-          const planPrompt =
-            "You are an autonomous research coordinator. Given the user's research goal, create a concise, logical 3-stage plan or outline (subtopics) to address it. Format your output clearly with bullet points.";
-          const researchPlan = await callGemini(
-            planPrompt,
-            `Research Goal: ${input}`,
-          );
-          if (myRunId !== currentRunId) return;
+      ## Executive Summary
+      This definitive report presents a highly polished, comprehensive synthesis of ${topic}. Achieving operational excellence inside this domain requires a methodical approach combining continuous audit loops with resource-optimized configurations.
 
-          document.getElementById("lab1-node-plan").className =
-            "node active-success";
-          if (isUsingSimulation) {
-            addLog(`⚠️ [API Fallback] Live planning call failed (${lastErrorMsg.slice(0, 60)}...). Planning Agent fell back to local high-precision templates.`);
-          } else {
-            addLog(`✅ [Planning Success] Plan formulated via live Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.`);
-          }
-          addLog(`[State Machine: Plan Generated]\n${researchPlan}`);
-          await pacedDelay("lab1-agentic", 800);
-          if (myRunId !== currentRunId) return;
+      ## Technical Framework & Implementation Guidelines
+      Audit findings demonstrate that applying rigorous, standardized parameter validation drastically limits performance degradation:
+      - **Parameter Normalization**: Standardizing input metrics prevents execution drift.
+      - **Sequential Orchestration**: Organizing operational elements linearly optimizes system throughput.
+      - **Fault-Tolerant Allocation**: Implementing fail-safe resource pathways guarantees continuous execution.
 
-          // Step 3: Draft
-          updateHUD("agentic", "RUNNING", "draft");
-          updatePipelineGlow(lab1Glow, "50%");
-          document.getElementById("lab1-node-draft").classList.add("active");
-          addLog(
-            "[State Machine: Research & Synthesis (Live)] Calling Gemini to write the comprehensive first draft based on the outline...",
-          );
-          const draftPrompt =
-            "You are an expert research analyst. Write a detailed first draft of a comprehensive, professional research report on the user's topic based on the provided outline. Keep it informative, clear, and structured with headings and bullet points.";
-          const draftText = await callGemini(
-            draftPrompt,
-            `Topic: ${input}\nOutline:\n${researchPlan}`,
-          );
-          if (myRunId !== currentRunId) return;
+      ## Strategic Verdict & Actionable Roadmap
+      Implementing systematic evaluation checklists provides immediate observability benefits. Organizations should adopt automated validation tools to maintain long-term stability and high output quality.`;
+              }
 
-          document.getElementById("lab1-node-draft").className =
-            "node active-success";
-          if (isUsingSimulation) {
-            addLog(`⚠️ [API Fallback] Live drafting call failed. Drafting Agent fell back to local high-precision database.`);
-          } else {
-            addLog(`✅ [Drafting Success] First-draft synthesized via live Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.`);
-          }
-          addLog(
-            `[State Machine: Draft Staged] (Generated ${draftText.length} characters)`,
-          );
-          await pacedDelay("lab1-agentic", 800);
-          if (myRunId !== currentRunId) return;
+              // Swarm Fallbacks
+              let adults = 1;
+              const adultsMatch = user.match(/(\d+)\s*adults/i);
+              if (adultsMatch) adults = parseInt(adultsMatch[1]);
 
-          // Step 4: Audit
-          updateHUD("agentic", "RUNNING", "audit");
-          updatePipelineGlow(lab1Glow, "75%");
-          document.getElementById("lab1-node-audit").classList.add("active");
-          addLog(
-            "[State Machine: Self-Review Audit (Live)] Calling Gemini to critique and audit the draft for clarity, accuracy, and gaps...",
-          );
-          const auditPrompt =
-            "You are a critical peer reviewer. Evaluate the following research draft for clarity, accuracy, and beginner-friendliness. Point out any gaps, issues, or areas for improvement, and summarize the audit findings. Be critical but constructive.";
-          const auditFeedback = await callGemini(
-            auditPrompt,
-            `Draft to audit:\n${draftText}`,
-          );
-          if (myRunId !== currentRunId) return;
+              let children = 0;
+              const childrenMatch =
+                user.match(/(\d+)\s*children/i) || user.match(/(\d+)\s*child/i);
+              if (childrenMatch) children = parseInt(childrenMatch[1]);
 
-          document.getElementById("lab1-node-audit").className =
-            "node active-success";
-          if (isUsingSimulation) {
-            addLog(`⚠️ [API Fallback] Live audit call failed. Auditing Agent fell back to local heuristic checks.`);
-          } else {
-            addLog(`✅ [Audit Success] Draft audited via live Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.`);
-          }
-          addLog(`[State Machine: Audit Feedback Received]\n${auditFeedback}`);
-          await pacedDelay("lab1-agentic", 800);
-          if (myRunId !== currentRunId) return;
+              let route = "roundtrip";
+              const routeMatch =
+                user.match(/routing strategy:\s*(\w+)/i) ||
+                user.match(/routing:\s*(\w+)/i) ||
+                user.match(/(skiplagging|oneway|roundtrip)/i);
+              if (routeMatch) route = routeMatch[1].toLowerCase();
 
-          // Step 5: Express (Final deliverable)
-          updateHUD("agentic", "RUNNING", "express");
-          updatePipelineGlow(lab1Glow, "100%");
-          document
-            .getElementById("lab1-node-express")
-            .classList.add("active-success");
-          addLog(
-            "[State Machine: Final Revision (Live)] Calling Gemini to polish, edit, and compile the final version incorporating the audit feedback...",
-          );
-          const revisionPrompt =
-            "You are a master editor. Revise the provided draft based on the peer audit feedback to produce a highly polished, complete, and definitive final version in beautiful, clean markdown.";
-          const finalDeliverable = await callGemini(
-            revisionPrompt,
-            `Original Draft:\n${draftText}\nAudit Feedback:\n${auditFeedback}`,
-          );
-          if (myRunId !== currentRunId) return;
+              let precision = "standard";
+              const precisionMatch =
+                user.match(/precision strategy:\s*(\w+)/i) ||
+                user.match(/precision:\s*(\w+)/i) ||
+                user.match(/(highprecision|standard)/i);
+              if (precisionMatch) precision = precisionMatch[1].toLowerCase();
 
-          if (isUsingSimulation) {
-            addLog(`⚠️ [API Fallback] Live polish call failed. Final Revision Agent fell back to local high-fidelity editing template.`);
-            addLog("📝 FINAL APPROVED DELIVERABLE:\n\n" + finalDeliverable);
-            addLog("💡 Tip: To bypass shared key rate limits and run the entire agentic loop live against Gemini, paste your custom Google AI Studio Key in the header input field.");
-          } else {
-            addLog(`✅ [Express Success] Final polished report generated via live Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.`);
-            addLog("📝 FINAL APPROVED DELIVERABLE:\n\n" + finalDeliverable);
-          }
-          addLog(
-            "[State Machine: Express] Run completed successfully. Real-time agentic research committed to warehouse storage.",
-          );
-          updateHUD("agentic", "SUCCESS", "completed");
-        } catch (e) {
-          if (myRunId !== currentRunId) return;
-          console.error(e);
-          addLog(
-            `⚠️ Connection/Runtime Error: Failed to execute agentic pipeline: ${e.message}`,
-          );
-          nodes.forEach((id) => {
-            const el = document.getElementById(id);
-            if (el.classList.contains("active"))
-              el.className = "node active-error";
-          });
-          updateHUD("agentic", "ERROR", "failed");
-        } finally {
-          if (myRunId === currentRunId) {
-            setLoading(btn, false);
-          }
-        }
-      }
-      async function runSwarmSimulation(btn) {
-        clearAllSimulations();
-        const myRunId = ++currentRunId;
-        setLoading(btn, true);
-        runCounters.swarm++;
-        updateHUD("swarm", "RUNNING", "ingest");
-
-        const consoleEl = document.getElementById("swarm-console");
-        const resultsEl = document.getElementById("sim-results");
-        const itineraryEl = document.getElementById("itinerary-output");
-        const pipelineGlow = document.getElementById("pipeline-glow");
-        const nodeIngest = document.getElementById("node-ingest");
-        const nodeLogistics = document.getElementById("node-logistics");
-        const nodeGuide = document.getElementById("node-guide");
-        const nodeBudget = document.getElementById("node-budget");
-
-        // Safely retrieve inputs and sanitize
-        const destInput = document.getElementById("travel-dest").value.trim();
-        const departInput = document
-          .getElementById("travel-depart")
-          .value.trim();
-        const dest = destInput
-          ? destInput.replace(/</g, "&lt;").replace(/>/g, "&gt;")
-          : "Japan";
-        const depart = departInput
-          ? departInput.replace(/</g, "&lt;").replace(/>/g, "&gt;")
-          : "Honolulu (HNL)";
-
-        const style = document.getElementById("travel-style").value;
-        const budget =
-          parseFloat(document.getElementById("travel-budget").value) || 1800;
-        const isLuxury = style === "luxury";
-
-        // Retrieve precision, traveler composition, trip dates, and routing
-        const precision = document.getElementById("travel-precision").value;
-        const adults =
-          parseInt(document.getElementById("travel-adults").value) || 1;
-        const children =
-          parseInt(document.getElementById("travel-children").value) || 0;
-        const route = document.getElementById("travel-route").value;
-        const startDate = document.getElementById("travel-start-date").value;
-        const endDate = document.getElementById("travel-end-date").value;
-        const isHighPrecision = precision === "highprecision";
-
-        consoleEl.innerHTML = "";
-        resultsEl.style.display = "none";
-
-        // Initialize Swarm Pipeline progress bar based on nativity
-        const isMobile = window.innerWidth <= 580;
-        if (isMobile) {
-          pipelineGlow.style.width = "2px";
-          pipelineGlow.style.height = "0%";
-        } else {
-          pipelineGlow.style.height = "2px";
-          pipelineGlow.style.width = "0%";
-        }
-        [nodeIngest, nodeLogistics, nodeGuide, nodeBudget].forEach(
-          (n) => (n.className = "node"),
-        );
-
-        function addLog(text, color = "#38bdf8") {
-          if (myRunId !== currentRunId) return;
-          const line = document.createElement("div");
-          line.className = "terminal-line";
-          line.style.color = color;
-          line.innerText = text;
-          consoleEl.appendChild(line);
-          consoleEl.scrollTop = consoleEl.scrollHeight;
-        }
-
-        try {
-          // Step 1: Ingest (Live Parameter Capture)
-          nodeIngest.classList.add("active-success");
-          const userKey = localStorage.getItem("lapaki_api_key");
-          addLog(
-            "📥 [Ingestion Agent] Travel task ticket ingested.",
-            "#a855f7",
-          );
-          addLog(
-            userKey
-              ? "🔑 [Credentials] Customized user API key active."
-              : "🔑 [Credentials] Shared free-tier API key active (rate-limits apply).",
-            "#10b981",
-          );
-          addLog(
-            `   Destination: ${dest} | Departing: ${depart} | Style Preferred: ${style.toUpperCase()} | Budget Limit: $${budget}`,
-            "#c084fc",
-          );
-          addLog(
-            `   Precision Level: ${isHighPrecision ? "HIGH-PRECISION AUTONOMOUS AGENTIC AI" : "STANDARD REACTIVE AGENT"}`,
-            "#c084fc",
-          );
-          addLog(
-            `   Travelers: ${adults} Adult${adults > 1 ? "s" : ""}, ${children} Child${children !== 1 ? "ren" : ""} | Dates: ${startDate} to ${endDate} | Route: ${route.toUpperCase()}`,
-            "#c084fc",
-          );
-
-          if (isHighPrecision) {
-            const stayDuration =
-              Math.max(
-                1,
-                Math.round(
-                  (new Date(endDate) - new Date(startDate)) /
-                    (1000 * 60 * 60 * 24),
-                ),
-              ) || 7;
-            addLog(
-              `   [High-Precision Telemetry] Calculated trip stay duration: ${stayDuration} days. Group multiplier scale factor: ${(adults + 0.7 * children).toFixed(2)}.`,
-              "#c084fc",
-            );
-            if (route === "skiplagging") {
-              addLog(
-                "   ⚠️ [SkipLagging Warnings Activated] Airline policies dictate carry-on baggage only. Do not link status accounts.",
-                "#f59e0b",
+              let startDate = "2026-06-01";
+              let endDate = "2026-06-08";
+              const dateMatch = user.match(
+                /(\d{4}-\d{2}-\d{2})\s*to\s*(\d{4}-\d{2}-\d{2})/i,
               );
+              if (dateMatch) {
+                startDate = dateMatch[1];
+                endDate = dateMatch[2];
+              }
+
+              const duration =
+                Math.max(
+                  1,
+                  Math.round(
+                    (new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24),
+                  ),
+                ) || 7;
+              const passCount = adults + 0.7 * children;
+
+              if (user.includes("logistics")) {
+                const isLuxury = user.includes("luxury");
+                const baseFlight = isLuxury ? 1000 : 500;
+                const routeMult =
+                  route === "oneway" ? 0.55 : route === "skiplagging" ? 0.65 : 1.0;
+                const flightCost = Math.round(baseFlight * passCount * routeMult);
+
+                const rooms = Math.ceil((adults + children) / 2) || 1;
+                const baseRoom = isLuxury ? 350 : 80;
+                const hotelCost = rooms * duration * baseRoom;
+
+                const baseTransit = isLuxury ? 250 : 60;
+                const transitCost = Math.round(
+                  baseTransit * (1 + 0.1 * (adults + children)),
+                );
+
+                return JSON.stringify({
+                  flight: flightCost,
+                  hotel: hotelCost,
+                  transit: transitCost,
+                });
+              }
+
+              if (user.includes("itinerary for")) {
+                const isLuxury = user.includes("luxury") || user.includes("michelin");
+                const totalPeople = adults + children;
+                const familyFriendly =
+                  children > 0 ? " (family-friendly spots optimized for kids)" : "";
+                if (isLuxury) {
+                  return `<h4>Day 1: Premium Ingress & Luxury Check-in</h4>
+      <p>Arrive via private first-class transfer for ${totalPeople} guest${totalPeople > 1 ? "s" : ""}. Check in to five-star accommodations. Evening fine-dining reservations${familyFriendly}.</p>
+      <h4>Day 2: Private Guided Cultural Tour & Michelin Dinner</h4>
+      <p>Exclusive access to landmarks with a private docent. Seven-course Michelin-starred dining custom-prepared for the group.</p>
+      <h4>Day 3: Scenic Retreat & Egress</h4>
+      <p>Luxury spa relaxation overlooking scenic vistas. Private airport lounge transfers for smooth egress.</p>`;
+                } else {
+                  return `<h4>Day 1: Budget Travel Ingress & Cozy Lodging</h4>
+      <p>Arrive via standard transit. Check in to highly-rated budget family hostel/guesthouse rooms. Self-guided neighborhood walking tour.</p>
+      <h4>Day 2: Public Landmarks & Local Delicacies</h4>
+      <p>Explore free local historic parks, streets, and community gardens${familyFriendly}. Dinner at famous street markets.</p>
+      <h4>Day 3: Local Sights & Departure</h4>
+      <p>Enjoy scenic public beaches or mountain viewpoints. Standard airport connection via local express line.</p>`;
+                }
+              }
+
+              if (
+                sys.includes("critical peer reviewer") ||
+                sys.includes("budget accountant") ||
+                sys.includes("audit travel plan")
+              ) {
+                const isLuxury =
+                  user.includes("luxury") ||
+                  user.includes("michelin") ||
+                  user.includes("hotel: 1800") ||
+                  (user.includes("hotel:") &&
+                    parseFloat(user.match(/hotel:\s*(\d+)/)?.[1]) > 500);
+
+                const budgetLimit =
+                  parseFloat(user.match(/max budget:\s*\$?(\d+)/i)?.[1]) || 1800;
+
+                // Parse active costs passed in prompt
+                const flightVal =
+                  parseFloat(user.match(/flight:\s*(\d+)/)?.[1]) ||
+                  (isLuxury ? 1000 : 500);
+                const hotelVal =
+                  parseFloat(user.match(/hotel:\s*(\d+)/)?.[1]) ||
+                  (isLuxury ? 2450 : 560);
+                const transitVal =
+                  parseFloat(user.match(/transit:\s*(\d+)/)?.[1]) ||
+                  (isLuxury ? 300 : 70);
+
+                const baseDine = isLuxury ? 150 : 40;
+                const dineVal = Math.round(duration * baseDine * passCount);
+
+                const origTotal = flightVal + hotelVal + transitVal + dineVal;
+                const auditPassed = origTotal <= budgetLimit;
+
+                // For sanitized fallback costs
+                const sanFlight = Math.round(
+                  500 *
+                    passCount *
+                    (route === "oneway"
+                      ? 0.55
+                      : route === "skiplagging"
+                        ? 0.65
+                        : 1.0),
+                );
+                const sanRooms = Math.ceil((adults + children) / 2) || 1;
+                const sanHotel = sanRooms * duration * 80;
+                const sanTransit = Math.round(60 * (1 + 0.1 * (adults + children)));
+                const sanDine = Math.round(duration * 40 * passCount);
+
+                return JSON.stringify({
+                  flight: flightVal,
+                  hotel: hotelVal,
+                  transit: transitVal,
+                  dine: dineVal,
+                  itinerary: isLuxury
+                    ? `<h4>Day 1: Penthouse Ingress</h4><p>Luxury 5-star suite transfer.</p>`
+                    : `<h4>Day 1: Guesthouse Ingress</h4><p>Cozy local guesthouse accommodations.</p>`,
+                  sanitized_flight: sanFlight,
+                  sanitized_hotel: sanHotel,
+                  sanitized_transit: sanTransit,
+                  sanitized_dine: sanDine,
+                  sanitized_itinerary: `<h4>Day 1: Sanitized Ingress (${startDate})</h4><p>Public transit and budget boutique hostels booked for ${adults} adult${adults > 1 ? "s" : ""}${children > 0 ? " & " + children + " children" : ""}. Flight parameters set to ${route.toUpperCase()} option to preserve capital balance sheet parameters.</p>`,
+                  audit_passed: auditPassed,
+                });
+              }
+
+              return "Local high-fidelity simulation content completed successfully.";
             }
-          }
 
-          await pacedDelay("lab2", 600);
-          if (myRunId !== currentRunId) return;
+            async function callGemini(systemPrompt, userPrompt) {
+              try {
+                const customKeyInput = document.getElementById("custom-api-key");
+                const userKey = customKeyInput ? customKeyInput.value.trim() : localStorage.getItem("lapaki_api_key");
+                const activeKey = userKey && userKey !== "" ? userKey : ("AIzaSyBJ1eH" + "OHMTu-RT4cFyRR7cxa4jXlRjMB_M");
+                lastCallWasCustom = userKey && userKey !== "";
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${activeKey}`;
+                const res = await fetch(url, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    systemInstruction: {
+                      parts: [{ text: systemPrompt }],
+                    },
+                    contents: [
+                      {
+                        parts: [{ text: userPrompt }],
+                      },
+                    ],
+                  }),
+                });
+                if (!res.ok) {
+                  let errText = "";
+                  try {
+                    const errJson = await res.json();
+                    errText = JSON.stringify(errJson);
+                  } catch (e) {
+                    errText = await res.text().catch(() => "");
+                  }
+                  throw new Error(
+                    `Gemini API Error ${res.status}: ${res.statusText || ""} - ${errText}`,
+                  );
+                }
+                const data = await res.json();
+                isUsingSimulation = false;
+                return data.candidates[0].content.parts[0].text;
+              } catch (err) {
+                isUsingSimulation = true;
+                lastErrorMsg = err.message || "";
+                console.warn(
+                  "Gemini API call failed, using high-fidelity local simulation fallback:",
+                  err,
+                );
+                return getSimulationFallback(systemPrompt, userPrompt);
+              }
+            }
 
-          // Step 2: Logistics Agent (Live Call with Overridable Prompt Settings)
-          updateHUD("swarm", "RUNNING", "logistics");
-          updatePipelineGlow(pipelineGlow, "30%");
-          nodeLogistics.classList.add("active");
-          addLog(
-            "\n✈️ [Active Module: Logistics Agent] Estimating live transit and lodging costs...",
-            "#3b82f6",
-          );
+            function clearAllSimulations() {
+              activeTimeouts.forEach((id) => clearTimeout(id));
+              activeTimeouts = [];
 
-          const logisticsBase = document
-            .getElementById("prompt-override-logistics")
-            .value.trim();
-          const logisticsPrompt = `${logisticsBase} Use ${isLuxury ? "high-end luxury (5-star hotels, premium flights)" : "standard economy (budget hotels, economy flights)"} standards. Return estimates for a trip to ${dest} departing from ${depart} for ${adults} adults and ${children} children from ${startDate} to ${endDate} using ${route} flight strategy. Precision: ${precision}. Compute cost parameters factoring layover discounts or multi-leg hidden city SkipLagging factors if active.`;
+              // Reset all buttons to active/original state
+              document.querySelectorAll("button").forEach((btn) => {
+                if (btn.dataset.origText) {
+                  setLoading(btn, false);
+                }
+              });
+            }
 
-          const logisticsResponse = await callGemini(
-            logisticsPrompt,
-            `Estimate trip logistics to ${dest} departing from ${depart} with ${adults} adults, ${children} children, ${route} route from ${startDate} to ${endDate}, precision: ${precision}`,
-          );
-          if (myRunId !== currentRunId) return;
+            function trackTimeout(fn, delay) {
+              const id = setTimeout(fn, delay);
+              activeTimeouts.push(id);
+              return id;
+            }
 
-          if (isUsingSimulation) {
-            addLog(`⚠️ [API Fallback Alert] Logistics Agent call failed (${lastErrorMsg.slice(0, 60)}...). Fell back to local high-precision calculations.`, "#f59e0b");
-          } else {
-            addLog(`✅ [Logistics Success] Logistics estimated via live Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.`, "#10b981");
-          }
+            function switchTab(tabId) {
+              // Stop any active simulations to prevent log bleed across tabs
+              clearAllSimulations();
 
-          let logisticsData;
-          try {
-            logisticsData = extractJSON(logisticsResponse);
-          } catch (err) {
-            addLog(
-              "⚠️ JSON parsing failed on Logistics output. Using realistic fallback...",
-              "#f59e0b",
-            );
-            // Dynamic high-fidelity local calculations
-            const baseFlight = isLuxury ? 1000 : 500;
-            const passCount = adults + 0.7 * children;
-            const routeMult =
-              route === "oneway" ? 0.55 : route === "skiplagging" ? 0.65 : 1.0;
-            const stayDuration =
-              Math.max(
-                1,
-                Math.round(
-                  (new Date(endDate) - new Date(startDate)) /
-                    (1000 * 60 * 60 * 24),
-                ),
-              ) || 7;
-            const rooms = Math.ceil((adults + children) / 2) || 1;
-            const baseRoom = isLuxury ? 350 : 80;
+              const currentActive = document.querySelector(".tab-content.active");
+              const nextActive = document.getElementById("tab-" + tabId);
 
-            logisticsData = {
-              flight: Math.round(baseFlight * passCount * routeMult),
-              hotel: rooms * stayDuration * baseRoom,
-              transit: Math.round(
-                (isLuxury ? 250 : 60) * (1 + 0.1 * (adults + children)),
-              ),
+              if (currentActive === nextActive) return;
+
+              // Update nav button highlight immediately (Steve Krug Rule: instant visual feedback)
+              document
+                .querySelectorAll("nav button")
+                .forEach((btn) => btn.classList.remove("active"));
+              const idx = { explorer: 0, playground: 1, swarm: 2, theory: 3 }[tabId];
+              document.querySelectorAll("nav button")[idx].classList.add("active");
+
+              // Update breadcrumb immediately (Steve Krug Rule)
+              const breadcrumbLabel = {
+                explorer: "Scaffolding Explorer",
+                playground: "Lab 10.1: Agent Playgrounds",
+                swarm: "Lab 10.2: Swarm Pipeline",
+                theory: "Reflections & Theory",
+              }[tabId];
+              document.getElementById("current-breadcrumb").innerText =
+                breadcrumbLabel;
+
+              // Update URL hash without causing viewport jump
+              if (window.location.hash !== "#" + tabId) {
+                history.replaceState(null, null, "#" + tabId);
+              }
+
+              if (currentActive) {
+                currentActive.classList.add("leaving");
+                currentActive.classList.remove("active");
+
+                currentActive.addEventListener(
+                  "animationend",
+                  () => {
+                    currentActive.classList.remove("leaving");
+                    nextActive.classList.add("active");
+                  },
+                  { once: true },
+                );
+              } else {
+                nextActive.classList.add("active");
+              }
+            }
+
+            function handleRouting() {
+              const hash = decodeURIComponent(
+                window.location.hash || "",
+              ).toLowerCase();
+              if (!hash) return;
+
+              if (
+                hash.includes("playground") ||
+                hash.includes("10.1") ||
+                hash.includes("agent-playgrounds")
+              ) {
+                switchTab("playground");
+              } else if (
+                hash.includes("swarm") ||
+                hash.includes("10.2") ||
+                hash.includes("swarm-pipeline")
+              ) {
+                switchTab("swarm");
+              } else if (
+                hash.includes("theory") ||
+                hash.includes("reflections") ||
+                hash.includes("solution")
+              ) {
+                switchTab("theory");
+              } else if (hash.includes("explorer")) {
+                switchTab("explorer");
+              }
+            }
+
+            window.addEventListener("hashchange", handleRouting);
+            window.addEventListener("DOMContentLoaded", handleRouting);
+            // Execute immediately to cover already loaded states
+            handleRouting();
+
+            function toggleAdvancedSwarmSettings() {
+              const panel = document.getElementById("advanced-swarm-panel");
+              if (panel.style.display === "none") {
+                panel.style.display = "flex";
+              } else {
+                panel.style.display = "none";
+              }
+            }
+
+            const nodeDescriptions = {
+              capture: {
+                title: "Selected Node: 1-Capture/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Ingestion Zone]</h4><p style="margin-bottom: 1rem;">The capture layer handles all raw inputs flowing into the active Second Brain. It catches untrusted logs, human ideas, and webhook telemetry before formatting.</p><div class="doc-alert"><h4>Factory Floor Loading Dock</h4><p>Receives materials raw and unsorted from external streams.</p></div>',
+              },
+              "human-inbox": {
+                title: "Selected Node: 1-Capture/human-inbox/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Human Ingestion Inbox]</h4><p>Stores raw scratchpads, rapid text dumps, and unformatted Obsidian thoughts logged by humans before they are categorized.</p>',
+              },
+              "raw-telemetry": {
+                title: "Selected Node: 1-Capture/raw-mcp-telemetry/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[External API Payloads]</h4><p>Buffers unprocessed API requests and structured payloads caught by the Cloudflare edge worker integration.</p>',
+              },
+              "raw-logs": {
+                title: "Selected Node: 1-Capture/raw-swarm-logs/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Raw System Telemetry]</h4><p>ZeroMQ execution streams and unmodified trace files logged directly by the Ruflo execution engines.</p>',
+              },
+              organize: {
+                title: "Selected Node: 2-Organize/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Routing & Assembly Zone]</h4><p>The processing state machine coordinates active jobs and binds execution variables into isolated context mounts.</p>',
+              },
+              "task-queues": {
+                title: "Selected Node: 2-Organize/active-task-queues/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Active Task Queue Ledger]</h4><p>Stores structured JSON tickets waiting for scheduler validation and execution by Ruflo worker nodes.</p>',
+              },
+              "context-staging": {
+                title: "Selected Node: 2-Organize/context-staging/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Isolated Working Context]</h4><p>Temporary folder arrays where context variables, schemas, and workspace maps are combined for execution runs.</p>',
+              },
+              distill: {
+                title: "Selected Node: 3-Distill/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Knowledge Refinement Layer]</h4><p>Isolates draft configurations and raw trace logs, condensing successful runs into reusable logic models.</p>',
+              },
+              scratchpad: {
+                title: "Selected Node: 3-Distill/hermes-scratchpad/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Hermes Reasoning Compressor]</h4><p>Active workspace where the Hermes agent compresses detailed execution steps into clean, declarative reasoning models.</p>',
+              },
+              "prompt-refinery": {
+                title: "Selected Node: 3-Distill/prompt-refinery/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Prompt Engineering Ingot]</h4><p>Stores high-density prompts being analyzed and calibrated for token efficiency and constraint retention.</p>',
+              },
+              express: {
+                title: "Selected Node: 4-Express/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Outbound & Execution Zone]</h4><p>Stages fully compiled components, reports, and API configurations ready to be dispatched or written to disk.</p>',
+              },
+              "build-staging": {
+                title: "Selected Node: 4-Express/local-build-staging/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Build Artifact Stage]</h4><p>Holds successfully validated components awaiting migration to Projects or server deployment.</p>',
+              },
+              "dispatch-payloads": {
+                title: "Selected Node: 4-Express/mcp-dispatch-payloads/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Outgoing Payload Buffer]</h4><p>JSON payloads compiled, checked for credentials, and staged for immediate MCP delivery.</p>',
+              },
+              projects: {
+                title: "Selected Node: PARA/1-Projects/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Active Code Repositories]</h4><p>Stores standard Git codebases for current core initiatives. Clean, active development files reside here.</p>',
+              },
+              "lapaki-core": {
+                title: "Selected Node: PARA/1-Projects/lapaki-core/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Main Swarm Core]</h4><p>The centralized hub containing main codebase components, testing suites, and local execution script interfaces.</p>',
+              },
+              "mcp-bridge": {
+                title: "Selected Node: PARA/1-Projects/mcp-cloudflare-bridge/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[MCP Edge Integration Bridge]</h4><p>Custom code modules bridging regional serverless routers with local tool schemas.</p>',
+              },
+              areas: {
+                title: "Selected Node: PARA/2-Areas/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Persistent Domains]</h4><p>Retains continuous infrastructure maps, hardware configurations, and long-term workspace settings.</p>',
+              },
+              inference: {
+                title: "Selected Node: PARA/2-Areas/local-inference/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Hardware Configuration Ledger]</h4><p>Maintains persistent resource definition files outlining cluster maps (e.g. RTX 4080/4090 node specifications).</p>',
+              },
+              orchestration: {
+                title: "Selected Node: PARA/2-Areas/swarm-orchestration/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Worker Routing Maps]</h4><p>Continuous configurations detailing ZeroMQ endpoints, Redis nodes, and active swarm orchestrator boundaries.</p>',
+              },
+              resources: {
+                title: "Selected Node: PARA/3-Resources/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Reusable Assets & Libraries]</h4><p>Acts as the library of validated capabilities, approved guidelines, and design documents.</p>',
+              },
+              skills: {
+                title: "Selected Node: PARA/3-Resources/hermes-skills/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Validated Skills Database]</h4><p>The central registry of hardened, highly reliable custom agent prompt playbooks promoted from active testing.</p>',
+              },
+              blueprints: {
+                title: "Selected Node: PARA/3-Resources/architecture-blueprints/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[System Reference Manuals]</h4><p>Core systems architecture documentation and lab deliverables explaining system designs.</p>',
+              },
+              archives: {
+                title: "Selected Node: PARA/4-Archives/",
+                desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Workspace Archives]</h4><p>Retains cold-storage repositories of completed work, outdated files, and legacy dispatch logs.</p>',
+              },
             };
-          }
 
-          addLog(`   Flight Estimate: $${logisticsData.flight}`);
-          addLog(`   Accommodations:  $${logisticsData.hotel}`);
-          addLog(`   Local Transit:   $${logisticsData.transit}`);
-          nodeLogistics.className = "node active-success";
-          await pacedDelay("lab2", 600);
-          if (myRunId !== currentRunId) return;
+            function toggleFolder(parentId, parentEl) {
+              const children = document.querySelectorAll(
+                `.dir-tree li[data-parent="${parentId}"]`,
+              );
+              const caret = parentEl.querySelector(".folder-caret");
+              if (children.length === 0) return;
+              const isCollapsed = children[0].style.display === "none";
+              children.forEach((child) => {
+                child.style.display = isCollapsed ? "flex" : "none";
+              });
+              if (caret) {
+                caret.innerText = isCollapsed ? "▼" : "▶";
+              }
+            }
 
-          // Step 3: Local Guide Agent (Live Call with Overridable Prompt Settings)
-          updateHUD("swarm", "RUNNING", "guide");
-          updatePipelineGlow(pipelineGlow, "65%");
-          nodeGuide.classList.add("active");
-          addLog(
-            "\n🗺️ [Active Module: Local Guide Agent] Generating customized day-by-day itinerary...",
-            "#f59e0b",
-          );
+            function inspectNode(nodeKey, element) {
+              document
+                .querySelectorAll(".dir-tree li")
+                .forEach((li) => li.classList.remove("active-node"));
+              element.classList.add("active-node");
+              const info = nodeDescriptions[nodeKey];
+              if (info) {
+                document.getElementById("node-viewer-title").innerText = info.title;
+                document.getElementById("node-viewer-desc").innerHTML = info.desc;
+              }
+            }
 
-          const guideBase = document
-            .getElementById("prompt-override-guide")
-            .value.trim();
-          const guidePrompt = `${guideBase} Style: ${style}. Sights and dining in ${dest} departing from ${depart} for ${adults} adults and ${children} children from ${startDate} to ${endDate}. Strategy: ${precision}. Design activities tailored to traveler ages and count.`;
+            function setLoading(btn, loading) {
+              if (!btn) return;
+              if (!btn.dataset.origText) {
+                btn.dataset.origText = btn.innerHTML;
+              }
+              if (loading) {
+                btn.disabled = true;
+                btn.innerHTML = "⏳ Processing...";
+              } else {
+                btn.disabled = false;
+                btn.innerHTML = btn.dataset.origText;
+              }
+            }
 
-          const itineraryHTML = await callGemini(
-            guidePrompt,
-            `Create itinerary for ${dest} for ${adults} adults and ${children} children from ${startDate} to ${endDate}, precision: ${precision}`,
-          );
-          if (myRunId !== currentRunId) return;
+            function extractJSON(text) {
+              const start = text.indexOf("{");
+              const end = text.lastIndexOf("}");
+              if (start !== -1 && end !== -1 && end >= start) {
+                const jsonStr = text.substring(start, end + 1);
+                return JSON.parse(jsonStr);
+              }
+              throw new Error("Could not find JSON payload inside model response");
+            }
 
-          if (isUsingSimulation) {
-            addLog("⚠️ [API Fallback Alert] Local Guide Agent call failed. Fell back to customized local templates.", "#f59e0b");
-          } else {
-            addLog(`✅ [Guide Success] Custom itinerary generated via live Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.`, "#10b981");
-          }
+            async function pacedDelay(tabId, ms) {
+              const selector =
+                tabId === "lab1-simple"
+                  ? "exec-speed-lab1-simple"
+                  : tabId === "lab1-agentic"
+                    ? "exec-speed-lab1-agentic"
+                    : "exec-speed-lab2";
+              const speed =
+                document.querySelector(`input[name="${selector}"]:checked`)?.value ||
+                "paced";
+              if (speed === "instant") return;
+              await new Promise((resolve) => trackTimeout(resolve, ms));
+            }
 
-          addLog(
-            `   Itinerary successfully drafted! Length: ${itineraryHTML.length} characters.`,
-          );
-          nodeGuide.className = "node active-success";
-          await pacedDelay("lab2", 600);
-          if (myRunId !== currentRunId) return;
+            function updatePipelineGlow(glowEl, percent) {
+              const isMobile = window.innerWidth <= 580;
+              if (isMobile) {
+                glowEl.style.width = "2px";
+                glowEl.style.height = percent;
+              } else {
+                glowEl.style.height = "2px";
+                const num = parseFloat(percent) || 0;
+                if (glowEl.id === "lab1-pipeline-glow") {
+                  glowEl.style.width = `calc((100% - 6rem) * ${num} / 100)`;
+                } else {
+                  glowEl.style.width = `calc((100% - 9rem) * ${num} / 100)`;
+                }
+              }
+            }
 
-          // Step 4: Budget Accountant Agent (Live Call with Overridable Prompt Settings)
-          updateHUD("swarm", "RUNNING", "accountant");
-          updatePipelineGlow(pipelineGlow, "100%");
-          nodeBudget.classList.add("active");
-          addLog(
-            "\n⚖️ [Active Module: Budget Accountant Agent] Executing financial audit and sanitization check...",
-            "#ef4444",
-          );
+            async function runSimpleAgent(btn) {
+              clearAllSimulations();
+              setLoading(btn, true);
+              runCounters.simple++;
+              updateHUD("simple", "RUNNING", "summarizer");
+              const input = document.getElementById("simple-input").value;
+              const output = document.getElementById("simple-output");
+              output.innerText =
+                "[Agent Init] Ingesting standard summarization prompt...\n[Agent Exec] Compiling article text into single-pass summarizer...\n\n";
 
-          const accountantBase = document
-            .getElementById("prompt-override-budget")
-            .value.trim();
-          const stayDuration =
-            Math.max(
-              1,
-              Math.round(
-                (new Date(endDate) - new Date(startDate)) /
-                  (1000 * 60 * 60 * 24),
-              ),
-            ) || 7;
-          const passCount = adults + 0.7 * children;
-          const estimatedDine = Math.round(
-            stayDuration * (isLuxury ? 150 : 40) * passCount,
-          );
+              try {
+                await pacedDelay("lab1-simple", 400);
+                output.innerText +=
+                  "[Agent Exec] Querying live Gemini 2.5 Flash API...\n";
 
-          const accountantPrompt = `${accountantBase}
-Review travel plan parameters:
-Destination: ${dest}
-Departing From: ${depart}
-Travelers: ${adults} adults, ${children} children
-Dates: ${startDate} to ${endDate}
-Routing Strategy: ${route}
-Max Budget: $${budget}
-Precision Strategy: ${precision}
-Estimated Cost parameters:
-- flight: ${logisticsData.flight}
-- hotel: ${logisticsData.hotel}
-- transit: ${logisticsData.transit}
-Based on destination ${dest} for ${adults} adults and ${children} children from ${startDate} to ${endDate}, estimate a realistic dining and sight expense as 'dine' ($${estimatedDine}).
-Calculate total = flight + hotel + transit + dine.
-Determine if total exceeds max budget ($${budget}). If it does, set 'audit_passed' to false, sanitize values to fit economy/hostel levels under $${budget}, and rewrite a sanitized HTML itinerary designed for ${adults} adults and ${children} children.
-Return strictly valid JSON:
-{
-  "flight": number,
-  "hotel": number,
-  "transit": number,
-  "dine": number,
-  "itinerary": "string (HTML)",
-  "sanitized_flight": number,
-  "sanitized_hotel": number,
-  "sanitized_transit": number,
-  "sanitized_dine": number,
-  "sanitized_itinerary": "string (HTML)",
-  "audit_passed": boolean
-}`;
+                const systemPrompt =
+                  "You are a summarization assistant. Your task is to summarize the user's article in exactly 5 concise, high-fidelity bullet points. Format the output with clean markdown bullet points (using standard bullet character •).";
+                const summary = await callGemini(systemPrompt, input);
 
-          const accountantResponse = await callGemini(
-            accountantPrompt,
-            `Audit travel plan. Max Budget: ${budget}. Original Itinerary: ${itineraryHTML}. Strategy: ${precision}. Adults: ${adults}, Children: ${children}, Route: ${route}, Dates: ${startDate} to ${endDate}`,
-          );
-          if (myRunId !== currentRunId) return;
+                if (isUsingSimulation) {
+                  output.innerText += `⚠️ [API Fallback Alert] Live Gemini API call failed or hit a rate limit (Error: ${lastErrorMsg.slice(0, 80)}). For safety and continuous operation, the system gracefully fell back to local high-fidelity simulated agent templates.\n`;
+                  output.innerText += `💡 Tip: To bypass shared-quota rate limits and run actual live Gemini models, paste your personal Google AI Studio API Key into the 🔑 Key input field in the top header.\n\n`;
+                } else {
+                  output.innerText += `✅ [Gemini Live Success] Successfully fetched response from Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.\n\n`;
+                }
 
-          if (isUsingSimulation) {
-            addLog("⚠️ [API Fallback Alert] Budget Accountant Agent call failed. Fell back to local audit heuristics.", "#f59e0b");
-            addLog("💡 Tip: To run the entire multi-agent swarm live on Gemini without rate limits, paste your custom Google AI Studio Key in the header input field.", "#f59e0b");
-          } else {
-            addLog(`✅ [Accountant Success] Travel plan audited via live Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.`, "#10b981");
-          }
+                output.innerText +=
+                  "--- REAL-TIME SUMMARIZER AGENT OUTPUT (5 BULLETS) ---\n" +
+                  summary +
+                  "\n\n";
+                output.innerText +=
+                  "[Agent Terminated] Process finished in 1 step successfully.";
+                updateHUD("simple", "SUCCESS", "finished");
+              } catch (e) {
+                console.error(e);
+                output.innerText += `⚠️ Connection Error: Failed to execute live agent: ${e.message}\n\n`;
+                updateHUD("simple", "ERROR", "failed");
+              } finally {
+                setLoading(btn, false);
+              }
+            }
 
-          let swarmData;
-          try {
-            swarmData = extractJSON(accountantResponse);
-          } catch (err) {
-            addLog(
-              "⚠️ JSON parsing failed on Budget Accountant output. Extracting data manually...",
-              "#f59e0b",
-            );
-            // Fallback robust regex parsing for swarm data keys
-            const flightMatch =
-              accountantResponse.match(/"sanitized_flight"\s*:\s*(\d+)/) ||
-              accountantResponse.match(/"flight"\s*:\s*(\d+)/);
-            const hotelMatch =
-              accountantResponse.match(/"sanitized_hotel"\s*:\s*(\d+)/) ||
-              accountantResponse.match(/"hotel"\s*:\s*(\d+)/);
-            const transitMatch =
-              accountantResponse.match(/"sanitized_transit"\s*:\s*(\d+)/) ||
-              accountantResponse.match(/"transit"\s*:\s*(\d+)/);
-            const dineMatch =
-              accountantResponse.match(/"sanitized_dine"\s*:\s*(\d+)/) ||
-              accountantResponse.match(/"dine"\s*:\s*(\d+)/);
+            async function runAgenticAI(btn) {
+              clearAllSimulations();
+              const myRunId = ++currentRunId;
+              setLoading(btn, true);
+              runCounters.agentic++;
+              updateHUD("agentic", "RUNNING", "ingest");
+              const input = document.getElementById("agentic-input").value;
+              const output = document.getElementById("agentic-output");
+              output.innerText = "";
 
-            swarmData = {
-              flight: logisticsData.flight,
-              hotel: logisticsData.hotel,
-              transit: logisticsData.transit,
-              dine: isLuxury ? 1200 : 250,
-              itinerary: itineraryHTML,
-              sanitized_flight: flightMatch ? parseInt(flightMatch[1]) : 800,
-              sanitized_hotel: hotelMatch ? parseInt(hotelMatch[1]) : 150,
-              sanitized_transit: transitMatch ? parseInt(transitMatch[1]) : 30,
-              sanitized_dine: dineMatch ? parseInt(dineMatch[1]) : 70,
-              sanitized_itinerary:
-                "<h4>Sanitized Budget Trip Itinerary</h4><p>We adjusted flights to standard economy and hotels to boutique budget hostels. Meals are locally sourced street food.</p>" +
-                itineraryHTML,
-              audit_passed: false,
-            };
-          }
+              // Show visual pipeline container (AI Interface Rule)
+              const pipelineContainer = document.getElementById(
+                "lab1-pipeline-container",
+              );
+              const lab1Glow = document.getElementById("lab1-pipeline-glow");
+              const nodes = [
+                "lab1-node-ingest",
+                "lab1-node-plan",
+                "lab1-node-draft",
+                "lab1-node-audit",
+                "lab1-node-express",
+              ];
 
-          const totalOrig =
-            swarmData.flight +
-            swarmData.hotel +
-            swarmData.transit +
-            swarmData.dine;
-          const totalSan =
-            swarmData.sanitized_flight +
-            swarmData.sanitized_hotel +
-            swarmData.sanitized_transit +
-            swarmData.sanitized_dine;
+              pipelineContainer.style.display = "block";
 
-          addLog("\n--- RUNNING AUDIT BALANCE SHEET ---", "#fff");
-          addLog(`   Flights Cost:      $${swarmData.flight}`);
-          addLog(`   Accommodations:    $${swarmData.hotel}`);
-          addLog(`   Transit Logistics: $${swarmData.transit}`);
-          addLog(`   Dining/Sights:     $${swarmData.dine}`);
-          addLog(`   ------------------------------`);
-          addLog(
-            `   GRAND ESTIMATED TOTAL: $${totalOrig} (Budget Limit: $${budget})`,
-            "#fff",
-          );
+              // Initialize pipeline glow based on nativity
+              const isMobile = window.innerWidth <= 580;
+              if (isMobile) {
+                lab1Glow.style.width = "2px";
+                lab1Glow.style.height = "0%";
+              } else {
+                lab1Glow.style.height = "2px";
+                lab1Glow.style.width = "0%";
+              }
+              nodes.forEach((id) => (document.getElementById(id).className = "node"));
 
-          resultsEl.style.display = "grid";
+              const addLog = (text) => {
+                if (myRunId !== currentRunId) return;
+                output.innerText += text + "\n\n";
+                output.scrollTop = output.scrollHeight;
+              };
 
-          if (!swarmData.audit_passed) {
-            nodeBudget.className = "node active-error";
-            addLog(
-              `🚨 AUDIT VERDICT: REJECTED: OVER BUDGET BY $${totalOrig - budget}`,
-              "#ef4444",
-            );
-            addLog(
-              "   [Trigger Swarm Rule 4] Stripping luxury options and recalculating budget-friendly sanitization...",
-              "#ef4444",
-            );
+              try {
+                // Step 1: Ingest
+                document
+                  .getElementById("lab1-node-ingest")
+                  .classList.add("active-success");
+                addLog(
+                  `[State Machine: Capture] Ingesting research goal: '${input}'`,
+                );
+                await pacedDelay("lab1-agentic", 600);
+                if (myRunId !== currentRunId) return;
 
-            await pacedDelay("lab2", 800);
-            if (myRunId !== currentRunId) return;
-            addLog(
-              `\n✅ BUDGET SANITIZED AND APPROVED AT $${totalSan} TOTAL`,
-              "#10b981",
-            );
-            addLog(
-              "   Output committed to CODE/4-Express/local-build-staging/",
-              "#10b981",
-            );
+                addLog(
+                  "[State Machine: Ingestion Check] VALIDATION: Checking constraints and scope... PASSED.",
+                );
+                await pacedDelay("lab1-agentic", 400);
+                if (myRunId !== currentRunId) return;
 
-            // Update Comparison Ledger dynamically
-            document.getElementById("cmp-flight-orig").innerHTML =
-              `$${swarmData.flight} (Original)`;
-            document.getElementById("cmp-hotel-orig").innerHTML =
-              `$${swarmData.hotel} (Original)`;
-            document.getElementById("cmp-transit-orig").innerHTML =
-              `$${swarmData.transit} (Original)`;
-            document.getElementById("cmp-dining-orig").innerHTML =
-              `$${swarmData.dine} (Original)`;
-            document.getElementById("cmp-total-orig").innerHTML =
-              `$${totalOrig}`;
+                // Step 2: Plan
+                updateHUD("agentic", "RUNNING", "plan");
+                updatePipelineGlow(lab1Glow, "25%");
+                document.getElementById("lab1-node-plan").classList.add("active");
+                addLog(
+                  "[State Machine: Planning (Live)] Calling Gemini to formulate structured multi-stage research plan...",
+                );
+                const planPrompt =
+                  "You are an autonomous research coordinator. Given the user's research goal, create a concise, logical 3-stage plan or outline (subtopics) to address it. Format your output clearly with bullet points.";
+                const researchPlan = await callGemini(
+                  planPrompt,
+                  `Research Goal: ${input}`,
+                );
+                if (myRunId !== currentRunId) return;
 
-            document.getElementById("cmp-flight-san").innerHTML =
-              `$${swarmData.sanitized_flight} (Sanitized)`;
-            document.getElementById("cmp-hotel-san").innerHTML =
-              `$${swarmData.sanitized_hotel} (Sanitized)`;
-            document.getElementById("cmp-transit-san").innerHTML =
-              `$${swarmData.sanitized_transit} (Sanitized)`;
-            document.getElementById("cmp-dining-san").innerHTML =
-              `$${swarmData.sanitized_dine} (Sanitized)`;
-            document.getElementById("cmp-total-san").innerHTML = `$${totalSan}`;
+                document.getElementById("lab1-node-plan").className =
+                  "node active-success";
+                if (isUsingSimulation) {
+                  addLog(`⚠️ [API Fallback] Live planning call failed (${lastErrorMsg.slice(0, 60)}...). Planning Agent fell back to local high-precision templates.`);
+                } else {
+                  addLog(`✅ [Planning Success] Plan formulated via live Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.`);
+                }
+                addLog(`[State Machine: Plan Generated]\n${researchPlan}`);
+                await pacedDelay("lab1-agentic", 800);
+                if (myRunId !== currentRunId) return;
 
-            itineraryEl.innerHTML = swarmData.sanitized_itinerary;
-            nodeBudget.className = "node active-success";
-          } else {
-            nodeBudget.className = "node active-success";
-            addLog(`\n✅ BUDGET APPROVED AT $${totalOrig} TOTAL`, "#10b981");
-            addLog(
-              "   Output committed to CODE/4-Express/local-build-staging/",
-              "#10b981",
-            );
+                // Step 3: Draft
+                updateHUD("agentic", "RUNNING", "draft");
+                updatePipelineGlow(lab1Glow, "50%");
+                document.getElementById("lab1-node-draft").classList.add("active");
+                addLog(
+                  "[State Machine: Research & Synthesis (Live)] Calling Gemini to write the comprehensive first draft based on the outline...",
+                );
+                const draftPrompt =
+                  "You are an expert research analyst. Write a detailed first draft of a comprehensive, professional research report on the user's topic based on the provided outline. Keep it informative, clear, and structured with headings and bullet points.";
+                const draftText = await callGemini(
+                  draftPrompt,
+                  `Topic: ${input}\nOutline:\n${researchPlan}`,
+                );
+                if (myRunId !== currentRunId) return;
 
-            // Update Comparison Ledger dynamically
-            document.getElementById("cmp-flight-orig").innerHTML =
-              `$${swarmData.flight}`;
-            document.getElementById("cmp-hotel-orig").innerHTML =
-              `$${swarmData.hotel}`;
-            document.getElementById("cmp-transit-orig").innerHTML =
-              `$${swarmData.transit}`;
-            document.getElementById("cmp-dining-orig").innerHTML =
-              `$${swarmData.dine}`;
-            document.getElementById("cmp-total-orig").innerHTML =
-              `$${totalOrig}`;
+                document.getElementById("lab1-node-draft").className =
+                  "node active-success";
+                if (isUsingSimulation) {
+                  addLog(`⚠️ [API Fallback] Live drafting call failed. Drafting Agent fell back to local high-precision database.`);
+                } else {
+                  addLog(`✅ [Drafting Success] First-draft synthesized via live Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.`);
+                }
+                addLog(
+                  `[State Machine: Draft Staged] (Generated ${draftText.length} characters)`,
+                );
+                await pacedDelay("lab1-agentic", 800);
+                if (myRunId !== currentRunId) return;
 
-            document.getElementById("cmp-flight-san").innerHTML =
-              `$${swarmData.flight}`;
-            document.getElementById("cmp-hotel-san").innerHTML =
-              `$${swarmData.hotel}`;
-            document.getElementById("cmp-transit-san").innerHTML =
-              `$${swarmData.transit}`;
-            document.getElementById("cmp-dining-san").innerHTML =
-              `$${swarmData.dine}`;
-            document.getElementById("cmp-total-san").innerHTML =
-              `$${totalOrig}`;
+                // Step 4: Audit
+                updateHUD("agentic", "RUNNING", "audit");
+                updatePipelineGlow(lab1Glow, "75%");
+                document.getElementById("lab1-node-audit").classList.add("active");
+                addLog(
+                  "[State Machine: Self-Review Audit (Live)] Calling Gemini to critique and audit the draft for clarity, accuracy, and gaps...",
+                );
+                const auditPrompt =
+                  "You are a critical peer reviewer. Evaluate the following research draft for clarity, accuracy, and beginner-friendliness. Point out any gaps, issues, or areas for improvement, and summarize the audit findings. Be critical but constructive.";
+                const auditFeedback = await callGemini(
+                  auditPrompt,
+                  `Draft to audit:\n${draftText}`,
+                );
+                if (myRunId !== currentRunId) return;
 
-            itineraryEl.innerHTML = swarmData.itinerary;
-          }
-          updateHUD("swarm", "SUCCESS", "completed");
-        } catch (e) {
-          if (myRunId !== currentRunId) return;
-          console.error(e);
-          addLog(
-            `⚠️ Connection/Runtime Error: Failed to execute travel swarm: ${e.message}`,
-            "#ef4444",
-          );
-          nodeBudget.className = "node active-error";
-          updateHUD("swarm", "ERROR", "failed");
-        } finally {
-          if (myRunId === currentRunId) {
-            setLoading(btn, false);
-          }
-        }
-      }
+                document.getElementById("lab1-node-audit").className =
+                  "node active-success";
+                if (isUsingSimulation) {
+                  addLog(`⚠️ [API Fallback] Live audit call failed. Auditing Agent fell back to local heuristic checks.`);
+                } else {
+                  addLog(`✅ [Audit Success] Draft audited via live Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.`);
+                }
+                addLog(`[State Machine: Audit Feedback Received]\n${auditFeedback}`);
+                await pacedDelay("lab1-agentic", 800);
+                if (myRunId !== currentRunId) return;
 
-      // Initialize dynamic ASCII status billboard
-      function initStatusBillboard() {
-        const statusText = document.getElementById("status-text");
-        if (!statusText) return;
+                // Step 5: Express (Final deliverable)
+                updateHUD("agentic", "RUNNING", "express");
+                updatePipelineGlow(lab1Glow, "100%");
+                document
+                  .getElementById("lab1-node-express")
+                  .classList.add("active-success");
+                addLog(
+                  "[State Machine: Final Revision (Live)] Calling Gemini to polish, edit, and compile the final version incorporating the audit feedback...",
+                );
+                const revisionPrompt =
+                  "You are a master editor. Revise the provided draft based on the peer audit feedback to produce a highly polished, complete, and definitive final version in beautiful, clean markdown.";
+                const finalDeliverable = await callGemini(
+                  revisionPrompt,
+                  `Original Draft:\n${draftText}\nAudit Feedback:\n${auditFeedback}`,
+                );
+                if (myRunId !== currentRunId) return;
 
-        // Scrolling marquee text for the retro ASCII presentation (pure ASCII for perfect monospace alignment)
-        const marqueeText =
-          " * LAPAKI SYSTEM * GEMINI 2.5 LIVE * PORT: 052726 * STATUS: ACTIVE * ";
-        let marqueeOffset = 0;
-        const visibleLength = 22; // Extended slightly for complete fit
+                if (isUsingSimulation) {
+                  addLog(`⚠️ [API Fallback] Live polish call failed. Final Revision Agent fell back to local high-fidelity editing template.`);
+                  addLog("📝 FINAL APPROVED DELIVERABLE:\n\n" + finalDeliverable);
+                  addLog("💡 Tip: To bypass shared key rate limits and run the entire agentic loop live against Gemini, paste your custom Google AI Studio Key in the header input field.");
+                } else {
+                  addLog(`✅ [Express Success] Final polished report generated via live Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.`);
+                  addLog("📝 FINAL APPROVED DELIVERABLE:\n\n" + finalDeliverable);
+                }
+                addLog(
+                  "[State Machine: Express] Run completed successfully. Real-time agentic research committed to warehouse storage.",
+                );
+                updateHUD("agentic", "SUCCESS", "completed");
+              } catch (e) {
+                if (myRunId !== currentRunId) return;
+                console.error(e);
+                addLog(
+                  `⚠️ Connection/Runtime Error: Failed to execute agentic pipeline: ${e.message}`,
+                );
+                nodes.forEach((id) => {
+                  const el = document.getElementById(id);
+                  if (el.classList.contains("active"))
+                    el.className = "node active-error";
+                });
+                updateHUD("agentic", "ERROR", "failed");
+              } finally {
+                if (myRunId === currentRunId) {
+                  setLoading(btn, false);
+                }
+              }
+            }
+            async function runSwarmSimulation(btn) {
+              clearAllSimulations();
+              const myRunId = ++currentRunId;
+              setLoading(btn, true);
+              runCounters.swarm++;
+              updateHUD("swarm", "RUNNING", "ingest");
 
-        // Tamagotchi virtual pet frames
-        const petFrames = [
-          " (•ㅅ•)ノ  ", // wave left
-          " (•ㅅ•)    ", // stand
-          "ヾ(•ㅅ•)   ", // wave right
-          " (•ㅅ•)    ", // stand
-          " (^ㅅ<)~✨ ", // wink & sparkle
-          " (◦ㅅ◦)    ", // look up
-          " (•ㅅ•)    ", // stand
-        ];
-        let petFrameIndex = 0;
+              const consoleEl = document.getElementById("swarm-console");
+              const resultsEl = document.getElementById("sim-results");
+              const itineraryEl = document.getElementById("itinerary-output");
+              const pipelineGlow = document.getElementById("pipeline-glow");
+              const nodeIngest = document.getElementById("node-ingest");
+              const nodeLogistics = document.getElementById("node-logistics");
+              const nodeGuide = document.getElementById("node-guide");
+              const nodeBudget = document.getElementById("node-budget");
 
-        // Hearts and status header
-        const statusIcons = [
-          "♥ ♥ ♥ 📶 [OK]",
-          "♡ ♥ ♥ 📶 [OK]",
-          "♥ ♡ ♥ 📶 [OK]",
-          "♥ ♥ ♡ 📶 [OK]",
-        ];
+              // Safely retrieve inputs and sanitize
+              const destInput = document.getElementById("travel-dest").value.trim();
+              const departInput = document
+                .getElementById("travel-depart")
+                .value.trim();
+              const dest = destInput
+                ? destInput.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                : "Japan";
+              const depart = departInput
+                ? departInput.replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                : "Honolulu (HNL)";
 
-        setInterval(() => {
-          // 1. Scrolling marquee slice
-          let marqueeSlice = "";
-          for (let i = 0; i < visibleLength; i++) {
-            marqueeSlice +=
-              marqueeText[(marqueeOffset + i) % marqueeText.length];
-          }
+              const style = document.getElementById("travel-style").value;
+              const budget =
+                parseFloat(document.getElementById("travel-budget").value) || 1800;
+              const isLuxury = style === "luxury";
 
-          // 2. Tamagotchi mascot bounce
-          const pet =
-            petFrames[Math.floor(petFrameIndex / 2) % petFrames.length];
+              // Retrieve precision, traveler composition, trip dates, and routing
+              const precision = document.getElementById("travel-precision").value;
+              const adults =
+                parseInt(document.getElementById("travel-adults").value) || 1;
+              const children =
+                parseInt(document.getElementById("travel-children").value) || 0;
+              const route = document.getElementById("travel-route").value;
+              const startDate = document.getElementById("travel-start-date").value;
+              const endDate = document.getElementById("travel-end-date").value;
+              const isHighPrecision = precision === "highprecision";
 
-          // 3. Pulsing heart icon
-          const rawIcons =
-            statusIcons[Math.floor(petFrameIndex / 4) % statusIcons.length];
-          const icons = rawIcons
-            .replace(
-              /♥/g,
-              '<span class="heart-pulse-icon" style="color: #10b981; display: inline-block; margin-right: 2px;">♥</span>',
-            )
-            .replace(
-              /♡/g,
-              '<span style="color: rgba(16, 185, 129, 0.25); display: inline-block; margin-right: 2px;">♡</span>',
-            );
+              consoleEl.innerHTML = "";
+              resultsEl.style.display = "none";
 
-          // Render the virtual CRT game screen in HTML with explicit monospace fonts
-          statusText.innerHTML = `
-<div style="font-size: 0.58rem; color: rgba(16, 185, 129, 0.75); display: flex; justify-content: space-between; width: 100%; border-bottom: 1px dashed rgba(16, 185, 129, 0.25); padding-bottom: 0.15rem; margin-bottom: 0.2rem; font-weight: 700; letter-spacing: 0.05em; font-family: var(--font-mono), monospace;">
-  <span>${icons}</span>
-</div>
-<div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 20px; font-size: 0.95rem; font-weight: 700; color: #10b981; text-shadow: 0 0 6px rgba(16, 185, 129, 0.85); font-family: var(--font-mono), monospace; letter-spacing: 0.05em; line-height: 1; padding: 0.1rem 0;">
-  ${pet}
-</div>
-<div style="font-size: 0.62rem; font-weight: 700; opacity: 0.9; border-top: 1px dashed rgba(16, 185, 129, 0.25); padding-top: 0.2rem; margin-top: 0.1rem; width: 100%; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: clip; font-family: var(--font-mono), monospace;">
-  ${marqueeSlice}
-</div>
-      `.trim();
+              // Initialize Swarm Pipeline progress bar based on nativity
+              const isMobile = window.innerWidth <= 580;
+              if (isMobile) {
+                pipelineGlow.style.width = "2px";
+                pipelineGlow.style.height = "0%";
+              } else {
+                pipelineGlow.style.height = "2px";
+                pipelineGlow.style.width = "0%";
+              }
+              [nodeIngest, nodeLogistics, nodeGuide, nodeBudget].forEach(
+                (n) => (n.className = "node"),
+              );
 
-          marqueeOffset = (marqueeOffset + 1) % marqueeText.length;
-          petFrameIndex++;
-        }, 180);
-      // Custom API Key Helper Functions
-      function saveApiKey(val) {
-        const cleanVal = val.trim();
-        if (cleanVal) {
-          localStorage.setItem("lapaki_api_key", cleanVal);
-        } else {
-          localStorage.removeItem("lapaki_api_key");
-        }
-      }
+              function addLog(text, color = "#38bdf8") {
+                if (myRunId !== currentRunId) return;
+                const line = document.createElement("div");
+                line.className = "terminal-line";
+                line.style.color = color;
+                line.innerText = text;
+                consoleEl.appendChild(line);
+                consoleEl.scrollTop = consoleEl.scrollHeight;
+              }
 
-      function toggleKeyVisibility() {
-        const input = document.getElementById("custom-api-key");
-        if (input.type === "password") {
-          input.type = "text";
-        } else {
-          input.type = "password";
-        }
-      }
+              try {
+                // Step 1: Ingest (Live Parameter Capture)
+                nodeIngest.classList.add("active-success");
+                const userKey = localStorage.getItem("lapaki_api_key");
+                addLog(
+                  "📥 [Ingestion Agent] Travel task ticket ingested.",
+                  "#a855f7",
+                );
+                addLog(
+                  userKey
+                    ? "🔑 [Credentials] Customized user API key active."
+                    : "🔑 [Credentials] Shared free-tier API key active (rate-limits apply).",
+                  "#10b981",
+                );
+                addLog(
+                  `   Destination: ${dest} | Departing: ${depart} | Style Preferred: ${style.toUpperCase()} | Budget Limit: $${budget}`,
+                  "#c084fc",
+                );
+                addLog(
+                  `   Precision Level: ${isHighPrecision ? "HIGH-PRECISION AUTONOMOUS AGENTIC AI" : "STANDARD REACTIVE AGENT"}`,
+                  "#c084fc",
+                );
+                addLog(
+                  `   Travelers: ${adults} Adult${adults > 1 ? "s" : ""}, ${children} Child${children !== 1 ? "ren" : ""} | Dates: ${startDate} to ${endDate} | Route: ${route.toUpperCase()}`,
+                  "#c084fc",
+                );
 
-      // Initialize saved API Key from localStorage
-      const savedKey = localStorage.getItem("lapaki_api_key");
-      if (savedKey) {
-        const customKeyInput = document.getElementById("custom-api-key");
-        if (customKeyInput) customKeyInput.value = savedKey;
-      }
+                if (isHighPrecision) {
+                  const stayDuration =
+                    Math.max(
+                      1,
+                      Math.round(
+                        (new Date(endDate) - new Date(startDate)) /
+                          (1000 * 60 * 60 * 24),
+                      ),
+                    ) || 7;
+                  addLog(
+                    `   [High-Precision Telemetry] Calculated trip stay duration: ${stayDuration} days. Group multiplier scale factor: ${(adults + 0.7 * children).toFixed(2)}.`,
+                    "#c084fc",
+                  );
+                  if (route === "skiplagging") {
+                    addLog(
+                      "   ⚠️ [SkipLagging Warnings Activated] Airline policies dictate carry-on baggage only. Do not link status accounts.",
+                      "#f59e0b",
+                    );
+                  }
+                }
 
-      initStatusBillboard();
+                await pacedDelay("lab2", 600);
+                if (myRunId !== currentRunId) return;
+
+                // Step 2: Logistics Agent (Live Call with Overridable Prompt Settings)
+                updateHUD("swarm", "RUNNING", "logistics");
+                updatePipelineGlow(pipelineGlow, "30%");
+                nodeLogistics.classList.add("active");
+                addLog(
+                  "\n✈️ [Active Module: Logistics Agent] Estimating live transit and lodging costs...",
+                  "#3b82f6",
+                );
+
+                const logisticsBase = document
+                  .getElementById("prompt-override-logistics")
+                  .value.trim();
+                const logisticsPrompt = `${logisticsBase} Use ${isLuxury ? "high-end luxury (5-star hotels, premium flights)" : "standard economy (budget hotels, economy flights)"} standards. Return estimates for a trip to ${dest} departing from ${depart} for ${adults} adults and ${children} children from ${startDate} to ${endDate} using ${route} flight strategy. Precision: ${precision}. Compute cost parameters factoring layover discounts or multi-leg hidden city SkipLagging factors if active.`;
+
+                const logisticsResponse = await callGemini(
+                  logisticsPrompt,
+                  `Estimate trip logistics to ${dest} departing from ${depart} with ${adults} adults, ${children} children, ${route} route from ${startDate} to ${endDate}, precision: ${precision}`,
+                );
+                if (myRunId !== currentRunId) return;
+
+                if (isUsingSimulation) {
+                  addLog(`⚠️ [API Fallback Alert] Logistics Agent call failed (${lastErrorMsg.slice(0, 60)}...). Fell back to local high-precision calculations.`, "#f59e0b");
+                } else {
+                  addLog(`✅ [Logistics Success] Logistics estimated via live Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.`, "#10b981");
+                }
+
+                let logisticsData;
+                try {
+                  logisticsData = extractJSON(logisticsResponse);
+                } catch (err) {
+                  addLog(
+                    "⚠️ JSON parsing failed on Logistics output. Using realistic fallback...",
+                    "#f59e0b",
+                  );
+                  // Dynamic high-fidelity local calculations
+                  const baseFlight = isLuxury ? 1000 : 500;
+                  const passCount = adults + 0.7 * children;
+                  const routeMult =
+                    route === "oneway" ? 0.55 : route === "skiplagging" ? 0.65 : 1.0;
+                  const stayDuration =
+                    Math.max(
+                      1,
+                      Math.round(
+                        (new Date(endDate) - new Date(startDate)) /
+                          (1000 * 60 * 60 * 24),
+                      ),
+                    ) || 7;
+                  const rooms = Math.ceil((adults + children) / 2) || 1;
+                  const baseRoom = isLuxury ? 350 : 80;
+
+                  logisticsData = {
+                    flight: Math.round(baseFlight * passCount * routeMult),
+                    hotel: rooms * stayDuration * baseRoom,
+                    transit: Math.round(
+                      (isLuxury ? 250 : 60) * (1 + 0.1 * (adults + children)),
+                    ),
+                  };
+                }
+
+                addLog(`   Flight Estimate: $${logisticsData.flight}`);
+                addLog(`   Accommodations:  $${logisticsData.hotel}`);
+                addLog(`   Local Transit:   $${logisticsData.transit}`);
+                nodeLogistics.className = "node active-success";
+                await pacedDelay("lab2", 600);
+                if (myRunId !== currentRunId) return;
+
+                // Step 3: Local Guide Agent (Live Call with Overridable Prompt Settings)
+                updateHUD("swarm", "RUNNING", "guide");
+                updatePipelineGlow(pipelineGlow, "65%");
+                nodeGuide.classList.add("active");
+                addLog(
+                  "\n🗺️ [Active Module: Local Guide Agent] Generating customized day-by-day itinerary...",
+                  "#f59e0b",
+                );
+
+                const guideBase = document
+                  .getElementById("prompt-override-guide")
+                  .value.trim();
+                const guidePrompt = `${guideBase} Style: ${style}. Sights and dining in ${dest} departing from ${depart} for ${adults} adults and ${children} children from ${startDate} to ${endDate}. Strategy: ${precision}. Design activities tailored to traveler ages and count.`;
+
+                const itineraryHTML = await callGemini(
+                  guidePrompt,
+                  `Create itinerary for ${dest} for ${adults} adults and ${children} children from ${startDate} to ${endDate}, precision: ${precision}`,
+                );
+                if (myRunId !== currentRunId) return;
+
+                if (isUsingSimulation) {
+                  addLog("⚠️ [API Fallback Alert] Local Guide Agent call failed. Fell back to customized local templates.", "#f59e0b");
+                } else {
+                  addLog(`✅ [Guide Success] Custom itinerary generated via live Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.`, "#10b981");
+                }
+
+                addLog(
+                  `   Itinerary successfully drafted! Length: ${itineraryHTML.length} characters.`,
+                );
+                nodeGuide.className = "node active-success";
+                await pacedDelay("lab2", 600);
+                if (myRunId !== currentRunId) return;
+
+                // Step 4: Budget Accountant Agent (Live Call with Overridable Prompt Settings)
+                updateHUD("swarm", "RUNNING", "accountant");
+                updatePipelineGlow(pipelineGlow, "100%");
+                nodeBudget.classList.add("active");
+                addLog(
+                  "\n⚖️ [Active Module: Budget Accountant Agent] Executing financial audit and sanitization check...",
+                  "#ef4444",
+                );
+
+                const accountantBase = document
+                  .getElementById("prompt-override-budget")
+                  .value.trim();
+                const stayDuration =
+                  Math.max(
+                    1,
+                    Math.round(
+                      (new Date(endDate) - new Date(startDate)) /
+                        (1000 * 60 * 60 * 24),
+                    ),
+                  ) || 7;
+                const passCount = adults + 0.7 * children;
+                const estimatedDine = Math.round(
+                  stayDuration * (isLuxury ? 150 : 40) * passCount,
+                );
+
+                const accountantPrompt = `${accountantBase}
+      Review travel plan parameters:
+      Destination: ${dest}
+      Departing From: ${depart}
+      Travelers: ${adults} adults, ${children} children
+      Dates: ${startDate} to ${endDate}
+      Routing Strategy: ${route}
+      Max Budget: $${budget}
+      Precision Strategy: ${precision}
+      Estimated Cost parameters:
+      - flight: ${logisticsData.flight}
+      - hotel: ${logisticsData.hotel}
+      - transit: ${logisticsData.transit}
+      Based on destination ${dest} for ${adults} adults and ${children} children from ${startDate} to ${endDate}, estimate a realistic dining and sight expense as 'dine' ($${estimatedDine}).
+      Calculate total = flight + hotel + transit + dine.
+      Determine if total exceeds max budget ($${budget}). If it does, set 'audit_passed' to false, sanitize values to fit economy/hostel levels under $${budget}, and rewrite a sanitized HTML itinerary designed for ${adults} adults and ${children} children.
+      Return strictly valid JSON:
+      {
+        "flight": number,
+        "hotel": number,
+        "transit": number,
+        "dine": number,
+        "itinerary": "string (HTML)",
+        "sanitized_flight": number,
+        "sanitized_hotel": number,
+        "sanitized_transit": number,
+        "sanitized_dine": number,
+        "sanitized_itinerary": "string (HTML)",
+        "audit_passed": boolean
+      }`;
+
+                const accountantResponse = await callGemini(
+                  accountantPrompt,
+                  `Audit travel plan. Max Budget: ${budget}. Original Itinerary: ${itineraryHTML}. Strategy: ${precision}. Adults: ${adults}, Children: ${children}, Route: ${route}, Dates: ${startDate} to ${endDate}`,
+                );
+                if (myRunId !== currentRunId) return;
+
+                if (isUsingSimulation) {
+                  addLog("⚠️ [API Fallback Alert] Budget Accountant Agent call failed. Fell back to local audit heuristics.", "#f59e0b");
+                  addLog("💡 Tip: To run the entire multi-agent swarm live on Gemini without rate limits, paste your custom Google AI Studio Key in the header input field.", "#f59e0b");
+                } else {
+                  addLog(`✅ [Accountant Success] Travel plan audited via live Gemini API using ${lastCallWasCustom ? "your custom API key" : "the default shared API key"}.`, "#10b981");
+                }
+
+                let swarmData;
+                try {
+                  swarmData = extractJSON(accountantResponse);
+                } catch (err) {
+                  addLog(
+                    "⚠️ JSON parsing failed on Budget Accountant output. Extracting data manually...",
+                    "#f59e0b",
+                  );
+                  // Fallback robust regex parsing for swarm data keys
+                  const flightMatch =
+                    accountantResponse.match(/"sanitized_flight"\s*:\s*(\d+)/) ||
+                    accountantResponse.match(/"flight"\s*:\s*(\d+)/);
+                  const hotelMatch =
+                    accountantResponse.match(/"sanitized_hotel"\s*:\s*(\d+)/) ||
+                    accountantResponse.match(/"hotel"\s*:\s*(\d+)/);
+                  const transitMatch =
+                    accountantResponse.match(/"sanitized_transit"\s*:\s*(\d+)/) ||
+                    accountantResponse.match(/"transit"\s*:\s*(\d+)/);
+                  const dineMatch =
+                    accountantResponse.match(/"sanitized_dine"\s*:\s*(\d+)/) ||
+                    accountantResponse.match(/"dine"\s*:\s*(\d+)/);
+
+                  swarmData = {
+                    flight: logisticsData.flight,
+                    hotel: logisticsData.hotel,
+                    transit: logisticsData.transit,
+                    dine: isLuxury ? 1200 : 250,
+                    itinerary: itineraryHTML,
+                    sanitized_flight: flightMatch ? parseInt(flightMatch[1]) : 800,
+                    sanitized_hotel: hotelMatch ? parseInt(hotelMatch[1]) : 150,
+                    sanitized_transit: transitMatch ? parseInt(transitMatch[1]) : 30,
+                    sanitized_dine: dineMatch ? parseInt(dineMatch[1]) : 70,
+                    sanitized_itinerary:
+                      "<h4>Sanitized Budget Trip Itinerary</h4><p>We adjusted flights to standard economy and hotels to boutique budget hostels. Meals are locally sourced street food.</p>" +
+                      itineraryHTML,
+                    audit_passed: false,
+                  };
+                }
+
+                const totalOrig =
+                  swarmData.flight +
+                  swarmData.hotel +
+                  swarmData.transit +
+                  swarmData.dine;
+                const totalSan =
+                  swarmData.sanitized_flight +
+                  swarmData.sanitized_hotel +
+                  swarmData.sanitized_transit +
+                  swarmData.sanitized_dine;
+
+                addLog("\n--- RUNNING AUDIT BALANCE SHEET ---", "#fff");
+                addLog(`   Flights Cost:      $${swarmData.flight}`);
+                addLog(`   Accommodations:    $${swarmData.hotel}`);
+                addLog(`   Transit Logistics: $${swarmData.transit}`);
+                addLog(`   Dining/Sights:     $${swarmData.dine}`);
+                addLog(`   ------------------------------`);
+                addLog(
+                  `   GRAND ESTIMATED TOTAL: $${totalOrig} (Budget Limit: $${budget})`,
+                  "#fff",
+                );
+
+                resultsEl.style.display = "grid";
+
+                if (!swarmData.audit_passed) {
+                  nodeBudget.className = "node active-error";
+                  addLog(
+                    `🚨 AUDIT VERDICT: REJECTED: OVER BUDGET BY $${totalOrig - budget}`,
+                    "#ef4444",
+                  );
+                  addLog(
+                    "   [Trigger Swarm Rule 4] Stripping luxury options and recalculating budget-friendly sanitization...",
+                    "#ef4444",
+                  );
+
+                  await pacedDelay("lab2", 800);
+                  if (myRunId !== currentRunId) return;
+                  addLog(
+                    `\n✅ BUDGET SANITIZED AND APPROVED AT $${totalSan} TOTAL`,
+                    "#10b981",
+                  );
+                  addLog(
+                    "   Output committed to CODE/4-Express/local-build-staging/",
+                    "#10b981",
+                  );
+
+                  // Update Comparison Ledger dynamically
+                  document.getElementById("cmp-flight-orig").innerHTML =
+                    `$${swarmData.flight} (Original)`;
+                  document.getElementById("cmp-hotel-orig").innerHTML =
+                    `$${swarmData.hotel} (Original)`;
+                  document.getElementById("cmp-transit-orig").innerHTML =
+                    `$${swarmData.transit} (Original)`;
+                  document.getElementById("cmp-dining-orig").innerHTML =
+                    `$${swarmData.dine} (Original)`;
+                  document.getElementById("cmp-total-orig").innerHTML =
+                    `$${totalOrig}`;
+
+                  document.getElementById("cmp-flight-san").innerHTML =
+                    `$${swarmData.sanitized_flight} (Sanitized)`;
+                  document.getElementById("cmp-hotel-san").innerHTML =
+                    `$${swarmData.sanitized_hotel} (Sanitized)`;
+                  document.getElementById("cmp-transit-san").innerHTML =
+                    `$${swarmData.sanitized_transit} (Sanitized)`;
+                  document.getElementById("cmp-dining-san").innerHTML =
+                    `$${swarmData.sanitized_dine} (Sanitized)`;
+                  document.getElementById("cmp-total-san").innerHTML = `$${totalSan}`;
+
+                  itineraryEl.innerHTML = swarmData.sanitized_itinerary;
+                  nodeBudget.className = "node active-success";
+                } else {
+                  nodeBudget.className = "node active-success";
+                  addLog(`\n✅ BUDGET APPROVED AT $${totalOrig} TOTAL`, "#10b981");
+                  addLog(
+                    "   Output committed to CODE/4-Express/local-build-staging/",
+                    "#10b981",
+                  );
+
+                  // Update Comparison Ledger dynamically
+                  document.getElementById("cmp-flight-orig").innerHTML =
+                    `$${swarmData.flight}`;
+                  document.getElementById("cmp-hotel-orig").innerHTML =
+                    `$${swarmData.hotel}`;
+                  document.getElementById("cmp-transit-orig").innerHTML =
+                    `$${swarmData.transit}`;
+                  document.getElementById("cmp-dining-orig").innerHTML =
+                    `$${swarmData.dine}`;
+                  document.getElementById("cmp-total-orig").innerHTML =
+                    `$${totalOrig}`;
+
+                  document.getElementById("cmp-flight-san").innerHTML =
+                    `$${swarmData.flight}`;
+                  document.getElementById("cmp-hotel-san").innerHTML =
+                    `$${swarmData.hotel}`;
+                  document.getElementById("cmp-transit-san").innerHTML =
+                    `$${swarmData.transit}`;
+                  document.getElementById("cmp-dining-san").innerHTML =
+                    `$${swarmData.dine}`;
+                  document.getElementById("cmp-total-san").innerHTML =
+                    `$${totalOrig}`;
+
+                  itineraryEl.innerHTML = swarmData.itinerary;
+                }
+                updateHUD("swarm", "SUCCESS", "completed");
+              } catch (e) {
+                if (myRunId !== currentRunId) return;
+                console.error(e);
+                addLog(
+                  `⚠️ Connection/Runtime Error: Failed to execute travel swarm: ${e.message}`,
+                  "#ef4444",
+                );
+                nodeBudget.className = "node active-error";
+                updateHUD("swarm", "ERROR", "failed");
+              } finally {
+                if (myRunId === currentRunId) {
+                  setLoading(btn, false);
+                }
+              }
+            }
+
+            // Initialize dynamic ASCII status billboard
+            function initStatusBillboard() {
+              const statusText = document.getElementById("status-text");
+              if (!statusText) return;
+
+              // Scrolling marquee text for the retro ASCII presentation (pure ASCII for perfect monospace alignment)
+              const marqueeText =
+                " * LAPAKI SYSTEM * GEMINI 2.5 LIVE * PORT: 052726 * STATUS: ACTIVE * ";
+              let marqueeOffset = 0;
+              const visibleLength = 22; // Extended slightly for complete fit
+
+              // Tamagotchi virtual pet frames
+              const petFrames = [
+                " (•ㅅ•)ノ  ", // wave left
+                " (•ㅅ•)    ", // stand
+                "ヾ(•ㅅ•)   ", // wave right
+                " (•ㅅ•)    ", // stand
+                " (^ㅅ<)~✨ ", // wink & sparkle
+                " (◦ㅅ◦)    ", // look up
+                " (•ㅅ•)    ", // stand
+              ];
+              let petFrameIndex = 0;
+
+              // Hearts and status header
+              const statusIcons = [
+                "♥ ♥ ♥ 📶 [OK]",
+                "♡ ♥ ♥ 📶 [OK]",
+                "♥ ♡ ♥ 📶 [OK]",
+                "♥ ♥ ♡ 📶 [OK]",
+              ];
+
+              setInterval(() => {
+                // 1. Scrolling marquee slice
+                let marqueeSlice = "";
+                for (let i = 0; i < visibleLength; i++) {
+                  marqueeSlice +=
+                    marqueeText[(marqueeOffset + i) % marqueeText.length];
+                }
+
+                // 2. Tamagotchi mascot bounce
+                const pet =
+                  petFrames[Math.floor(petFrameIndex / 2) % petFrames.length];
+
+                // 3. Pulsing heart icon
+                const rawIcons =
+                  statusIcons[Math.floor(petFrameIndex / 4) % statusIcons.length];
+                const icons = rawIcons
+                  .replace(
+                    /♥/g,
+                    '<span class="heart-pulse-icon" style="color: #10b981; display: inline-block; margin-right: 2px;">♥</span>',
+                  )
+                  .replace(
+                    /♡/g,
+                    '<span style="color: rgba(16, 185, 129, 0.25); display: inline-block; margin-right: 2px;">♡</span>',
+                  );
+
+                // Render the virtual CRT game screen in HTML with explicit monospace fonts
+                statusText.innerHTML = `
+      <div style="font-size: 0.58rem; color: rgba(16, 185, 129, 0.75); display: flex; justify-content: space-between; width: 100%; border-bottom: 1px dashed rgba(16, 185, 129, 0.25); padding-bottom: 0.15rem; margin-bottom: 0.2rem; font-weight: 700; letter-spacing: 0.05em; font-family: var(--font-mono), monospace;">
+        <span>${icons}</span>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 20px; font-size: 0.95rem; font-weight: 700; color: #10b981; text-shadow: 0 0 6px rgba(16, 185, 129, 0.85); font-family: var(--font-mono), monospace; letter-spacing: 0.05em; line-height: 1; padding: 0.1rem 0;">
+        ${pet}
+      </div>
+      <div style="font-size: 0.62rem; font-weight: 700; opacity: 0.9; border-top: 1px dashed rgba(16, 185, 129, 0.25); padding-top: 0.2rem; margin-top: 0.1rem; width: 100%; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: clip; font-family: var(--font-mono), monospace;">
+        ${marqueeSlice}
+      </div>
+            `.trim();
+
+                marqueeOffset = (marqueeOffset + 1) % marqueeText.length;
+                petFrameIndex++;
+              }, 180);
+            // Custom API Key Helper Functions
+            function saveApiKey(val) {
+              const cleanVal = val.trim();
+              if (cleanVal) {
+                localStorage.setItem("lapaki_api_key", cleanVal);
+              } else {
+                localStorage.removeItem("lapaki_api_key");
+              }
+            }
+
+            function toggleKeyVisibility() {
+              const input = document.getElementById("custom-api-key");
+              if (input.type === "password") {
+                input.type = "text";
+              } else {
+                input.type = "password";
+              }
+            }
+
+            // Initialize saved API Key from localStorage
+            const savedKey = localStorage.getItem("lapaki_api_key");
+            if (savedKey) {
+              const customKeyInput = document.getElementById("custom-api-key");
+              if (customKeyInput) customKeyInput.value = savedKey;
+            }
+
+            initStatusBillboard();
     </script>
   </body>
 </html>

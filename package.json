@@ -13,7 +13,7 @@
   "scripts": {
     "dev": "npx serve .",
     "lint": "npx eslint **/*.js",
-    "format": "npx prettier --write **/*.{html,css,js,json,md}",
+    "format": "npx prettier --write --no-error-on-unmatched-pattern **/*.{html,css,js,json,md}",
     "test": "echo \"Error: no test specified\" && exit 0"
   },
   "keywords": [
