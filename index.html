@@ -144,8 +144,26 @@
       .brand-mascot:hover {
         transform: scale(1.15) rotate(8deg);
       }
+      @keyframes gradient-shift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
       .brand-badge {
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        background: linear-gradient(
+          270deg,
+          var(--primary),
+          var(--secondary),
+          var(--accent)
+        ) !important;
+        background-size: 600% 600% !important;
+        animation: gradient-shift 8s ease infinite !important;
         padding: 0.3rem 0.65rem;
         border-radius: 7px;
         font-size: 0.7rem;
@@ -891,12 +909,46 @@
           filter: drop-shadow(0 0 3px rgba(16, 185, 129, 0.9));
         }
       }
+      @keyframes crt-sweep {
+        0% {
+          transform: translateY(-100%);
+        }
+        100% {
+          transform: translateY(100%);
+        }
+      }
       .pet-crt-screen {
         animation: crt-flicker 0.15s infinite;
+      }
+      .pet-crt-screen::before {
+        content: " ";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: rgba(16, 185, 129, 0.2);
+        animation: crt-sweep 6s linear infinite;
+        pointer-events: none;
+        z-index: 5;
       }
       .heart-pulse-icon {
         display: inline-block;
         animation: heart-pulse 0.8s ease-in-out infinite;
+      }
+      .folder-caret {
+        display: inline-block;
+        width: 0.8rem;
+        text-align: center;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        cursor: pointer;
+        user-select: none;
+        transition: transform 0.2s ease;
+      }
+      .dir-tree li.tree-child {
+        display: none; /* Collapsed by default */
       }
     </style>
   </head>
@@ -1005,9 +1057,13 @@
                 </h3>
                 <ul class="dir-tree">
                   <li
-                    onclick="inspectNode('capture', this)"
+                    onclick="
+                      toggleFolder('capture', this);
+                      inspectNode('capture', this);
+                    "
                     class="active-node"
                   >
+                    <span class="folder-caret">▶</span>
                     <svg
                       class="tree-icon icon-code"
                       viewBox="0 0 24 24"
@@ -1025,7 +1081,9 @@
                   </li>
                   <li
                     onclick="inspectNode('human-inbox', this)"
-                    style="padding-left: 2rem"
+                    data-parent="capture"
+                    class="tree-child"
+                    style="padding-left: 2rem; display: none"
                   >
                     <svg
                       class="tree-icon icon-code"
@@ -1048,7 +1106,9 @@
                   </li>
                   <li
                     onclick="inspectNode('raw-telemetry', this)"
-                    style="padding-left: 2rem"
+                    data-parent="capture"
+                    class="tree-child"
+                    style="padding-left: 2rem; display: none"
                   >
                     <svg
                       class="tree-icon icon-code"
@@ -1071,7 +1131,9 @@
                   </li>
                   <li
                     onclick="inspectNode('raw-logs', this)"
-                    style="padding-left: 2rem"
+                    data-parent="capture"
+                    class="tree-child"
+                    style="padding-left: 2rem; display: none"
                   >
                     <svg
                       class="tree-icon icon-code"
@@ -1092,7 +1154,13 @@
                     </svg>
                     raw-swarm-logs/
                   </li>
-                  <li onclick="inspectNode('organize', this)">
+                  <li
+                    onclick="
+                      toggleFolder('organize', this);
+                      inspectNode('organize', this);
+                    "
+                  >
+                    <span class="folder-caret">▶</span>
                     <svg
                       class="tree-icon icon-code"
                       viewBox="0 0 24 24"
@@ -1110,7 +1178,9 @@
                   </li>
                   <li
                     onclick="inspectNode('task-queues', this)"
-                    style="padding-left: 2rem"
+                    data-parent="organize"
+                    class="tree-child"
+                    style="padding-left: 2rem; display: none"
                   >
                     <svg
                       class="tree-icon icon-code"
@@ -1133,7 +1203,9 @@
                   </li>
                   <li
                     onclick="inspectNode('context-staging', this)"
-                    style="padding-left: 2rem"
+                    data-parent="organize"
+                    class="tree-child"
+                    style="padding-left: 2rem; display: none"
                   >
                     <svg
                       class="tree-icon icon-code"
@@ -1154,7 +1226,13 @@
                     </svg>
                     context-staging/
                   </li>
-                  <li onclick="inspectNode('distill', this)">
+                  <li
+                    onclick="
+                      toggleFolder('distill', this);
+                      inspectNode('distill', this);
+                    "
+                  >
+                    <span class="folder-caret">▶</span>
                     <svg
                       class="tree-icon icon-code"
                       viewBox="0 0 24 24"
@@ -1172,7 +1250,9 @@
                   </li>
                   <li
                     onclick="inspectNode('scratchpad', this)"
-                    style="padding-left: 2rem"
+                    data-parent="distill"
+                    class="tree-child"
+                    style="padding-left: 2rem; display: none"
                   >
                     <svg
                       class="tree-icon icon-code"
@@ -1195,7 +1275,9 @@
                   </li>
                   <li
                     onclick="inspectNode('prompt-refinery', this)"
-                    style="padding-left: 2rem"
+                    data-parent="distill"
+                    class="tree-child"
+                    style="padding-left: 2rem; display: none"
                   >
                     <svg
                       class="tree-icon icon-code"
@@ -1216,7 +1298,13 @@
                     </svg>
                     prompt-refinery/
                   </li>
-                  <li onclick="inspectNode('express', this)">
+                  <li
+                    onclick="
+                      toggleFolder('express', this);
+                      inspectNode('express', this);
+                    "
+                  >
+                    <span class="folder-caret">▶</span>
                     <svg
                       class="tree-icon icon-code"
                       viewBox="0 0 24 24"
@@ -1234,7 +1322,9 @@
                   </li>
                   <li
                     onclick="inspectNode('build-staging', this)"
-                    style="padding-left: 2rem"
+                    data-parent="express"
+                    class="tree-child"
+                    style="padding-left: 2rem; display: none"
                   >
                     <svg
                       class="tree-icon icon-code"
@@ -1257,7 +1347,9 @@
                   </li>
                   <li
                     onclick="inspectNode('dispatch-payloads', this)"
-                    style="padding-left: 2rem"
+                    data-parent="express"
+                    class="tree-child"
+                    style="padding-left: 2rem; display: none"
                   >
                     <svg
                       class="tree-icon icon-code"
@@ -1284,7 +1376,13 @@
               <div class="scaffold-section">
                 <h3>PARA <span class="badge badge-para">Data At Rest</span></h3>
                 <ul class="dir-tree">
-                  <li onclick="inspectNode('projects', this)">
+                  <li
+                    onclick="
+                      toggleFolder('projects', this);
+                      inspectNode('projects', this);
+                    "
+                  >
+                    <span class="folder-caret">▶</span>
                     <svg
                       class="tree-icon icon-para"
                       viewBox="0 0 24 24"
@@ -1302,7 +1400,9 @@
                   </li>
                   <li
                     onclick="inspectNode('lapaki-core', this)"
-                    style="padding-left: 2rem"
+                    data-parent="projects"
+                    class="tree-child"
+                    style="padding-left: 2rem; display: none"
                   >
                     <svg
                       class="tree-icon icon-para"
@@ -1325,7 +1425,9 @@
                   </li>
                   <li
                     onclick="inspectNode('mcp-bridge', this)"
-                    style="padding-left: 2rem"
+                    data-parent="projects"
+                    class="tree-child"
+                    style="padding-left: 2rem; display: none"
                   >
                     <svg
                       class="tree-icon icon-para"
@@ -1346,7 +1448,13 @@
                     </svg>
                     mcp-cloudflare-bridge/
                   </li>
-                  <li onclick="inspectNode('areas', this)">
+                  <li
+                    onclick="
+                      toggleFolder('areas', this);
+                      inspectNode('areas', this);
+                    "
+                  >
+                    <span class="folder-caret">▶</span>
                     <svg
                       class="tree-icon icon-para"
                       viewBox="0 0 24 24"
@@ -1364,7 +1472,9 @@
                   </li>
                   <li
                     onclick="inspectNode('inference', this)"
-                    style="padding-left: 2rem"
+                    data-parent="areas"
+                    class="tree-child"
+                    style="padding-left: 2rem; display: none"
                   >
                     <svg
                       class="tree-icon icon-para"
@@ -1387,7 +1497,9 @@
                   </li>
                   <li
                     onclick="inspectNode('orchestration', this)"
-                    style="padding-left: 2rem"
+                    data-parent="areas"
+                    class="tree-child"
+                    style="padding-left: 2rem; display: none"
                   >
                     <svg
                       class="tree-icon icon-para"
@@ -1408,7 +1520,13 @@
                     </svg>
                     swarm-orchestration/
                   </li>
-                  <li onclick="inspectNode('resources', this)">
+                  <li
+                    onclick="
+                      toggleFolder('resources', this);
+                      inspectNode('resources', this);
+                    "
+                  >
+                    <span class="folder-caret">▶</span>
                     <svg
                       class="tree-icon icon-para"
                       viewBox="0 0 24 24"
@@ -1426,7 +1544,9 @@
                   </li>
                   <li
                     onclick="inspectNode('skills', this)"
-                    style="padding-left: 2rem"
+                    data-parent="resources"
+                    class="tree-child"
+                    style="padding-left: 2rem; display: none"
                   >
                     <svg
                       class="tree-icon icon-para"
@@ -1449,7 +1569,9 @@
                   </li>
                   <li
                     onclick="inspectNode('blueprints', this)"
-                    style="padding-left: 2rem"
+                    data-parent="resources"
+                    class="tree-child"
+                    style="padding-left: 2rem; display: none"
                   >
                     <svg
                       class="tree-icon icon-para"
@@ -1540,7 +1662,6 @@
           <div
             id="lab1-pipeline-container"
             style="
-              display: none;
               margin-bottom: 2rem;
               background: rgba(0, 0, 0, 0.25);
               border: 1px solid var(--border-color);
@@ -1570,6 +1691,7 @@
                 id="lab1-pipeline-glow"
                 style="
                   left: 3rem;
+                  width: 0%;
                   transition:
                     width 1s ease,
                     height 1s ease;
@@ -3035,6 +3157,21 @@ Implementing systematic evaluation checklists provides immediate observability b
           desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Workspace Archives]</h4><p>Retains cold-storage repositories of completed work, outdated files, and legacy dispatch logs.</p>',
         },
       };
+
+      function toggleFolder(parentId, parentEl) {
+        const children = document.querySelectorAll(
+          `.dir-tree li[data-parent="${parentId}"]`,
+        );
+        const caret = parentEl.querySelector(".folder-caret");
+        if (children.length === 0) return;
+        const isCollapsed = children[0].style.display === "none";
+        children.forEach((child) => {
+          child.style.display = isCollapsed ? "flex" : "none";
+        });
+        if (caret) {
+          caret.innerText = isCollapsed ? "▼" : "▶";
+        }
+      }
 
       function inspectNode(nodeKey, element) {
         document
