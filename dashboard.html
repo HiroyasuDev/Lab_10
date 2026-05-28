@@ -3568,18 +3568,18 @@ You are the Budget Accountant Agent in a collaborative travel swarm. Review the 
                 history.replaceState(null, null, "#" + tabId);
               }
 
+              // Remove stale states first to prevent frozen double tabs
+              document.querySelectorAll(".tab-content").forEach((tab) => {
+                tab.classList.remove("active", "leaving");
+              });
+
               if (currentActive) {
                 currentActive.classList.add("leaving");
-                currentActive.classList.remove("active");
-
-                currentActive.addEventListener(
-                  "animationend",
-                  () => {
-                    currentActive.classList.remove("leaving");
-                    nextActive.classList.add("active");
-                  },
-                  { once: true },
-                );
+                nextActive.classList.add("active");
+                // Cleanup leaving state safely after the transition completes
+                setTimeout(() => {
+                  currentActive.classList.remove("leaving");
+                }, 280);
               } else {
                 nextActive.classList.add("active");
               }
