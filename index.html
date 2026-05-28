@@ -238,33 +238,12 @@
       }
       .tab-content.active {
         display: block;
-        animation: cardFlipIn 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        animation: cardFlipIn 0.28s cubic-bezier(0, 0, 0.2, 1) forwards;
       }
       .tab-content.leaving {
         display: block !important;
-        animation: cardFlipOut 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        animation: cardFlipOut 0.28s cubic-bezier(0.4, 0, 1, 1) forwards;
         pointer-events: none;
-        position: absolute;
-        left: 3rem;
-        right: 3rem;
-        top: 3.5rem;
-        z-index: 0;
-      }
-
-      @media (max-width: 1180px) {
-        .tab-content.leaving {
-          left: 1.5rem;
-          right: 1.5rem;
-          top: 3.5rem;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .tab-content.leaving {
-          left: 1rem;
-          right: 1rem;
-          top: 3.5rem;
-        }
       }
 
       @keyframes cardFlipOut {
@@ -3427,28 +3406,16 @@ Implementing systematic evaluation checklists provides immediate observability b
         const currentActive = document.querySelector(".tab-content.active");
         const nextActive = document.getElementById("tab-" + tabId);
 
-        if (currentActive && currentActive !== nextActive) {
-          currentActive.classList.remove("active");
-          currentActive.classList.add("leaving");
+        if (currentActive === nextActive) return;
 
-          currentActive.addEventListener(
-            "animationend",
-            () => {
-              currentActive.classList.remove("leaving");
-            },
-            { once: true },
-          );
-        }
-
+        // Update nav button highlight immediately (Steve Krug Rule: instant visual feedback)
         document
           .querySelectorAll("nav button")
           .forEach((btn) => btn.classList.remove("active"));
-
-        nextActive.classList.add("active");
         const idx = { explorer: 0, playground: 1, swarm: 2, theory: 3 }[tabId];
         document.querySelectorAll("nav button")[idx].classList.add("active");
 
-        // Update breadcrumb (Steve Krug Rule)
+        // Update breadcrumb immediately (Steve Krug Rule)
         const breadcrumbLabel = {
           explorer: "Scaffolding Explorer",
           playground: "Lab 10.1: Agent Playgrounds",
@@ -3461,6 +3428,22 @@ Implementing systematic evaluation checklists provides immediate observability b
         // Update URL hash without causing viewport jump
         if (window.location.hash !== "#" + tabId) {
           history.replaceState(null, null, "#" + tabId);
+        }
+
+        if (currentActive) {
+          currentActive.classList.add("leaving");
+          currentActive.classList.remove("active");
+
+          currentActive.addEventListener(
+            "animationend",
+            () => {
+              currentActive.classList.remove("leaving");
+              nextActive.classList.add("active");
+            },
+            { once: true },
+          );
+        } else {
+          nextActive.classList.add("active");
         }
       }
 
