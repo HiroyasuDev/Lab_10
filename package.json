@@ -1,7 +1,7 @@
 {
   "name": "@HiroyasuDev/lapaki-second-brain",
   "version": "1.0.0",
-  "description": "Production-grade, device-native Second Brain & multi-agent traveling swarm orchestration playground powered by the Google Gemini 2.5 Flash API.",
+  "description": "Lapaki: A production-grade, device-native Second Brain & multi-agent traveling swarm orchestration playground powered by the Google Gemini 2.5 Flash API.",
   "main": "index.html",
   "repository": {
     "type": "git",

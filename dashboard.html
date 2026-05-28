@@ -3271,11 +3271,11 @@ Return strictly valid JSON:
         const statusText = document.getElementById("status-text");
         if (!statusText) return;
 
-        // Scrolling marquee text for the retro ASCII presentation
+        // Scrolling marquee text for the retro ASCII presentation (pure ASCII for perfect monospace alignment)
         const marqueeText =
-          " * ラパキ・システム * GEMINI 2.5 LIVE * ACTIVE * PORT: 052726 * SYSTEM: 健全 * ";
+          " * LAPAKI SYSTEM * GEMINI 2.5 LIVE * PORT: 052726 * STATUS: ACTIVE * ";
         let marqueeOffset = 0;
-        const visibleLength = 17; // matches width
+        const visibleLength = 22; // Extended slightly for complete fit
 
         // Tamagotchi virtual pet frames
         const petFrames = [
@@ -3322,15 +3322,15 @@ Return strictly valid JSON:
               '<span style="color: rgba(16, 185, 129, 0.25); display: inline-block; margin-right: 2px;">♡</span>',
             );
 
-          // Render the virtual CRT game screen in HTML
+          // Render the virtual CRT game screen in HTML with explicit monospace fonts
           statusText.innerHTML = `
-<div style="font-size: 0.58rem; color: rgba(16, 185, 129, 0.75); display: flex; justify-content: space-between; width: 100%; border-bottom: 1px dashed rgba(16, 185, 129, 0.25); padding-bottom: 0.15rem; margin-bottom: 0.2rem; font-weight: 700; letter-spacing: 0.05em;">
+<div style="font-size: 0.58rem; color: rgba(16, 185, 129, 0.75); display: flex; justify-content: space-between; width: 100%; border-bottom: 1px dashed rgba(16, 185, 129, 0.25); padding-bottom: 0.15rem; margin-bottom: 0.2rem; font-weight: 700; letter-spacing: 0.05em; font-family: var(--font-mono), monospace;">
   <span>${icons}</span>
 </div>
-<div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 20px; font-size: 0.95rem; font-weight: 700; color: #10b981; text-shadow: 0 0 6px rgba(16, 185, 129, 0.85); font-family: monospace; letter-spacing: 0.05em; line-height: 1; padding: 0.1rem 0;">
+<div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 20px; font-size: 0.95rem; font-weight: 700; color: #10b981; text-shadow: 0 0 6px rgba(16, 185, 129, 0.85); font-family: var(--font-mono), monospace; letter-spacing: 0.05em; line-height: 1; padding: 0.1rem 0;">
   ${pet}
 </div>
-<div style="font-size: 0.62rem; font-weight: 700; opacity: 0.9; border-top: 1px dashed rgba(16, 185, 129, 0.25); padding-top: 0.2rem; margin-top: 0.1rem; width: 100%; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: clip;">
+<div style="font-size: 0.62rem; font-weight: 700; opacity: 0.9; border-top: 1px dashed rgba(16, 185, 129, 0.25); padding-top: 0.2rem; margin-top: 0.1rem; width: 100%; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: clip; font-family: var(--font-mono), monospace;">
   ${marqueeSlice}
 </div>
       `.trim();
