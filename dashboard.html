@@ -669,9 +669,9 @@
   </div>
   <nav>
     <button class="active" onclick="switchTab('explorer')">Scaffolding Explorer</button>
-    <button onclick="switchTab('playground')">Lab 1: Agent Playgrounds</button>
-    <button onclick="switchTab('swarm')">Lab 2: Swarm Pipeline</button>
-    <button onclick="switchTab('theory')">Lab 1: Reflections & Theory</button>
+    <button onclick="switchTab('playground')">Lab 10.1: Agent Playgrounds</button>
+    <button onclick="switchTab('swarm')">Lab 10.2: Swarm Pipeline</button>
+    <button onclick="switchTab('theory')">Lab 10.1: Reflections & Theory</button>
   </nav>
 </header>
 
@@ -816,7 +816,7 @@
   <!-- TAB 2: AGENT PLAYGROUNDS -->
   <div id="tab-playground" class="tab-content">
     <div class="glass-card">
-      <div class="card-title"><i>🧪</i> Lab 1: Interactive Agent Playgrounds</div>
+      <div class="card-title"><i>🧪</i> Lab 10.1: Interactive Agent Playgrounds</div>
       <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem;">
         Compare standard, single-pass <strong>AI Agents</strong> against multi-step, autonomous <strong>Agentic AI</strong>. Input a research goal below to observe their logical execution pathways.
       </p>
@@ -920,7 +920,7 @@
   <!-- TAB 3: SWARM PIPELINE -->
   <div id="tab-swarm" class="tab-content">
     <div class="glass-card">
-      <div class="card-title"><i>🧠</i> Lab 2: Autonomous Multi-Agent Swarm Assembly Line</div>
+      <div class="card-title"><i>🧠</i> Lab 10.2: Autonomous Multi-Agent Swarm Assembly Line</div>
       <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
         Collaborative swarm execution. Logistics, Guide, and Accountant agents act sequentially to audit budgets. If target limits are exceeded, the accountant strips luxury parameters to enforce compliance.
       </p>
@@ -1072,7 +1072,7 @@
   <!-- TAB 4: REFLECTIONS & THEORY -->
   <div id="tab-theory" class="tab-content">
     <div class="glass-card">
-      <div class="card-title"><i>📚</i> Lab 1 Theory & Reflection Solutions</div>
+      <div class="card-title"><i>📚</i> Lab 10.1 Theory & Reflection Solutions</div>
 
       <div class="doc-section">
         <h3>Q1. What makes an AI system "agentic"?</h3>
@@ -1119,7 +1119,7 @@
   </div>
 
   <div class="footer">
-    Lapaki <span>Second Brain</span> &mdash; Lab 1 + Lab 2 Production Telemetry Dashboard
+    Lapaki <span>Second Brain</span> &mdash; Lab 10.1 + Lab 10.2 Production Telemetry Dashboard
   </div>
 
 </main>
@@ -1189,7 +1189,7 @@
     document.querySelectorAll('nav button')[idx].classList.add('active');
 
     // Update breadcrumb (Steve Krug Rule)
-    const breadcrumbLabel = { explorer: "Scaffolding Explorer", playground: "Lab 1: Agent Playgrounds", swarm: "Lab 2: Swarm Pipeline", theory: "Reflections & Theory" }[tabId];
+    const breadcrumbLabel = { explorer: "Scaffolding Explorer", playground: "Lab 10.1: Agent Playgrounds", swarm: "Lab 10.2: Swarm Pipeline", theory: "Reflections & Theory" }[tabId];
     document.getElementById('current-breadcrumb').innerText = breadcrumbLabel;
   }
 
@@ -1706,8 +1706,30 @@ Return strictly valid JSON:
       if (myRunId === currentRunId) {
         setLoading(btn, false);
       }
-    }
   }
+
+  // Initialize dynamic ASCII status billboard
+  function initStatusBillboard() {
+    const statusText = document.getElementById('status-text');
+    if (!statusText) return;
+    
+    const billboardStates = [
+      "[ SYS: ACTIVE ] GEMINI LIVE STACK ▰▱▱▱",
+      "[ TELEM: OK ]  GEMINI LIVE STACK ▰▰▱▱",
+      "[ SWARM: RUN ] GEMINI LIVE STACK ▰▰▰▱",
+      "[ LIVE: SYNC ] GEMINI LIVE STACK ▰▰▰▰",
+      "[ SWARM: IDLE ] GEMINI LIVE STACK ▱▰▰▰",
+      "[ PORTFOLIO: V1 ] GEMINI LIVE STACK ▱▱▰▰",
+      "[ LAPAKI: OK ]  GEMINI LIVE STACK ▱▱▱▰"
+    ];
+    
+    let frame = 0;
+    setInterval(() => {
+      statusText.textContent = billboardStates[frame];
+      frame = (frame + 1) % billboardStates.length;
+    }, 1200);
+  }
+  initStatusBillboard();
 </script>
 
 </body>
