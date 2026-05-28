@@ -116,10 +116,10 @@
         position: sticky;
         top: 0;
         z-index: 100;
-        padding: 1rem 3rem;
+        padding: 0.8rem 3rem;
         border-bottom: 1px solid var(--border-color);
-        display: flex;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
         align-items: center;
         backdrop-filter: blur(20px) saturate(1.6);
         background: rgba(8, 9, 15, 0.85);
@@ -130,6 +130,7 @@
         display: flex;
         align-items: center;
         gap: 0.85rem;
+        justify-self: start;
         flex-shrink: 0;
       }
       .brand-mascot {
@@ -156,32 +157,35 @@
           background-position: 0% 50%;
         }
       }
-      .brand-badge {
-        background: linear-gradient(
-          270deg,
-          var(--primary),
-          var(--secondary),
-          var(--accent)
-        ) !important;
-        background-size: 600% 600% !important;
-        animation: gradient-shift 8s ease infinite !important;
-        padding: 0.3rem 0.65rem;
-        border-radius: 7px;
-        font-size: 0.7rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        box-shadow: 0 0 16px rgba(147, 51, 234, 0.2);
-        flex-shrink: 0;
-      }
       .brand h1 {
         font-size: 1.35rem;
         font-weight: 800;
         letter-spacing: -0.05em;
-        background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+      .brand-title-lapaki {
+        background: linear-gradient(
+          135deg,
+          var(--accent) 30%,
+          var(--primary) 100%
+        );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        white-space: nowrap;
+        font-weight: 800;
+      }
+      .brand-title-second-brain {
+        color: var(--text-main);
+        font-weight: 500;
+      }
+      .system-controls {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        justify-self: end;
+        flex-shrink: 0;
       }
 
       nav {
@@ -237,18 +241,28 @@
           display: inline;
         }
         header {
+          display: flex;
           flex-wrap: wrap;
-          padding: 1.25rem 2rem;
-          gap: 1.25rem;
+          justify-content: space-between;
+          padding: 1rem 1.5rem;
+          gap: 1rem;
         }
         .brand {
           flex: 1 1 auto;
           justify-content: flex-start;
           width: auto;
+          justify-self: auto;
+        }
+        .system-controls {
+          flex: 0 0 auto;
+          justify-self: auto;
+          gap: 0.75rem;
         }
         nav {
+          order: 3;
           width: 100%;
           justify-content: flex-start;
+          justify-self: auto;
           overflow-x: auto;
           padding-bottom: 6px;
           margin-top: 0.25rem;
@@ -282,23 +296,42 @@
        ========================================================================== */
       @media (max-width: 580px) {
         header {
-          padding: 1rem 1rem;
-          gap: 1rem;
+          padding: 0.75rem 1rem;
+          gap: 0.75rem;
         }
         .brand {
           width: 100%;
-          justify-content: space-between;
-          gap: 0.5rem;
+          justify-content: flex-start;
+          margin-bottom: 0.25rem;
         }
         .brand h1 {
-          font-size: 1.15rem;
+          font-size: 1.1rem;
+        }
+        .system-controls {
+          width: 100%;
+          justify-content: space-between;
+          order: 2;
+          gap: 0.5rem;
         }
         #connection-status {
-          font-size: 0.7rem !important;
-          padding: 0.15rem 0.45rem !important;
-          margin-left: 0.25rem !important;
+          font-size: 0.65rem !important;
+          padding: 0.2rem 0.4rem !important;
+          margin-left: 0 !important;
+          width: 120px !important;
+          min-height: 48px !important;
+        }
+        .api-key-container {
+          flex: 1;
+          max-width: none;
+          margin-left: 0 !important;
+          padding: 0.25rem 0.5rem !important;
+        }
+        .api-key-container input {
+          width: 100% !important;
+          font-size: 0.68rem !important;
         }
         nav {
+          order: 3;
           gap: 0.35rem;
         }
 
@@ -1026,13 +1059,34 @@
     <header>
       <div class="brand">
         <img src="lapaki_mascot.png" alt="Lapaki Mascot" class="brand-mascot" />
-        <span class="brand-badge">Lapaki</span>
-        <h1>Second Brain</h1>
+        <h1>
+          <span class="brand-title-lapaki">Lapaki</span>
+          <span class="brand-title-second-brain">Second Brain</span>
+        </h1>
+      </div>
+      <nav>
+        <button class="active" onclick="switchTab('explorer')">
+          <span class="desktop-text">Scaffolding Explorer</span>
+          <span class="mobile-text">Explorer</span>
+        </button>
+        <button onclick="switchTab('playground')">
+          <span class="desktop-text">Lab 10.1: Agent Playgrounds</span>
+          <span class="mobile-text">Lab 10.1</span>
+        </button>
+        <button onclick="switchTab('swarm')">
+          <span class="desktop-text">Lab 10.2: Swarm Pipeline</span>
+          <span class="mobile-text">Lab 10.2</span>
+        </button>
+        <button onclick="switchTab('theory')">
+          <span class="desktop-text">Lab 10.1: Reflections & Theory</span>
+          <span class="mobile-text">Theory</span>
+        </button>
+      </nav>
+      <div class="system-controls">
         <div
           id="connection-status"
           class="pet-crt-screen"
           style="
-            margin-left: 1.2rem;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -1060,146 +1114,127 @@
         >
           <div id="status-text" style="width: 100%">Gemini Live Stack</div>
         </div>
-      </div>
-      <!-- API KEY INPUT CONTAINER -->
-      <div
-        class="api-key-container"
-        style="
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid var(--border-color);
-          padding: 0.35rem 0.65rem;
-          border-radius: var(--radius-sm);
-          backdrop-filter: blur(8px);
-          max-height: 42px;
-          box-sizing: border-box;
-          margin-left: 1rem;
-          transition: all 0.3s ease;
-        "
-      >
-        <span
-          style="
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            display: flex;
-            align-items: center;
-            gap: 0.35rem;
-            white-space: nowrap;
-          "
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            style="width: 13px; height: 13px; color: var(--text-muted)"
-          >
-            <path
-              d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"
-            />
-          </svg>
-          Dev Key:
-        </span>
-        <input
-          type="password"
-          id="custom-api-key"
-          placeholder="Paste developer API key for testing..."
-          style="
-            background: transparent;
-            border: none;
-            outline: none;
-            font-size: 0.72rem;
-            color: var(--text-main);
-            width: 140px;
-            padding: 0;
-            margin: 0;
-            font-family: var(--font-mono);
-          "
-          onchange="saveApiKey(this.value)"
-        />
+        <!-- API KEY INPUT CONTAINER -->
         <div
-          class="warning-icon-tooltip"
+          class="api-key-container"
           style="
             display: flex;
             align-items: center;
-            cursor: help;
-            margin-left: 0.1rem;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            padding: 0.35rem 0.65rem;
+            border-radius: var(--radius-sm);
+            backdrop-filter: blur(8px);
+            max-height: 42px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
           "
-          title="⚠️ CAUTION: Use a Developer API Key only. Do NOT use your production API key. Any test API key can be used here."
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#f59e0b"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            style="width: 14px; height: 14px"
+          <span
+            style="
+              font-size: 0.7rem;
+              font-weight: 700;
+              color: var(--text-muted);
+              text-transform: uppercase;
+              letter-spacing: 0.04em;
+              display: flex;
+              align-items: center;
+              gap: 0.35rem;
+              white-space: nowrap;
+            "
           >
-            <path
-              d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
-            />
-            <line x1="12" y1="9" x2="12" y2="13" />
-            <line x1="12" y1="17" x2="12.01" y2="17" />
-          </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 13px; height: 13px; color: var(--text-muted)"
+            >
+              <path
+                d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"
+              />
+            </svg>
+            Dev Key:
+          </span>
+          <input
+            type="password"
+            id="custom-api-key"
+            placeholder="Paste developer API key for testing..."
+            style="
+              background: transparent;
+              border: none;
+              outline: none;
+              font-size: 0.72rem;
+              color: var(--text-main);
+              width: 140px;
+              padding: 0;
+              margin: 0;
+              font-family: var(--font-mono);
+            "
+            onchange="saveApiKey(this.value)"
+          />
+          <div
+            class="warning-icon-tooltip"
+            style="
+              display: flex;
+              align-items: center;
+              cursor: help;
+              margin-left: 0.1rem;
+            "
+            title="⚠️ CAUTION: Use a Developer API Key only. Do NOT use your production API key. Any test API key can be used here."
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#f59e0b"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 14px; height: 14px"
+            >
+              <path
+                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+              />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+          </div>
+          <button
+            id="toggle-key-btn"
+            onclick="toggleKeyVisibility()"
+            style="
+              background: transparent;
+              border: none;
+              color: var(--text-muted);
+              cursor: pointer;
+              font-size: 0.8rem;
+              padding: 0 0.2rem;
+              display: flex;
+              align-items: center;
+            "
+            title="Toggle key visibility"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style="width: 14px; height: 14px; color: var(--text-muted)"
+            >
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </button>
         </div>
-        <button
-          id="toggle-key-btn"
-          onclick="toggleKeyVisibility()"
-          style="
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 0.8rem;
-            padding: 0 0.2rem;
-            display: flex;
-            align-items: center;
-          "
-          title="Toggle key visibility"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            style="width: 14px; height: 14px; color: var(--text-muted)"
-          >
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-            <circle cx="12" cy="12" r="3" />
-          </svg>
-        </button>
       </div>
-      <nav>
-        <button class="active" onclick="switchTab('explorer')">
-          <span class="desktop-text">Scaffolding Explorer</span>
-          <span class="mobile-text">Explorer</span>
-        </button>
-        <button onclick="switchTab('playground')">
-          <span class="desktop-text">Lab 10.1: Agent Playgrounds</span>
-          <span class="mobile-text">Lab 10.1</span>
-        </button>
-        <button onclick="switchTab('swarm')">
-          <span class="desktop-text">Lab 10.2: Swarm Pipeline</span>
-          <span class="mobile-text">Lab 10.2</span>
-        </button>
-        <button onclick="switchTab('theory')">
-          <span class="desktop-text">Lab 10.1: Reflections & Theory</span>
-          <span class="mobile-text">Theory</span>
-        </button>
-      </nav>
     </header>
 
     <main>
