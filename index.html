@@ -661,12 +661,8 @@
     <img src="lapaki_mascot.png" alt="Lapaki Mascot" class="brand-mascot">
     <span class="brand-badge">Lapaki</span>
     <h1>Second Brain</h1>
-    <div id="connection-status" style="margin-left: 1.2rem; display: flex; flex-direction: column; align-items: flex-start; gap: 0.25rem; font-size: 0.72rem; font-weight: 600; font-family: var(--font-mono); padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.05); color: #10b981; box-shadow: 0 0 12px rgba(16, 185, 129, 0.15); flex-shrink: 0; line-height: 1.2; width: 160px; min-height: 52px; box-sizing: border-box; justify-content: center; overflow: hidden;">
-      <div style="display: flex; align-items: center; gap: 0.35rem; width: 100%; font-size: 0.6rem; font-weight: 700; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px dashed rgba(16, 185, 129, 0.2); padding-bottom: 0.15rem; margin-bottom: 0.15rem; white-space: nowrap;">
-        <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;" id="status-dot"></span>
-        <span>SYS: ONLINE</span>
-      </div>
-      <div id="status-text" style="font-size: 0.68rem; font-weight: 700; white-space: pre-wrap; text-shadow: 0 0 4px rgba(16, 185, 129, 0.4); line-height: 1.2; width: 100%;">Gemini Live Stack</div>
+    <div id="connection-status" style="margin-left: 1.2rem; display: flex; flex-direction: column; align-items: flex-start; font-family: var(--font-mono); padding: 0.4rem 0.65rem; border-radius: 8px; border: 2.2px solid #10b981; background: #022c22; color: #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.25), inset 0 0 8px rgba(16, 185, 129, 0.2); flex-shrink: 0; width: 175px; min-height: 72px; box-sizing: border-box; justify-content: center; overflow: hidden; position: relative;">
+      <div id="status-text" style="width: 100%;">Gemini Live Stack</div>
     </div>
   </div>
   <nav>
@@ -1729,35 +1725,59 @@ Return strictly valid JSON:
     if (!statusText) return;
     
     // Scrolling marquee text for the retro ASCII presentation
-    const marqueeText = " ⚡ GEMINI LIVE STACK ⚡ ACTIVE ⚡ PORT: 2222 ⚡ LAPAKI: v1.0.0 ⚡ SWARM: RUNNING ⚡ ";
+    const marqueeText = " * ラパキ・システム * GEMINI 2.5 LIVE * ACTIVE * PORT: 2222 * SYSTEM: 健全 * ";
     let marqueeOffset = 0;
-    const visibleLength = 17; // Matches the container size without wrapping
+    const visibleLength = 17; // matches width
     
-    // Pulse animation frames for equalizers
-    const eqFrames = [
-      " ▂▄▆▇▆▄▂",
-      "▂▄▆▇▆▄▂ ",
-      "▄▆▇▆▄▂  ",
-      "▆▇▆▄▂ ▂▄",
-      "▇▆▄▂ ▂▄▆",
-      "▆▄▂ ▂▄▆▇",
-      "▄▂ ▂▄▆▇▆",
-      "▂ ▂▄▆▇▆▄"
+    // Tamagotchi virtual pet frames
+    const petFrames = [
+      " (•ㅅ•)ノ  ", // wave left
+      " (•ㅅ•)    ", // stand
+      "ヾ(•ㅅ•)   ", // wave right
+      " (•ㅅ•)    ", // stand
+      " (^ㅅ<)~✨ ", // wink & sparkle
+      " (◦ㅅ◦)    ", // look up
+      " (•ㅅ•)    "  // stand
     ];
-    let eqFrame = 0;
+    let petFrameIndex = 0;
+    
+    // Hearts and status header
+    const statusIcons = [
+      "❤ ❤ ❤ 📶 [OK]",
+      "♡ ❤ ❤ 📶 [OK]",
+      "❤ ♡ ❤ 📶 [OK]",
+      "❤ ❤ ♡ 📶 [OK]"
+    ];
     
     setInterval(() => {
-      let visibleSlice = "";
+      // 1. Scrolling marquee slice
+      let marqueeSlice = "";
       for (let i = 0; i < visibleLength; i++) {
-        visibleSlice += marqueeText[(marqueeOffset + i) % marqueeText.length];
+        marqueeSlice += marqueeText[(marqueeOffset + i) % marqueeText.length];
       }
       
-      const currentEq = eqFrames[eqFrame % eqFrames.length];
-      statusText.innerHTML = `${visibleSlice}\n<span style="opacity: 0.65; font-size: 0.58rem; font-weight: 500; letter-spacing: 0.05em; display: inline-block; margin-top: 0.1rem;">TELEM:</span> <span style="font-size: 0.65rem; color: #10b981; font-weight: 800; text-shadow: 0 0 6px #10b981;">${currentEq}</span>`;
+      // 2. Tamagotchi mascot bounce
+      const pet = petFrames[Math.floor(petFrameIndex / 2) % petFrames.length];
+      
+      // 3. Pulsing heart icon
+      const icons = statusIcons[Math.floor(petFrameIndex / 4) % statusIcons.length];
+      
+      // Render the virtual CRT game screen in HTML
+      statusText.innerHTML = `
+<div style="font-size: 0.58rem; color: rgba(16, 185, 129, 0.75); display: flex; justify-content: space-between; width: 100%; border-bottom: 1px dashed rgba(16, 185, 129, 0.25); padding-bottom: 0.15rem; margin-bottom: 0.2rem; font-weight: 700; letter-spacing: 0.05em;">
+  <span>${icons}</span>
+</div>
+<div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 20px; font-size: 0.95rem; font-weight: 700; color: #10b981; text-shadow: 0 0 6px rgba(16, 185, 129, 0.85); font-family: monospace; letter-spacing: 0.05em; line-height: 1; padding: 0.1rem 0;">
+  ${pet}
+</div>
+<div style="font-size: 0.62rem; font-weight: 700; opacity: 0.9; border-top: 1px dashed rgba(16, 185, 129, 0.25); padding-top: 0.2rem; margin-top: 0.1rem; width: 100%; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: clip;">
+  ${marqueeSlice}
+</div>
+      `.trim();
       
       marqueeOffset = (marqueeOffset + 1) % marqueeText.length;
-      eqFrame++;
-    }, 150);
+      petFrameIndex++;
+    }, 180);
   }
   initStatusBillboard();
 </script>
