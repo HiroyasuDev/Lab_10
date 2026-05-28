@@ -846,7 +846,7 @@
         text-align: center;
         color: var(--text-muted);
         position: absolute;
-        bottom: -1.5rem;
+        bottom: -2.35rem;
         left: 50%;
         transform: translateX(-50%);
         width: 7rem;
@@ -2840,6 +2840,38 @@ You are the Budget Accountant Agent in a collaborative travel swarm. Review the 
                 request clarity when inputs are ambiguous.
               </p>
             </div>
+          </div>
+
+          <h2 style="color: var(--primary); margin: 2.5rem 0 1.25rem 0; font-size: 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; letter-spacing: 0.02em; text-transform: uppercase;">
+            Lab 10.2: Swarm & Multi-Agent Orchestration Theory
+          </h2>
+
+          <div class="doc-section">
+            <h3>Q6. What distinguishes a Multi-Agent Swarm from a single multi-stage Agentic Pipeline?</h3>
+            <p>
+              While a single agentic pipeline executes sequentially in a linear state machine (Ingest → Plan → Draft → Audit → Express), a Multi-Agent Swarm distributes tasks among independent, highly specialized role-based actors (e.g. Ingestion, Logistics, Local Guide, Accountant). In a swarm, each agent maintains its own localized system instructions, parameters, and operational boundaries, passing structured data payloads sequentially or in parallel. This role separation prevents context window bloating and allows modular tuning of individual models.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h3>Q7. How does the "Sequential Sanitizer/Auditor" pattern enforce budget/policy compliance?</h3>
+            <p>
+              In Lab 10.2, the Swarm Travel Pipeline implements a sequential sanitization gate: the Accountant Agent acts as a budget compliance auditor. After the Logistics and Local Guide agents produce their idealized travel details, the Accountant inspects the combined financial balance sheet. If the total estimate exceeds the user-defined cap, the Accountant automatically recalculates costs, scales down luxury parameters (such as switching from 5-star hotels to budget lodging or from private transfers to subway systems), and outputs a sanitized, verified itinerary that strictly adheres to the hard safety threshold.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h3>Q8. What are the key tradeoffs between Parallel vs. Sequential multi-agent coordination?</h3>
+            <p>
+              Sequential coordination (used in our travel swarm) allows each agent to build upon the refined output of the preceding agent, minimizing hallucination risks and preserving dependency logic. However, it introduces cumulative latency, as each agent must wait for the prior step to complete. Parallel coordination executes multiple calls simultaneously (e.g., querying separate airlines or booking engines in parallel), reducing total execution time, but requires a complex "synthesizer" or "aggregator" agent to merge disparate, unstructured schemas and resolve conflicting inputs.
+            </p>
+          </div>
+
+          <div class="doc-section">
+            <h3>Q9. How does a Bipartite Workspace Architecture (PARA/CODE) prevent untrusted LLM write operations?</h3>
+            <p>
+              A bipartite architecture establishes a strict security boundary by partitioning active "factory floor" operations (the <code>CODE/</code> directory where temporary captures and transient runs occur) from the structured "warehouse" (the <code>PARA/</code> directory where long-term assets reside). The AI agents are restricted to write, draft, and modify files only within active <code>CODE/</code> paths. Long-term storage files in <code>PARA/</code> remain read-only during autonomous run loops. They are only updated through human-approved promotions, effectively preventing rogue LLM writes from corrupting historical, verified backups.
+            </p>
           </div>
         </div>
       </div>
