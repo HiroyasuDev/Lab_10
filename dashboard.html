@@ -753,6 +753,9 @@
         letter-spacing: 0.04em;
         text-align: center;
         color: var(--text-muted);
+        max-width: 85%;
+        white-space: normal;
+        line-height: 1.2;
       }
       .node.active .node-label,
       .node.active-success .node-label,
@@ -2352,35 +2355,112 @@ You are the Budget Accountant Agent in a collaborative travel swarm. Review the 
         const user = (userPrompt || "").toLowerCase();
 
         if (sys.includes("summarize") || sys.includes("summarization")) {
-          return `• Ingested article text and mapped architectural layers.
-• Captured core PARA framework divisions (Projects, Areas, Resources, Archives).
-• Extracted dynamic state telemetry logs successfully.
-• Streamlined execution parameters for optimized processing speed.
-• Output packaged cleanly into standard Second Brain storage.`;
+          if (
+            user.includes("renewable") ||
+            user.includes("energy") ||
+            user.includes("solar")
+          ) {
+            return `• Solar photovoltaic panels convert solar radiation directly into household electrical power.
+• Small-scale wind turbines harness local airflow to generate supplementary off-grid energy.
+• Geothermal heat pumps leverage constant subsurface ground temperatures for high-efficiency heating and cooling.
+• Wood and pellet biomass stoves provide highly efficient localized space heating solutions.
+• Modern lithium-ion home battery storage systems capture excess power to maintain energy resilience during outages.`;
+          }
+          return `• Analyzed the primary input narrative to extract core thematic concepts.
+• Categorized essential data divisions into logical, structured components.
+• Outlined critical supporting facts and operational parameter constraints.
+• Synthesized overall technical dependencies for optimal understanding.
+• Formatted the final response into clean, high-fidelity Markdown bullet points.`;
         }
 
         if (
           sys.includes("research coordinator") ||
           sys.includes("structured multi-stage research plan")
         ) {
-          return `Stage 1: Core Definitions and Background Study
-  - Define primary terms and establish historical context.
-  - Survey existing literature and identify key research milestones.
+          if (
+            user.includes("renewable") ||
+            user.includes("energy") ||
+            user.includes("solar")
+          ) {
+            return `Stage 1: Resource Auditing and Feasibility Studies
+  - Analyze local solar irradiation indices, wind velocities, and geothermal profiles.
+  - Assess spatial requirements for battery storage, biomass stoves, and heat pump loops.
+
+Stage 2: Technical Component Evaluation
+  - Compare grid-tied vs. off-grid solar microinverter architectures.
+  - Evaluate closed-loop vs. open-loop ground-source geothermal heat exchange options.
+
+Stage 3: Financial Optimization & Egress Plan
+  - Calculate net metering returns, tax credits, and initial capex amortizations.
+  - Design a scalable backup transition path to isolate households during utility failures.`;
+          }
+          if (
+            user.includes("state") ||
+            user.includes("telemetry") ||
+            user.includes("agent")
+          ) {
+            return `Stage 1: Core Definitions and Background Study
+  - Define primary terms and establish historical context of agentic telemetry.
+  - Survey existing literature and identify key research milestones in state-tracking.
 
 Stage 2: Comparative Architecture and Technical Analysis
-  - Map components side-by-side to compare performance.
-  - Identify strengths, vulnerabilities, and edge cases in standard stacks.
+  - Map components side-by-side to compare performance under active load.
+  - Identify strengths, vulnerabilities, and edge cases in standard agent stacks.
 
 Stage 3: Recommended Action Plan and Integration Path
   - Formulate phase-by-phase migration and deployment checklist.
   - Establish verification metrics to ensure long-term stability.`;
+          }
+          // Generic Topic Fallback
+          const topic =
+            user
+              .replace(/topic:\s*/i, "")
+              .replace(/Outline:[\s\S]*/i, "")
+              .trim() || "Requested Topic";
+          return `Stage 1: Core Background & Fundamentals of ${topic}
+  - Outline key definitions, primary parameters, and operational boundaries.
+  - Identify primary literature sources and industry standard references.
+
+Stage 2: Advanced Analysis & Structural Framework
+  - Analyze side-by-side component architectures and performance tradeoffs.
+  - Identify primary challenges, operational bottlenecks, and vulnerability vectors.
+
+Stage 3: Actionable Implementation & Verification Roadmap
+  - Define a phase-by-phase implementation plan and deployment guidelines.
+  - Establish strict quality metrics and continuous monitoring protocols.`;
         }
 
         if (
           sys.includes("research analyst") ||
           sys.includes("detailed first draft")
         ) {
-          return `# Comprehensive Research Report & Synthesis
+          if (
+            user.includes("renewable") ||
+            user.includes("energy") ||
+            user.includes("solar")
+          ) {
+            return `# Detailed Research Draft: Household Renewable Energy Integration
+
+## 1. Executive Summary
+This draft analyzes the integration of residential renewable energy generation and storage systems. Modern households require a multi-faceted approach combining solar, wind, geothermal, and biomass options with high-capacity batteries to maximize self-reliance and reduce utility costs.
+
+## 2. Deep Component Analysis
+Our initial technical synthesis reveals high efficacy across five distinct generation and storage modalities:
+- **Solar Photovoltaics**: Closed-loop monocrystalline silicon panels yield a 22% conversion efficiency, providing standard household power.
+- **Wind Generation**: Small-scale vertical-axis turbines generate auxiliary electricity under local turbulent airflow conditions.
+- **Geothermal Heat Exchange**: Closed-loop horizontal ground heat pumps leverage stable subterranean temperatures for energy-efficient climate control.
+- **Biomass Combustion**: Clean-burning wood pellet stoves offer localized, high-efficiency space heating solutions.
+- **Lithium-Ion Storage**: Residential battery walls manage household load shifts, storing excess midday solar generation to eliminate peak-rate reliance.
+
+## 3. Operational Implementation
+Calculated capex payback periods range from 6 to 9 years depending on state-level net metering regulations and local federal tax incentives.`;
+          }
+          if (
+            user.includes("state") ||
+            user.includes("telemetry") ||
+            user.includes("agent")
+          ) {
+            return `# Comprehensive Research Report & Synthesis
 
 ## 1. Executive Summary
 This report analyzes architectural state-tracking paradigms and dynamic telemetry models within agentic software stacks. Modern AI workflows demand highly coordinated, resilient distributed agent layers that communicate state cleanly.
@@ -2393,24 +2473,90 @@ Our investigation indicates that relational data binding combined with isolated 
 
 ## 3. Findings & Synthesis
 The synthesis phase indicates that retro-fitting existing legacy architectures with simple glassmorphic dashboards boosts developer observability by up to 47%.`;
+          }
+          // Generic Topic Fallback
+          const topic =
+            user.match(/topic:\s*([^\n]+)/i)?.[1] || "Requested Topic";
+          return `# Comprehensive Research Draft: ${topic}
+
+## 1. Executive Summary
+This preliminary draft explores the core principles, operational requirements, and strategic value of ${topic}. Implementing structured frameworks inside this domain ensures high reliability and optimized performance characteristics.
+
+## 2. System Architecture & Technical Deep-Dive
+A rigorous analysis of this topic reveals several key structural components:
+- **Core Parameters**: Stable configurations and parameter normalization prevent execution drift.
+- **Operational Integration**: Orchestrating elements sequentially improves system efficiency.
+- **Resource Allocation**: Optimal load management mitigates typical performance bottlenecks.
+
+## 3. Preliminary Conclusions
+Initial findings indicate that applying continuous validation loops and strict quality control standards within the domain of ${topic} significantly enhances final output quality.`;
         }
 
         if (
           sys.includes("peer reviewer") ||
           sys.includes("critique and audit the draft")
         ) {
-          return `### Peer Review Audit Feedback
+          if (
+            user.includes("renewable") ||
+            user.includes("energy") ||
+            user.includes("solar")
+          ) {
+            return `### Peer Review Audit Feedback: Renewable Energy Draft
+
+- **Clarity & Structure (Score: 9/10)**: The layout is clear, detailing solar, wind, geothermal, biomass, and batteries. Adding a comparative efficiency table would improve immediate readability for beginners.
+- **Technical Gaps (Score: 8/10)**: The solar monocrystalline panel metrics are highly accurate, but the draft lacks detail regarding vertical-axis vs. horizontal-axis wind turbine efficiency differences under moderate wind velocities.
+- **Verification Plan (Score: 8/10)**: Standard amortization math is sound. Including a step-by-step household energy audit outline would provide a concrete verification checklist for homeowners.`;
+          }
+          if (
+            user.includes("state") ||
+            user.includes("telemetry") ||
+            user.includes("agent")
+          ) {
+            return `### Peer Review Audit Feedback
 
 - **Clarity & Structure (Score: 9/10)**: The layout is highly intuitive, using clear headers and logical progressions. Adding a brief glossary of custom terms could improve accessibility for beginners.
 - **Technical Gaps (Score: 8/10)**: The analysis of the memory leak profile is solid, but could benefit from a short paragraph detailing the exact profiling tools used.
 - **Verification Plan (Score: 9/10)**: Standard unit testing covers the core path cleanly. Recommending regular automated layout tests will prevent future styling regressions.`;
+          }
+          // Generic Topic Fallback
+          return `### Peer Review Audit Feedback
+
+- **Clarity & Structure (Score: 9/10)**: The document structure is highly logical, with distinct headers and bullet points. Incorporating a comparative visual diagram would make it even easier to navigate.
+- **Technical Gaps (Score: 8/10)**: The core concepts are presented clearly, but the draft lacks a detailed exploration of edge-case failure modes and standard mitigation strategies.
+- **Verification Plan (Score: 8/10)**: The preliminary findings are encouraging. Adding concrete, measurable performance metrics will enable rigorous post-implementation audits.`;
         }
 
         if (
           sys.includes("master editor") ||
           sys.includes("polish, edit, and compile the final version")
         ) {
-          return `# Polished Synthesis: State-Tracking & Telemetry in Agentic Stacks
+          if (
+            user.includes("renewable") ||
+            user.includes("energy") ||
+            user.includes("solar")
+          ) {
+            return `# Polished Synthesis: Residential Renewable Energy Systems
+
+## Executive Summary
+This polished, comprehensive report synthesizes technical integration strategies for home-scale renewable energy generation and storage. Achieving carbon neutrality and grid independence requires orchestrating solar, wind, geothermal, and biomass systems into a unified grid.
+
+## Technical Framework & Comparative Analysis
+Rigorous system auditing demonstrates that combining monocrystalline solar panels with vertical-axis wind turbines and lithium-ion batteries provides maximum grid resilience:
+- **Solar Photovoltaics**: Monocrystalline arrays yield 22% conversion efficiency, functioning as the primary generation engine.
+- **Wind Generation**: Vertical-axis wind turbines harvest turbulent residential air currents, producing constant supplementary output.
+- **Geothermal Heat Exchange**: Closed-loop horizontal loops exchange ground heat with a 400% coefficient of performance for efficient climate control.
+- **Biomass Space Heating**: Automated pellet-combustion stoves offer localized heating with thermal efficiency ratings exceeding 85%.
+- **Lithium-Ion Storage**: High-capacity battery walls buffer load shifts, eliminating utility dependence during peak-tariff windows.
+
+## Definitive Recommendations & Energy Audit Path
+Homeowners should execute a systematic energy audit utilizing a thermal imaging leak analysis. Closed-loop ground heat systems combined with solar arrays yield the highest financial returns and maximum household resilience.`;
+          }
+          if (
+            user.includes("state") ||
+            user.includes("telemetry") ||
+            user.includes("agent")
+          ) {
+            return `# Polished Synthesis: State-Tracking & Telemetry in Agentic Stacks
 
 ## Executive Summary
 This polished report synthesizes architectural state-tracking paradigms and telemetry models inside modern agentic software stacks. Modern AI workflows rely on highly coordinated, resilient distributed layers.
@@ -2423,6 +2569,23 @@ Detailed profiling reveals that combining relational data binding with isolated 
 
 ## Definitive Verdict & Recommendations
 Integrating retro-glowing status boards improves visual diagnostic speed. Sticking to strict native CSS units ensures responsive layout scaling from desktop to mobile screens.`;
+          }
+          // Generic Topic Fallback
+          const topic =
+            user.match(/Topic:\s*([^\n]+)/i)?.[1] || "Requested Topic";
+          return `# Polished Synthesis: Deep Analysis of ${topic}
+
+## Executive Summary
+This definitive report presents a highly polished, comprehensive synthesis of ${topic}. Achieving operational excellence inside this domain requires a methodical approach combining continuous audit loops with resource-optimized configurations.
+
+## Technical Framework & Implementation Guidelines
+Audit findings demonstrate that applying rigorous, standardized parameter validation drastically limits performance degradation:
+- **Parameter Normalization**: Standardizing input metrics prevents execution drift.
+- **Sequential Orchestration**: Organizing operational elements linearly optimizes system throughput.
+- **Fault-Tolerant Allocation**: Implementing fail-safe resource pathways guarantees continuous execution.
+
+## Strategic Verdict & Actionable Roadmap
+Implementing systematic evaluation checklists provides immediate observability benefits. Organizations should adopt automated validation tools to maintain long-term stability and high output quality.`;
         }
 
         // Swarm Fallbacks
