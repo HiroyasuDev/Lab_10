@@ -528,6 +528,26 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 2rem;
+        position: relative;
+      }
+      @media (min-width: 1181px) {
+        .explorer-grid::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: 0;
+          bottom: 0;
+          width: 1px;
+          transform: translateX(-50%);
+          background: linear-gradient(
+            to bottom,
+            rgba(147, 51, 234, 0) 0%,
+            rgba(147, 51, 234, 0.35) 15%,
+            rgba(37, 99, 235, 0.35) 85%,
+            rgba(37, 99, 235, 0) 100%
+          );
+          pointer-events: none;
+        }
       }
       .scaffold-column {
         display: flex;
@@ -1103,6 +1123,48 @@
             cleanly isolate execution telemetry from long-term assets. Click on
             nodes below to review their role.
           </p>
+
+          <!-- Global Folder Expand/Collapse Controls -->
+          <div style="display: flex; gap: 0.75rem; margin-bottom: 1.25rem">
+            <button
+              class="btn"
+              style="
+                padding: 0.4rem 0.8rem;
+                font-size: 0.72rem;
+                min-height: auto;
+                border: 1px solid var(--border-color);
+                background: rgba(255, 255, 255, 0.03);
+                color: var(--text-main);
+                font-family: var(--font-mono);
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                cursor: pointer;
+              "
+              onclick="expandAllExplorer()"
+            >
+              <span>📂</span> EXPAND ALL
+            </button>
+            <button
+              class="btn"
+              style="
+                padding: 0.4rem 0.8rem;
+                font-size: 0.72rem;
+                min-height: auto;
+                border: 1px solid var(--border-color);
+                background: rgba(255, 255, 255, 0.03);
+                color: var(--text-main);
+                font-family: var(--font-mono);
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                cursor: pointer;
+              "
+              onclick="collapseAllExplorer()"
+            >
+              <span>📁</span> COLLAPSE ALL
+            </button>
+          </div>
 
           <div class="explorer-grid">
             <div class="scaffold-column">
@@ -1932,7 +1994,73 @@ Renewable energy options for homes include solar photovoltaic panels that conver
                   Run Simple Agent
                 </button>
               </div>
-              <div class="agent-output-box" id="simple-output">
+              <!-- Telemetry HUD Status Bar -->
+              <div
+                class="hud-status-bar"
+                id="simple-hud"
+                style="
+                  font-family: var(--font-mono);
+                  font-size: 0.72rem;
+                  letter-spacing: 0.05em;
+                  background: rgba(5, 5, 8, 0.6);
+                  border: 1px solid var(--border-color);
+                  border-bottom: none;
+                  padding: 0.5rem 0.8rem;
+                  border-top-left-radius: 6px;
+                  border-top-right-radius: 6px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  color: var(--text-muted);
+                  margin-bottom: 0;
+                "
+              >
+                <div style="display: flex; align-items: center; gap: 0.4rem">
+                  <span
+                    style="
+                      display: inline-block;
+                      width: 6px;
+                      height: 6px;
+                      border-radius: 50%;
+                      background: var(--text-muted);
+                    "
+                    id="simple-hud-dot"
+                  ></span>
+                  <span
+                    >STATUS:
+                    <span
+                      id="simple-hud-status"
+                      style="color: var(--text-muted); font-weight: bold"
+                      >IDLE</span
+                    ></span
+                  >
+                </div>
+                <div>
+                  RUN:
+                  <span
+                    id="simple-hud-run"
+                    style="color: var(--text-main); font-weight: bold"
+                    >#0</span
+                  >
+                </div>
+                <div>
+                  MODULE:
+                  <span
+                    id="simple-hud-module"
+                    style="color: var(--text-main); font-weight: bold"
+                    >NONE</span
+                  >
+                </div>
+              </div>
+              <div
+                class="agent-output-box"
+                id="simple-output"
+                style="
+                  border-top-left-radius: 0;
+                  border-top-right-radius: 0;
+                  border-top: none;
+                "
+              >
                 Output logs will display here...
               </div>
             </div>
@@ -2047,7 +2175,73 @@ Help me understand renewable energy options for homes.</textarea
                   Trigger Agentic Pipeline
                 </button>
               </div>
-              <div class="agent-output-box" id="agentic-output">
+              <!-- Telemetry HUD Status Bar -->
+              <div
+                class="hud-status-bar"
+                id="agentic-hud"
+                style="
+                  font-family: var(--font-mono);
+                  font-size: 0.72rem;
+                  letter-spacing: 0.05em;
+                  background: rgba(5, 5, 8, 0.6);
+                  border: 1px solid var(--border-color);
+                  border-bottom: none;
+                  padding: 0.5rem 0.8rem;
+                  border-top-left-radius: 6px;
+                  border-top-right-radius: 6px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  color: var(--text-muted);
+                  margin-bottom: 0;
+                "
+              >
+                <div style="display: flex; align-items: center; gap: 0.4rem">
+                  <span
+                    style="
+                      display: inline-block;
+                      width: 6px;
+                      height: 6px;
+                      border-radius: 50%;
+                      background: var(--text-muted);
+                    "
+                    id="agentic-hud-dot"
+                  ></span>
+                  <span
+                    >STATUS:
+                    <span
+                      id="agentic-hud-status"
+                      style="color: var(--text-muted); font-weight: bold"
+                      >IDLE</span
+                    ></span
+                  >
+                </div>
+                <div>
+                  RUN:
+                  <span
+                    id="agentic-hud-run"
+                    style="color: var(--text-main); font-weight: bold"
+                    >#0</span
+                  >
+                </div>
+                <div>
+                  MODULE:
+                  <span
+                    id="agentic-hud-module"
+                    style="color: var(--text-main); font-weight: bold"
+                    >NONE</span
+                  >
+                </div>
+              </div>
+              <div
+                class="agent-output-box"
+                id="agentic-output"
+                style="
+                  border-top-left-radius: 0;
+                  border-top-right-radius: 0;
+                  border-top: none;
+                "
+              >
                 Cognitive state machine logs will display here...
               </div>
             </div>
@@ -2375,14 +2569,81 @@ You are the Budget Accountant Agent in a collaborative travel swarm. Review the 
             </div>
 
             <div class="play-column">
-              <div class="form-group" style="height: 100%">
+              <div
+                class="form-group"
+                style="height: 100%; display: flex; flex-direction: column"
+              >
                 <label style="font-family: var(--font-mono); font-size: 0.8rem"
                   >Swarm Telemetry Console</label
                 >
+                <!-- Telemetry HUD Status Bar -->
+                <div
+                  class="hud-status-bar"
+                  id="swarm-hud"
+                  style="
+                    font-family: var(--font-mono);
+                    font-size: 0.72rem;
+                    letter-spacing: 0.05em;
+                    background: rgba(5, 5, 8, 0.6);
+                    border: 1px solid var(--border-color);
+                    border-bottom: none;
+                    padding: 0.5rem 0.8rem;
+                    border-top-left-radius: 6px;
+                    border-top-right-radius: 6px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    color: var(--text-muted);
+                    margin-bottom: 0;
+                  "
+                >
+                  <div style="display: flex; align-items: center; gap: 0.4rem">
+                    <span
+                      style="
+                        display: inline-block;
+                        width: 6px;
+                        height: 6px;
+                        border-radius: 50%;
+                        background: var(--text-muted);
+                      "
+                      id="swarm-hud-dot"
+                    ></span>
+                    <span
+                      >STATUS:
+                      <span
+                        id="swarm-hud-status"
+                        style="color: var(--text-muted); font-weight: bold"
+                        >IDLE</span
+                      ></span
+                    >
+                  </div>
+                  <div>
+                    RUN:
+                    <span
+                      id="swarm-hud-run"
+                      style="color: var(--text-main); font-weight: bold"
+                      >#0</span
+                    >
+                  </div>
+                  <div>
+                    MODULE:
+                    <span
+                      id="swarm-hud-module"
+                      style="color: var(--text-main); font-weight: bold"
+                      >NONE</span
+                    >
+                  </div>
+                </div>
                 <div
                   class="terminal-console"
                   id="swarm-console"
-                  style="height: calc(100% - 1.5rem)"
+                  style="
+                    flex: 1;
+                    min-height: 250px;
+                    border-top-left-radius: 0;
+                    border-top-right-radius: 0;
+                    border-top: none;
+                  "
                 >
                   Swarm idle. Ingest vacation settings and press "Trigger Swarm
                   Pipeline" to launch...
@@ -2558,16 +2819,17 @@ You are the Budget Accountant Agent in a collaborative travel swarm. Review the 
             <div class="doc-alert">
               <h4>HITL Boundaries</h4>
               <p>
-                1. <strong>Hard Limitations</strong>: Establishing un-bypassable target
-                thresholds (e.g. max budgets, safe zones, zero-trust tokens).
+                1. <strong>Hard Limitations</strong>: Establishing un-bypassable
+                target thresholds (e.g. max budgets, safe zones, zero-trust
+                tokens).
               </p>
               <p>
-                2. <strong>Plan Approvals</strong>: Human reviews and manual approval of
-                plans before code-writing or deployment executions.
+                2. <strong>Plan Approvals</strong>: Human reviews and manual
+                approval of plans before code-writing or deployment executions.
               </p>
               <p>
-                3. <strong>Feedback Routing</strong>: Halting state machines to request
-                clarity when inputs are ambiguous.
+                3. <strong>Feedback Routing</strong>: Halting state machines to
+                request clarity when inputs are ambiguous.
               </p>
             </div>
           </div>
@@ -2584,6 +2846,90 @@ You are the Budget Accountant Agent in a collaborative travel swarm. Review the 
       // --- Global Telemetry & Execution State ---
       let activeTimeouts = [];
       let currentRunId = 0;
+
+      let runCounters = {
+        simple: 0,
+        agentic: 0,
+        swarm: 0,
+      };
+
+      function updateHUD(type, status, module, isError = false) {
+        const dot = document.getElementById(`${type}-hud-dot`);
+        const statusEl = document.getElementById(`${type}-hud-status`);
+        const runEl = document.getElementById(`${type}-hud-run`);
+        const moduleEl = document.getElementById(`${type}-hud-module`);
+
+        if (status === "RUNNING") {
+          if (dot) {
+            dot.style.background = "var(--warning)";
+            dot.style.boxShadow = "0 0 6px var(--warning)";
+          }
+          if (statusEl) {
+            statusEl.innerText = "RUNNING";
+            statusEl.style.color = "var(--warning)";
+          }
+        } else if (status === "SUCCESS" || status === "COMPLETED") {
+          if (dot) {
+            dot.style.background = "var(--success)";
+            dot.style.boxShadow = "0 0 6px var(--success)";
+          }
+          if (statusEl) {
+            statusEl.innerText = "SUCCESS";
+            statusEl.style.color = "var(--success)";
+          }
+        } else if (status === "ERROR" || isError) {
+          if (dot) {
+            dot.style.background = "var(--error)";
+            dot.style.boxShadow = "0 0 6px var(--error)";
+          }
+          if (statusEl) {
+            statusEl.innerText = "ERROR";
+            statusEl.style.color = "var(--error)";
+          }
+        } else {
+          if (dot) {
+            dot.style.background = "var(--text-muted)";
+            dot.style.boxShadow = "none";
+          }
+          if (statusEl) {
+            statusEl.innerText = "IDLE";
+            statusEl.style.color = "var(--text-muted)";
+          }
+        }
+
+        if (runEl) {
+          runEl.innerText = `#${runCounters[type]}`;
+        }
+        if (moduleEl) {
+          moduleEl.innerText = module.toUpperCase();
+        }
+      }
+
+      function expandAllExplorer() {
+        document
+          .querySelectorAll(".dir-tree li.tree-child")
+          .forEach((child) => {
+            child.style.display = "flex";
+          });
+        document
+          .querySelectorAll(".dir-tree li .folder-caret")
+          .forEach((caret) => {
+            caret.innerText = "▼";
+          });
+      }
+
+      function collapseAllExplorer() {
+        document
+          .querySelectorAll(".dir-tree li.tree-child")
+          .forEach((child) => {
+            child.style.display = "none";
+          });
+        document
+          .querySelectorAll(".dir-tree li .folder-caret")
+          .forEach((caret) => {
+            caret.innerText = "▶";
+          });
+      }
 
       // Securely split key to bypass automated secret scanning decoders
       const apiKey = "AIzaSyBJ1eH" + "OHMTu-RT4cFyRR7cxa4jXlRjMB_M";
@@ -3049,16 +3395,20 @@ Implementing systematic evaluation checklists provides immediate observability b
         if (currentActive && currentActive !== nextActive) {
           currentActive.classList.remove("active");
           currentActive.classList.add("leaving");
-          
-          currentActive.addEventListener("animationend", () => {
-            currentActive.classList.remove("leaving");
-          }, { once: true });
+
+          currentActive.addEventListener(
+            "animationend",
+            () => {
+              currentActive.classList.remove("leaving");
+            },
+            { once: true },
+          );
         }
 
         document
           .querySelectorAll("nav button")
           .forEach((btn) => btn.classList.remove("active"));
-        
+
         nextActive.classList.add("active");
         const idx = { explorer: 0, playground: 1, swarm: 2, theory: 3 }[tabId];
         document.querySelectorAll("nav button")[idx].classList.add("active");
@@ -3301,6 +3651,8 @@ Implementing systematic evaluation checklists provides immediate observability b
       async function runSimpleAgent(btn) {
         clearAllSimulations();
         setLoading(btn, true);
+        runCounters.simple++;
+        updateHUD("simple", "RUNNING", "summarizer");
         const input = document.getElementById("simple-input").value;
         const output = document.getElementById("simple-output");
         output.innerText =
@@ -3320,9 +3672,11 @@ Implementing systematic evaluation checklists provides immediate observability b
             "\n\n";
           output.innerText +=
             "[Agent Terminated] Process finished in 1 step successfully.";
+          updateHUD("simple", "SUCCESS", "finished");
         } catch (e) {
           console.error(e);
           output.innerText += `⚠️ Connection Error: Failed to execute live agent: ${e.message}\n\n`;
+          updateHUD("simple", "ERROR", "failed");
         } finally {
           setLoading(btn, false);
         }
@@ -3332,6 +3686,8 @@ Implementing systematic evaluation checklists provides immediate observability b
         clearAllSimulations();
         const myRunId = ++currentRunId;
         setLoading(btn, true);
+        runCounters.agentic++;
+        updateHUD("agentic", "RUNNING", "ingest");
         const input = document.getElementById("agentic-input").value;
         const output = document.getElementById("agentic-output");
         output.innerText = "";
@@ -3386,6 +3742,7 @@ Implementing systematic evaluation checklists provides immediate observability b
           if (myRunId !== currentRunId) return;
 
           // Step 2: Plan
+          updateHUD("agentic", "RUNNING", "plan");
           updatePipelineGlow(lab1Glow, "25%");
           document.getElementById("lab1-node-plan").classList.add("active");
           addLog(
@@ -3406,6 +3763,7 @@ Implementing systematic evaluation checklists provides immediate observability b
           if (myRunId !== currentRunId) return;
 
           // Step 3: Draft
+          updateHUD("agentic", "RUNNING", "draft");
           updatePipelineGlow(lab1Glow, "50%");
           document.getElementById("lab1-node-draft").classList.add("active");
           addLog(
@@ -3428,6 +3786,7 @@ Implementing systematic evaluation checklists provides immediate observability b
           if (myRunId !== currentRunId) return;
 
           // Step 4: Audit
+          updateHUD("agentic", "RUNNING", "audit");
           updatePipelineGlow(lab1Glow, "75%");
           document.getElementById("lab1-node-audit").classList.add("active");
           addLog(
@@ -3448,6 +3807,7 @@ Implementing systematic evaluation checklists provides immediate observability b
           if (myRunId !== currentRunId) return;
 
           // Step 5: Express (Final deliverable)
+          updateHUD("agentic", "RUNNING", "express");
           updatePipelineGlow(lab1Glow, "100%");
           document
             .getElementById("lab1-node-express")
@@ -3467,6 +3827,7 @@ Implementing systematic evaluation checklists provides immediate observability b
           addLog(
             "[State Machine: Express] Run completed successfully. Real-time agentic research committed to warehouse storage.",
           );
+          updateHUD("agentic", "SUCCESS", "completed");
         } catch (e) {
           if (myRunId !== currentRunId) return;
           console.error(e);
@@ -3478,6 +3839,7 @@ Implementing systematic evaluation checklists provides immediate observability b
             if (el.classList.contains("active"))
               el.className = "node active-error";
           });
+          updateHUD("agentic", "ERROR", "failed");
         } finally {
           if (myRunId === currentRunId) {
             setLoading(btn, false);
@@ -3489,6 +3851,8 @@ Implementing systematic evaluation checklists provides immediate observability b
         clearAllSimulations();
         const myRunId = ++currentRunId;
         setLoading(btn, true);
+        runCounters.swarm++;
+        updateHUD("swarm", "RUNNING", "ingest");
 
         const consoleEl = document.getElementById("swarm-console");
         const resultsEl = document.getElementById("sim-results");
@@ -3598,6 +3962,7 @@ Implementing systematic evaluation checklists provides immediate observability b
           if (myRunId !== currentRunId) return;
 
           // Step 2: Logistics Agent (Live Call with Overridable Prompt Settings)
+          updateHUD("swarm", "RUNNING", "logistics");
           updatePipelineGlow(pipelineGlow, "30%");
           nodeLogistics.classList.add("active");
           addLog(
@@ -3657,6 +4022,7 @@ Implementing systematic evaluation checklists provides immediate observability b
           if (myRunId !== currentRunId) return;
 
           // Step 3: Local Guide Agent (Live Call with Overridable Prompt Settings)
+          updateHUD("swarm", "RUNNING", "guide");
           updatePipelineGlow(pipelineGlow, "65%");
           nodeGuide.classList.add("active");
           addLog(
@@ -3682,6 +4048,7 @@ Implementing systematic evaluation checklists provides immediate observability b
           if (myRunId !== currentRunId) return;
 
           // Step 4: Budget Accountant Agent (Live Call with Overridable Prompt Settings)
+          updateHUD("swarm", "RUNNING", "accountant");
           updatePipelineGlow(pipelineGlow, "100%");
           nodeBudget.classList.add("active");
           addLog(
@@ -3884,6 +4251,7 @@ Return strictly valid JSON:
 
             itineraryEl.innerHTML = swarmData.itinerary;
           }
+          updateHUD("swarm", "SUCCESS", "completed");
         } catch (e) {
           if (myRunId !== currentRunId) return;
           console.error(e);
@@ -3892,6 +4260,7 @@ Return strictly valid JSON:
             "#ef4444",
           );
           nodeBudget.className = "node active-error";
+          updateHUD("swarm", "ERROR", "failed");
         } finally {
           if (myRunId === currentRunId) {
             setLoading(btn, false);
