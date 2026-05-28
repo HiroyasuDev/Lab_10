@@ -364,6 +364,9 @@
         /* ------------------------------------------------------------------
          VERTICAL TELEMETRY PIPELINE FOR MOBILE (Prevents clipping & overlap)
          ------------------------------------------------------------------ */
+        .lab-pipeline-container {
+          padding: 1.5rem 1.25rem 1.5rem 1.25rem !important;
+        }
         .pipeline-nodes {
           flex-direction: column !important;
           align-items: flex-start !important;
@@ -738,6 +741,10 @@
         line-height: 1.5;
       }
 
+      /* Horizontal Telemetry Pipeline (Tablet / Desktop) */
+      .lab-pipeline-container {
+        padding: 1.5rem 1.25rem 3.5rem 1.25rem;
+      }
       .pipeline-nodes {
         display: flex;
         justify-content: space-between;
@@ -1832,12 +1839,12 @@
           <!-- LAB 10.1 VISUAL NODE PIPELINE (AI Interface Rule) -->
           <div
             id="lab1-pipeline-container"
+            class="lab-pipeline-container"
             style="
               margin-bottom: 2rem;
               background: rgba(0, 0, 0, 0.25);
               border: 1px solid var(--border-color);
               border-radius: var(--radius-sm);
-              padding: 1.5rem 1.25rem;
             "
           >
             <div
@@ -2322,24 +2329,103 @@ Help me understand renewable energy options for homes.</textarea
             compliance.
           </p>
 
-          <!-- SWARM PIPELINE NODES -->
-          <div class="pipeline-nodes">
-            <div class="pipeline-line-glow" id="pipeline-glow"></div>
-            <div class="node" id="node-ingest">
-              <div class="node-icon">📥</div>
-              <div class="node-label">Ingest</div>
+          <!-- LAB 10.2 VISUAL NODE PIPELINE -->
+          <div
+            id="lab2-pipeline-container"
+            class="lab-pipeline-container"
+            style="
+              margin-bottom: 2rem;
+              background: rgba(0, 0, 0, 0.25);
+              border: 1px solid var(--border-color);
+              border-radius: var(--radius-sm);
+            "
+          >
+            <div
+              style="
+                font-size: 0.75rem;
+                font-weight: 700;
+                color: var(--text-muted);
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                margin-bottom: 1.25rem;
+                font-family: var(--font-mono);
+              "
+            >
+              Swarm Execution Sequence
             </div>
-            <div class="node" id="node-logistics">
-              <div class="node-icon">✈️</div>
-              <div class="node-label">Logistics</div>
-            </div>
-            <div class="node" id="node-guide">
-              <div class="node-icon">🗺️</div>
-              <div class="node-label">Local Guide</div>
-            </div>
-            <div class="node" id="node-budget">
-              <div class="node-icon">⚖️</div>
-              <div class="node-label">Accountant</div>
+            <!-- SWARM PIPELINE NODES -->
+            <div
+              class="pipeline-nodes"
+              style="margin: 0; padding: 0 1rem; gap: 1rem"
+            >
+              <div
+                class="pipeline-line-glow"
+                id="pipeline-glow"
+                style="
+                  left: 3rem;
+                  transition:
+                    width 1s ease,
+                    height 1s ease;
+                "
+              ></div>
+              <div
+                class="node"
+                id="node-ingest"
+                style="width: 4rem; height: 4rem"
+              >
+                <div
+                  class="node-icon"
+                  style="font-size: 1.1rem; margin-bottom: 0"
+                >
+                  📥
+                </div>
+                <div class="node-label" style="font-size: 0.45rem">Ingest</div>
+              </div>
+              <div
+                class="node"
+                id="node-logistics"
+                style="width: 4rem; height: 4rem"
+              >
+                <div
+                  class="node-icon"
+                  style="font-size: 1.1rem; margin-bottom: 0"
+                >
+                  ✈️
+                </div>
+                <div class="node-label" style="font-size: 0.45rem">
+                  Logistics
+                </div>
+              </div>
+              <div
+                class="node"
+                id="node-guide"
+                style="width: 4rem; height: 4rem"
+              >
+                <div
+                  class="node-icon"
+                  style="font-size: 1.1rem; margin-bottom: 0"
+                >
+                  🗺️
+                </div>
+                <div class="node-label" style="font-size: 0.45rem">
+                  Local Guide
+                </div>
+              </div>
+              <div
+                class="node"
+                id="node-budget"
+                style="width: 4rem; height: 4rem"
+              >
+                <div
+                  class="node-icon"
+                  style="font-size: 1.1rem; margin-bottom: 0"
+                >
+                  ⚖️
+                </div>
+                <div class="node-label" style="font-size: 0.45rem">
+                  Accountant
+                </div>
+              </div>
             </div>
           </div>
 
