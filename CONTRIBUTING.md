@@ -19,13 +19,16 @@ Our release and development cycle is managed through 5 active branches. Please t
 We maintain a zero-dependency, local-first HTML5 and client-side JavaScript design.
 
 ### 1. CSS & Layouts (No Tailwind)
+
 - Use standard vanilla CSS and custom HSL variables.
 - Prioritize **Fluid Typography**: Use relative `rem`/`em` and viewport-relative units (`vw`/`vh`) rather than fixed pixels (`px`).
 - Always define media queries for Mobile Native (`<= 480px`), Tablet Native (`481px` to `1024px`), and Desktop Native (`> 1024px`).
 - **Touch-safe Guidelines**: Tap targets, selectors, text inputs, and navigation buttons must be at least `48px` high on mobile devices.
 
 ### 2. Code Quality Tooling
+
 Before submitting a PR, ensure your changes are linted and formatted:
+
 ```bash
 # Format code using Prettier
 npm run format

@@ -45,7 +45,7 @@ graph TD
     %% Styling
     classDef codeGroup fill:#1e1b4b,stroke:#818cf8,stroke-width:2px,color:#f8fafc;
     classDef paraGroup fill:#062f4f,stroke:#38bdf8,stroke-width:2px,color:#f8fafc;
-    
+
     class C1,C2,C3,C4 codeGroup;
     class P1,P2,P3,P4 paraGroup;
 
@@ -102,13 +102,13 @@ sequenceDiagram
     User->>Ingestion: Inputs Travel Goal (Dest, Budget, Style)
     Note over User,Ingestion: Pacing control manages delay or instant async execution.
     Ingestion->>Console: Log: Travel task ticket ingested
-    
+
     rect rgb(30, 27, 75)
         Note right of Logistics: Logistics Agent analyzes flights, transit, and lodging.
         Ingestion->>Logistics: Pass Parameters & Logistics System Prompt Override
         Logistics-->>Console: Stream: Flight, hotel, and transit estimates (JSON)
     end
-    
+
     rect rgb(6, 47, 79)
         Note right of Guide: Local Guide Agent writes customized day-by-day itineraries.
         Logistics->>Guide: Pass Estimates & Guide System Prompt Override
@@ -148,13 +148,13 @@ The interface is engineered to adapt dynamically to the constraints of various v
 
 To support safe development, rapid prototyping, and production stability, the repository implements a structured 5-branch strategy:
 
-| Branch Name | Type / Stage | Target Audience / Purpose |
-| :--- | :--- | :--- |
-| `main` | 🚀 **Production Stable** | Live public production-ready build. Aliased to [lapaki-dashboard-six.vercel.app](https://lapaki-dashboard-six.vercel.app). |
-| `staging` | 🧪 **Pre-Release Staging** | High-fidelity classroom integration testing and professor audit staging. |
-| `develop` | ⚙️ **Swarm Integration** | Active development branch for adding new agents, prompt refineries, and MCP bridges. |
-| `prototype` | 💡 **Experimental** | Rapid sandbox environment for testing novel LLM system instructions and raw features. |
-| `baseline` | 📐 **Reference Baseline** | Clean static framework template baseline for architectural verification. |
+| Branch Name | Type / Stage               | Target Audience / Purpose                                                                                                  |
+| :---------- | :------------------------- | :------------------------------------------------------------------------------------------------------------------------- |
+| `main`      | 🚀 **Production Stable**   | Live public production-ready build. Aliased to [lapaki-dashboard-six.vercel.app](https://lapaki-dashboard-six.vercel.app). |
+| `staging`   | 🧪 **Pre-Release Staging** | High-fidelity classroom integration testing and professor audit staging.                                                   |
+| `develop`   | ⚙️ **Swarm Integration**   | Active development branch for adding new agents, prompt refineries, and MCP bridges.                                       |
+| `prototype` | 💡 **Experimental**        | Rapid sandbox environment for testing novel LLM system instructions and raw features.                                      |
+| `baseline`  | 📐 **Reference Baseline**  | Clean static framework template baseline for architectural verification.                                                   |
 
 ---
 
@@ -164,7 +164,9 @@ To support safe development, rapid prototyping, and production stability, the re
 - **Engineered Core**: Google Gemini 2.5 Flash API with custom JSON extraction filters.
 
 ### Running Locally
+
 To launch the Lapaki Second Brain & AI Agent dashboard locally:
+
 ```bash
 # Clone the repository
 git clone https://github.com/HiroyasuDev/Lab_10.git
@@ -177,4 +179,4 @@ npx serve .
 
 ---
 
-*Lapaki is built for classrooms, professors, and engineering enthusiasts who want to explore the future of **Agentic UX** and **Multi-Agent Swarm Orchestration**.*
+_Lapaki is built for classrooms, professors, and engineering enthusiasts who want to explore the future of **Agentic UX** and **Multi-Agent Swarm Orchestration**._
