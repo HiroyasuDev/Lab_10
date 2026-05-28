@@ -1,6 +1,6 @@
-# Contributing to OpenCode Second Brain & Swarm
+# Contributing to Lapaki Second Brain & Swarm
 
-Thank you for your interest in contributing to OpenCode! This project follows structured engineering conventions to maintain device-native layouts, rapid responsiveness, and clean multi-agent execution telemetry.
+Thank you for your interest in contributing to Lapaki! This project follows structured engineering conventions to maintain device-native layouts, rapid responsiveness, and clean multi-agent execution telemetry.
 
 ## 🚀 Branching Strategy
 

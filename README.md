@@ -1,6 +1,6 @@
-# 🧠 OpenCode: Second Brain & Autonomous Swarm Playground
+# 🧠 Lapaki: Second Brain & Autonomous Swarm Playground
 
-OpenCode is a production-grade, highly polished cognitive dashboard and local-first execution environment built on the **Google Gemini 2.5 Live Stack**. It integrates a **Bipartite Workspace Architecture** (partitioning active "factory floor" operations from structured "warehouse" long-term assets) with interactive AI playgrounds and a multi-agent travel planning swarm.
+Lapaki is a production-grade, highly polished cognitive dashboard and local-first execution environment built on the **Google Gemini 2.5 Live Stack**. It integrates a **Bipartite Workspace Architecture** (partitioning active "factory floor" operations from structured "warehouse" long-term assets) with interactive AI playgrounds and a multi-agent travel planning swarm.
 
 The entire application is fully optimized for **Mobile Native, Tablet Native, and Desktop Native viewports**, utilizing fluid typography scaling, touch-safe tap targets ($\ge$ 48px), and dynamic layout refactoring (including horizontal-to-vertical timeline transitions for narrow screens).
 
@@ -8,7 +8,7 @@ The entire application is fully optimized for **Mobile Native, Tablet Native, an
 
 ## 🗺️ System Architecture
 
-OpenCode splits memory and operations into a **Bipartite Workspace** following the **PARA** (Projects, Areas, Resources, Archives) and **CODE** (Capture, Organize, Distill, Express) methodology.
+Lapaki splits memory and operations into a **Bipartite Workspace** following the **PARA** (Projects, Areas, Resources, Archives) and **CODE** (Capture, Organize, Distill, Express) methodology.
 
 ### Bipartite Data & Cognitive Flow (Node Graph Topology)
 
@@ -150,7 +150,7 @@ To support safe development, rapid prototyping, and production stability, the re
 
 | Branch Name | Type / Stage | Target Audience / Purpose |
 | :--- | :--- | :--- |
-| `main` | 🚀 **Production Stable** | Live public production-ready build. Aliased to [opencode-dashboard-six.vercel.app](https://opencode-dashboard-six.vercel.app). |
+| `main` | 🚀 **Production Stable** | Live public production-ready build. Aliased to [lapaki-dashboard-six.vercel.app](https://lapaki-dashboard-six.vercel.app). |
 | `staging` | 🧪 **Pre-Release Staging** | High-fidelity classroom integration testing and professor audit staging. |
 | `develop` | ⚙️ **Swarm Integration** | Active development branch for adding new agents, prompt refineries, and MCP bridges. |
 | `prototype` | 💡 **Experimental** | Rapid sandbox environment for testing novel LLM system instructions and raw features. |
@@ -160,11 +160,11 @@ To support safe development, rapid prototyping, and production stability, the re
 
 ## 🚀 Live Deployments & Getting Started
 
-- **Aliased Production Web App**: [https://opencode-dashboard-six.vercel.app](https://opencode-dashboard-six.vercel.app)
+- **Aliased Production Web App**: [https://lapaki-dashboard-six.vercel.app](https://lapaki-dashboard-six.vercel.app)
 - **Engineered Core**: Google Gemini 2.5 Flash API with custom JSON extraction filters.
 
 ### Running Locally
-To launch the OpenCode Second Brain & AI Agent dashboard locally:
+To launch the Lapaki Second Brain & AI Agent dashboard locally:
 ```bash
 # Clone the repository
 git clone https://github.com/HiroyasuDev/Lab_10.git
@@ -177,4 +177,4 @@ npx serve .
 
 ---
 
-*OpenCode is built for classrooms, professors, and engineering enthusiasts who want to explore the future of **Agentic UX** and **Multi-Agent Swarm Orchestration**.*
+*Lapaki is built for classrooms, professors, and engineering enthusiasts who want to explore the future of **Agentic UX** and **Multi-Agent Swarm Orchestration**.*

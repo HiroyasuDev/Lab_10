@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OpenCode Second Brain & AI Agent Playground</title>
+  <title>Lapaki Second Brain & AI Agent Playground</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -87,6 +87,18 @@
     }
 
     .brand { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-mascot {
+      height: 2.2rem;
+      width: 2.2rem;
+      border-radius: 50%;
+      border: 1.5px solid var(--primary-glow);
+      filter: drop-shadow(0 0 4px var(--primary-glow));
+      object-fit: cover;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .brand-mascot:hover {
+      transform: scale(1.15) rotate(8deg);
+    }
     .brand-badge {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       padding: 0.3rem 0.65rem;
@@ -597,7 +609,8 @@
 
 <header>
   <div class="brand">
-    <span class="brand-badge">OpenCode</span>
+    <img src="lapaki_mascot.png" alt="Lapaki Mascot" class="brand-mascot">
+    <span class="brand-badge">Lapaki</span>
     <h1>Second Brain</h1>
     <div id="connection-status" style="margin-left: 1rem; display: flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 600; font-family: var(--font-mono); padding: 0.2rem 0.6rem; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.08); color: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);">
       <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;" id="status-dot"></span>
@@ -623,7 +636,7 @@
     <div class="glass-card">
       <div class="card-title"><i>📁</i> Bipartite Workspace Architecture</div>
       <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem;">
-        OpenCode splits operations into an active <strong>"factory floor"</strong> (<strong>CODE/</strong>) and a structured <strong>"warehouse"</strong> (<strong>PARA/</strong>) to cleanly isolate execution telemetry from long-term assets. Click on nodes below to review their role.
+        Lapaki splits operations into an active <strong>"factory floor"</strong> (<strong>CODE/</strong>) and a structured <strong>"warehouse"</strong> (<strong>PARA/</strong>) to cleanly isolate execution telemetry from long-term assets. Click on nodes below to review their role.
       </p>
 
       <div class="explorer-grid">
@@ -693,9 +706,9 @@
                 <svg class="tree-icon icon-para" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
                 1-Projects/
               </li>
-              <li onclick="inspectNode('opencode-core', this)" style="padding-left: 2rem;">
+              <li onclick="inspectNode('lapaki-core', this)" style="padding-left: 2rem;">
                 <svg class="tree-icon icon-para" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                opencode-core/
+                lapaki-core/
               </li>
               <li onclick="inspectNode('mcp-bridge', this)" style="padding-left: 2rem;">
                 <svg class="tree-icon icon-para" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
@@ -1056,7 +1069,7 @@
   </div>
 
   <div class="footer">
-    OpenCode <span>Second Brain</span> &mdash; Lab 1 + Lab 2 Production Telemetry Dashboard
+    Lapaki <span>Second Brain</span> &mdash; Lab 1 + Lab 2 Production Telemetry Dashboard
   </div>
 
 </main>
@@ -1196,8 +1209,8 @@
       title: 'Selected Node: PARA/1-Projects/',
       desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Active Code Repositories]</h4><p>Stores standard Git codebases for current core initiatives. Clean, active development files reside here.</p>'
     },
-    'opencode-core': {
-      title: 'Selected Node: PARA/1-Projects/opencode-core/',
+    'lapaki-core': {
+      title: 'Selected Node: PARA/1-Projects/lapaki-core/',
       desc: '<h4 style="color: #fff; margin-bottom: 0.5rem;">[Main Swarm Core]</h4><p>The centralized hub containing main codebase components, testing suites, and local execution script interfaces.</p>'
     },
     'mcp-bridge': {

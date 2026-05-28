@@ -210,7 +210,7 @@ class BudgetAnalystAgent:
 
 def main():
     print(f"{BOLD}{MAGENTA}=================================================={RESET}")
-    print(f"{BOLD}{MAGENTA}        OPENCODE SYSTEM TRAVEL AGENT SWARM         {RESET}")
+    print(f"{BOLD}{MAGENTA}        LAPAKI SYSTEM TRAVEL AGENT SWARM         {RESET}")
     print(f"{BOLD}{MAGENTA}=================================================={RESET}")
     
     # Stress test input parameters
