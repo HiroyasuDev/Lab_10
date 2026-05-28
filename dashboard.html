@@ -411,23 +411,67 @@
         }
       }
 
+      main {
+        perspective: 1600px;
+        transform-style: preserve-3d;
+      }
+
       .tab-content {
         display: none;
-        animation: fadeSlideIn 0.45s ease forwards;
         scroll-margin-top: 6.5rem;
+        backface-visibility: hidden;
+        transform-style: preserve-3d;
       }
       .tab-content.active {
         display: block;
+        animation: cardFlipIn 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      }
+      .tab-content.leaving {
+        display: block !important;
+        animation: cardFlipOut 0.55s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        pointer-events: none;
+        position: absolute;
+        left: 3rem;
+        right: 3rem;
+        top: 3.5rem;
+        z-index: 0;
       }
 
-      @keyframes fadeSlideIn {
-        from {
-          opacity: 0;
-          transform: translateY(12px);
+      @media (max-width: 1180px) {
+        .tab-content.leaving {
+          left: 1.5rem;
+          right: 1.5rem;
+          top: 3.5rem;
         }
-        to {
+      }
+
+      @media (max-width: 768px) {
+        .tab-content.leaving {
+          left: 1rem;
+          right: 1rem;
+          top: 3.5rem;
+        }
+      }
+
+      @keyframes cardFlipOut {
+        0% {
+          transform: rotateY(0deg) scale(1);
           opacity: 1;
-          transform: translateY(0);
+        }
+        100% {
+          transform: rotateY(-90deg) scale(0.95);
+          opacity: 0;
+        }
+      }
+
+      @keyframes cardFlipIn {
+        0% {
+          transform: rotateY(90deg) scale(0.95);
+          opacity: 0;
+        }
+        100% {
+          transform: rotateY(0deg) scale(1);
+          opacity: 1;
         }
       }
 
@@ -2999,13 +3043,23 @@ Implementing systematic evaluation checklists provides immediate observability b
         // Stop any active simulations to prevent log bleed across tabs
         clearAllSimulations();
 
-        document
-          .querySelectorAll(".tab-content")
-          .forEach((tab) => tab.classList.remove("active"));
+        const currentActive = document.querySelector(".tab-content.active");
+        const nextActive = document.getElementById("tab-" + tabId);
+
+        if (currentActive && currentActive !== nextActive) {
+          currentActive.classList.remove("active");
+          currentActive.classList.add("leaving");
+          
+          currentActive.addEventListener("animationend", () => {
+            currentActive.classList.remove("leaving");
+          }, { once: true });
+        }
+
         document
           .querySelectorAll("nav button")
           .forEach((btn) => btn.classList.remove("active"));
-        document.getElementById("tab-" + tabId).classList.add("active");
+        
+        nextActive.classList.add("active");
         const idx = { explorer: 0, playground: 1, swarm: 2, theory: 3 }[tabId];
         document.querySelectorAll("nav button")[idx].classList.add("active");
 
