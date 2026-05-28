@@ -77,24 +77,31 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      padding: 1.25rem 3rem;
+      padding: 1rem 3rem;
       border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      backdrop-filter: blur(16px) saturate(1.4);
-      background: rgba(8, 9, 15, 0.75);
+      backdrop-filter: blur(20px) saturate(1.6);
+      background: rgba(8, 9, 15, 0.85);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .brand { display: flex; align-items: center; gap: 0.75rem; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-shrink: 0;
+    }
     .brand-mascot {
       height: 2.2rem;
       width: 2.2rem;
       border-radius: 50%;
       border: 1.5px solid var(--primary-glow);
-      filter: drop-shadow(0 0 4px var(--primary-glow));
+      filter: drop-shadow(0 0 6px var(--primary-glow));
       object-fit: cover;
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      flex-shrink: 0;
     }
     .brand-mascot:hover {
       transform: scale(1.15) rotate(8deg);
@@ -108,6 +115,7 @@
       letter-spacing: 0.06em;
       text-transform: uppercase;
       box-shadow: 0 0 16px rgba(147, 51, 234, 0.2);
+      flex-shrink: 0;
     }
     .brand h1 {
       font-size: 1.35rem;
@@ -116,9 +124,15 @@
       background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      white-space: nowrap;
     }
 
-    nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    nav {
+      display: flex;
+      gap: 0.5rem;
+      flex-shrink: 0;
+      flex-wrap: nowrap;
+    }
     nav button {
       background: transparent;
       border: 1px solid transparent;
@@ -488,10 +502,33 @@
     .footer span { color: var(--primary); }
 
     /* ==========================================================================
-       1. TABLET LAYOUTS & SCALING (Viewport 481px to 1024px)
+       1. TABLET & LAPTOP LAYOUTS & SCALING (Viewport <= 1180px)
        ========================================================================== */
-    @media (min-width: 481px) and (max-width: 1024px) {
-      header { padding: 1.25rem 2rem; }
+    @media (max-width: 1180px) {
+      header {
+        flex-wrap: wrap;
+        padding: 1.25rem 2rem;
+        gap: 1.25rem;
+      }
+      .brand {
+        flex: 1 1 auto;
+        justify-content: flex-start;
+        width: auto;
+      }
+      nav {
+        width: 100%;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 6px;
+        margin-top: 0.25rem;
+        -webkit-overflow-scrolling: touch;
+      }
+      nav::-webkit-scrollbar {
+        display: none;
+      }
+      nav button {
+        flex: 0 0 auto;
+      }
       main { padding: 2rem 2rem; }
       .explorer-grid, .playground-grid, .comparison-grid {
         grid-template-columns: 1fr !important;
@@ -502,27 +539,36 @@
     }
 
     /* ==========================================================================
-       2. MOBILE NATIVE BREAKPOINTS & SCALING (Viewport <= 480px)
+       2. MOBILE NATIVE BREAKPOINTS & SCALING (Viewport <= 580px)
        ========================================================================== */
-    @media (max-width: 480px) {
+    @media (max-width: 580px) {
       header {
         padding: 1rem 1rem;
-        flex-direction: column;
-        gap: 0.85rem;
-        align-items: center;
-        text-align: center;
+        gap: 1rem;
       }
-      .brand { flex-direction: column; gap: 0.4rem; }
-      .brand-badge { font-size: 0.65rem; }
-      #connection-status { margin-left: 0 !important; margin-top: 0.2rem; }
-      nav { width: 100%; justify-content: center; gap: 0.3rem; }
+      .brand {
+        width: 100%;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+      .brand h1 {
+        font-size: 1.15rem;
+      }
+      #connection-status {
+        font-size: 0.7rem !important;
+        padding: 0.15rem 0.45rem !important;
+        margin-left: 0.25rem !important;
+      }
+      nav {
+        gap: 0.35rem;
+      }
       
       /* Touch-safe navigation targets (Krug Usability Rule) */
       nav button {
         font-size: 0.75rem !important;
-        padding: 0.7rem 0.85rem !important;
+        padding: 0.65rem 0.8rem !important;
         border-radius: 6px;
-        flex: 1 1 auto;
+        flex: 0 0 auto;
         text-align: center;
       }
 
@@ -612,7 +658,7 @@
     <img src="lapaki_mascot.png" alt="Lapaki Mascot" class="brand-mascot">
     <span class="brand-badge">Lapaki</span>
     <h1>Second Brain</h1>
-    <div id="connection-status" style="margin-left: 1rem; display: flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 600; font-family: var(--font-mono); padding: 0.2rem 0.6rem; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.08); color: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);">
+    <div id="connection-status" style="margin-left: 1rem; display: flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 600; font-family: var(--font-mono); padding: 0.2rem 0.6rem; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.08); color: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.1); white-space: nowrap; flex-shrink: 0;">
       <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;" id="status-dot"></span>
       <span id="status-text">Gemini Live Stack</span>
     </div>
