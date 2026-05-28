@@ -55,9 +55,9 @@ graph TD
 
 ---
 
-## 🧪 Interactive Agentic AI Playgrounds (Lab 1)
+## 🧪 Interactive Agentic AI Playgrounds (Lab 10.1)
 
-Lab 1 allows real-time execution and comparison between **Standard Reactive Assistants** and multi-stage, self-correcting **Agentic AI Pipelines**.
+Lab 10.1 allows real-time execution and comparison between **Standard Reactive Assistants** and multi-stage, self-correcting **Agentic AI Pipelines**.
 
 ### Agentic AI Reasoning Chain
 
@@ -81,9 +81,9 @@ stateDiagram-v2
 
 ---
 
-## ✈️ Multi-Agent Swarm Travel Pipeline (Lab 2)
+## ✈️ Multi-Agent Swarm Travel Pipeline (Lab 10.2)
 
-Lab 2 implements an **Autonomous Multi-Agent Swarm** utilizing the **Gemini 2.5 Flash API**. By distributing complex travel planning tasks among specialized roles, the swarm aggregates live estimates, drafts detailed itineraries, and audits budgets.
+Lab 10.2 implements an **Autonomous Multi-Agent Swarm** utilizing the **Gemini 2.5 Flash API**. By distributing complex travel planning tasks among specialized roles, the swarm aggregates live estimates, drafts detailed itineraries, and audits budgets.
 
 ### Swarm Execution & Telemetry Sequence (Swimlane Flow)
 

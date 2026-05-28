@@ -1,6 +1,6 @@
-# Lab 1 Solution: Understanding AI Agents vs. Agentic AI
+# Lab 10.1 Solution: Understanding AI Agents vs. Agentic AI
 
-This document presents the complete deliverables for Lab 1, including the designed prompts, comparison table, workflow diagram, and academic reflections.
+This document presents the complete deliverables for Lab 10.1, including the designed prompts, comparison table, workflow diagram, and academic reflections.
 
 ---
 

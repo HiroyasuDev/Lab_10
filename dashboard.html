@@ -662,9 +662,12 @@
     <img src="lapaki_mascot.png" alt="Lapaki Mascot" class="brand-mascot">
     <span class="brand-badge">Lapaki</span>
     <h1>Second Brain</h1>
-    <div id="connection-status" style="margin-left: 1rem; display: flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 600; font-family: var(--font-mono); padding: 0.2rem 0.6rem; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.2); background: rgba(16, 185, 129, 0.08); color: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.1); white-space: nowrap; flex-shrink: 0;">
-      <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;" id="status-dot"></span>
-      <span id="status-text">Gemini Live Stack</span>
+    <div id="connection-status" style="margin-left: 1.2rem; display: flex; flex-direction: column; align-items: flex-start; gap: 0.25rem; font-size: 0.72rem; font-weight: 600; font-family: var(--font-mono); padding: 0.35rem 0.65rem; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.05); color: #10b981; box-shadow: 0 0 12px rgba(16, 185, 129, 0.15); flex-shrink: 0; line-height: 1.2; width: 160px; min-height: 52px; box-sizing: border-box; justify-content: center; overflow: hidden;">
+      <div style="display: flex; align-items: center; gap: 0.35rem; width: 100%; font-size: 0.6rem; font-weight: 700; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px dashed rgba(16, 185, 129, 0.2); padding-bottom: 0.15rem; margin-bottom: 0.15rem; white-space: nowrap;">
+        <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981;" id="status-dot"></span>
+        <span>SYS: ONLINE</span>
+      </div>
+      <div id="status-text" style="font-size: 0.68rem; font-weight: 700; white-space: pre-wrap; text-shadow: 0 0 4px rgba(16, 185, 129, 0.4); line-height: 1.2; width: 100%;">Gemini Live Stack</div>
     </div>
   </div>
   <nav>
@@ -821,7 +824,7 @@
         Compare standard, single-pass <strong>AI Agents</strong> against multi-step, autonomous <strong>Agentic AI</strong>. Input a research goal below to observe their logical execution pathways.
       </p>
 
-      <!-- LAB 1 VISUAL NODE PIPELINE (AI Interface Rule) -->
+      <!-- LAB 10.1 VISUAL NODE PIPELINE (AI Interface Rule) -->
       <div id="lab1-pipeline-container" style="display: none; margin-bottom: 2rem; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.5rem 1.25rem;">
         <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 1.25rem; font-family: var(--font-mono);">Agentic AI Reasoning Chain</div>
         <div class="pipeline-nodes" style="margin: 0; padding: 0 1rem; gap: 1rem;">
@@ -1713,21 +1716,36 @@ Return strictly valid JSON:
     const statusText = document.getElementById('status-text');
     if (!statusText) return;
     
-    const billboardStates = [
-      "[ SYS: ACTIVE ] GEMINI LIVE STACK ▰▱▱▱",
-      "[ TELEM: OK ]  GEMINI LIVE STACK ▰▰▱▱",
-      "[ SWARM: RUN ] GEMINI LIVE STACK ▰▰▰▱",
-      "[ LIVE: SYNC ] GEMINI LIVE STACK ▰▰▰▰",
-      "[ SWARM: IDLE ] GEMINI LIVE STACK ▱▰▰▰",
-      "[ PORTFOLIO: V1 ] GEMINI LIVE STACK ▱▱▰▰",
-      "[ LAPAKI: OK ]  GEMINI LIVE STACK ▱▱▱▰"
-    ];
+    // Scrolling marquee text for the retro ASCII presentation
+    const marqueeText = " ⚡ GEMINI LIVE STACK ⚡ ACTIVE ⚡ PORT: 2222 ⚡ LAPAKI: v1.0.0 ⚡ SWARM: RUNNING ⚡ ";
+    let marqueeOffset = 0;
+    const visibleLength = 17; // Matches the container size without wrapping
     
-    let frame = 0;
+    // Pulse animation frames for equalizers
+    const eqFrames = [
+      " ▂▄▆▇▆▄▂",
+      "▂▄▆▇▆▄▂ ",
+      "▄▆▇▆▄▂  ",
+      "▆▇▆▄▂ ▂▄",
+      "▇▆▄▂ ▂▄▆",
+      "▆▄▂ ▂▄▆▇",
+      "▄▂ ▂▄▆▇▆",
+      "▂ ▂▄▆▇▆▄"
+    ];
+    let eqFrame = 0;
+    
     setInterval(() => {
-      statusText.textContent = billboardStates[frame];
-      frame = (frame + 1) % billboardStates.length;
-    }, 1200);
+      let visibleSlice = "";
+      for (let i = 0; i < visibleLength; i++) {
+        visibleSlice += marqueeText[(marqueeOffset + i) % marqueeText.length];
+      }
+      
+      const currentEq = eqFrames[eqFrame % eqFrames.length];
+      statusText.innerHTML = `${visibleSlice}\n<span style="opacity: 0.65; font-size: 0.58rem; font-weight: 500; letter-spacing: 0.05em; display: inline-block; margin-top: 0.1rem;">TELEM:</span> <span style="font-size: 0.65rem; color: #10b981; font-weight: 800; text-shadow: 0 0 6px #10b981;">${currentEq}</span>`;
+      
+      marqueeOffset = (marqueeOffset + 1) % marqueeText.length;
+      eqFrame++;
+    }, 150);
   }
   initStatusBillboard();
 </script>
