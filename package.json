@@ -1,0 +1,28 @@
+{
+  "name": "opencode-second-brain",
+  "version": "1.0.0",
+  "description": "Production-grade, device-native Second Brain & multi-agent traveling swarm orchestration playground powered by the Google Gemini 2.5 Flash API.",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "lint": "npx eslint **/*.js",
+    "format": "npx prettier --write **/*.{html,css,js,json,md}",
+    "test": "echo \"Error: no test specified\" && exit 0"
+  },
+  "keywords": [
+    "generative-ai",
+    "agentic-workflows",
+    "multi-agent-swarm",
+    "responsive-design",
+    "bipartite-architecture",
+    "second-brain",
+    "gemini-api"
+  ],
+  "author": "HiroyasuDev",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0",
+    "serve": "^14.2.0"
+  }
+}

@@ -1,0 +1,31 @@
+name: CI Quality Workflow
+
+on:
+  push:
+    branches: [ main, develop, staging ]
+  pull_request:
+    branches: [ main, develop, staging ]
+
+jobs:
+  audit:
+    name: Code Quality Audit
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js Environment
+      uses: actions/setup-node@v4
+      with:
+        node-size: 20
+        cache: 'npm'
+
+    - name: Install Project Dependencies
+      run: npm ci
+
+    - name: Audit Formatting (Prettier)
+      run: npx prettier --check **/*.{html,css,js,json,md}
+
+    - name: Audit Syntax & Lints (ESLint)
+      run: npx eslint **/*.js
