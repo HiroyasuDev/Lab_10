@@ -273,6 +273,7 @@
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        min-width: 0;
       }
 
       .scaffold-section {
@@ -392,6 +393,7 @@
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
+        min-width: 0;
       }
 
       .form-group {
@@ -464,6 +466,8 @@
         max-height: 400px;
         overflow-y: auto;
         white-space: pre-wrap;
+        word-break: break-word;
+        overflow-wrap: break-word;
         line-height: 1.5;
       }
 
@@ -570,6 +574,10 @@
         font-size: 0.8rem;
         height: 380px;
         overflow-y: auto;
+        overflow-x: hidden;
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-wrap: break-word;
         color: #38bdf8;
         box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.8);
         line-height: 1.5;
@@ -2345,7 +2353,10 @@ You are the Budget Accountant Agent in a collaborative travel swarm. Review the 
 • Output packaged cleanly into standard Second Brain storage.`;
         }
 
-        if (sys.includes("research coordinator") || sys.includes("structured multi-stage research plan")) {
+        if (
+          sys.includes("research coordinator") ||
+          sys.includes("structured multi-stage research plan")
+        ) {
           return `Stage 1: Core Definitions and Background Study
   - Define primary terms and establish historical context.
   - Survey existing literature and identify key research milestones.
@@ -2359,7 +2370,10 @@ Stage 3: Recommended Action Plan and Integration Path
   - Establish verification metrics to ensure long-term stability.`;
         }
 
-        if (sys.includes("research analyst") || sys.includes("detailed first draft")) {
+        if (
+          sys.includes("research analyst") ||
+          sys.includes("detailed first draft")
+        ) {
           return `# Comprehensive Research Report & Synthesis
 
 ## 1. Executive Summary
@@ -2375,7 +2389,10 @@ Our investigation indicates that relational data binding combined with isolated 
 The synthesis phase indicates that retro-fitting existing legacy architectures with simple glassmorphic dashboards boosts developer observability by up to 47%.`;
         }
 
-        if (sys.includes("peer reviewer") || sys.includes("critique and audit the draft")) {
+        if (
+          sys.includes("peer reviewer") ||
+          sys.includes("critique and audit the draft")
+        ) {
           return `### Peer Review Audit Feedback
 
 - **Clarity & Structure (Score: 9/10)**: The layout is highly intuitive, using clear headers and logical progressions. Adding a brief glossary of custom terms could improve accessibility for beginners.
@@ -2383,7 +2400,10 @@ The synthesis phase indicates that retro-fitting existing legacy architectures w
 - **Verification Plan (Score: 9/10)**: Standard unit testing covers the core path cleanly. Recommending regular automated layout tests will prevent future styling regressions.`;
         }
 
-        if (sys.includes("master editor") || sys.includes("polish, edit, and compile the final version")) {
+        if (
+          sys.includes("master editor") ||
+          sys.includes("polish, edit, and compile the final version")
+        ) {
           return `# Polished Synthesis: State-Tracking & Telemetry in Agentic Stacks
 
 ## Executive Summary
@@ -2402,7 +2422,11 @@ Integrating retro-glowing status boards improves visual diagnostic speed. Sticki
         // Swarm Fallbacks
         if (user.includes("logistics")) {
           const isLuxury = user.includes("luxury");
-          return JSON.stringify(isLuxury ? { flight: 1200, hotel: 1800, transit: 250 } : { flight: 650, hotel: 350, transit: 60 });
+          return JSON.stringify(
+            isLuxury
+              ? { flight: 1200, hotel: 1800, transit: 250 }
+              : { flight: 650, hotel: 350, transit: 60 },
+          );
         }
 
         if (user.includes("itinerary for")) {
@@ -2424,9 +2448,17 @@ Integrating retro-glowing status boards improves visual diagnostic speed. Sticki
           }
         }
 
-        if (sys.includes("critical peer reviewer") || sys.includes("budget accountant") || sys.includes("audit travel plan")) {
-          const isLuxury = user.includes("luxury") || user.includes("michelin") || user.includes("hotel: 1800");
-          const budgetLimit = parseFloat(user.match(/max budget:\s*\$?(\d+)/i)?.[1]) || 1800;
+        if (
+          sys.includes("critical peer reviewer") ||
+          sys.includes("budget accountant") ||
+          sys.includes("audit travel plan")
+        ) {
+          const isLuxury =
+            user.includes("luxury") ||
+            user.includes("michelin") ||
+            user.includes("hotel: 1800");
+          const budgetLimit =
+            parseFloat(user.match(/max budget:\s*\$?(\d+)/i)?.[1]) || 1800;
           const origTotal = isLuxury ? 4450 : 1310;
           const auditPassed = origTotal <= budgetLimit;
 
@@ -2435,13 +2467,15 @@ Integrating retro-glowing status boards improves visual diagnostic speed. Sticki
             hotel: isLuxury ? 1800 : 350,
             transit: isLuxury ? 250 : 60,
             dine: isLuxury ? 1200 : 250,
-            itinerary: isLuxury ? `<h4>Day 1: Penthouse Ingress</h4><p>Stay at 5-star hotel.</p>` : `<h4>Day 1: Hostel Ingress</h4><p>Stay at budget hostel.</p>`,
+            itinerary: isLuxury
+              ? `<h4>Day 1: Penthouse Ingress</h4><p>Stay at 5-star hotel.</p>`
+              : `<h4>Day 1: Hostel Ingress</h4><p>Stay at budget hostel.</p>`,
             sanitized_flight: 650,
             sanitized_hotel: 350,
             sanitized_transit: 60,
             sanitized_dine: 250,
             sanitized_itinerary: `<h4>Day 1: Sanitized Ingress</h4><p>Public transit and budget hostel accommodations booked to preserve balance sheet parameters.</p>`,
-            audit_passed: auditPassed
+            audit_passed: auditPassed,
           });
         }
 
@@ -2480,7 +2514,10 @@ Integrating retro-glowing status boards improves visual diagnostic speed. Sticki
           const data = await res.json();
           return data.candidates[0].content.parts[0].text;
         } catch (err) {
-          console.warn("Gemini API call failed, using high-fidelity local simulation fallback:", err);
+          console.warn(
+            "Gemini API call failed, using high-fidelity local simulation fallback:",
+            err,
+          );
           return getSimulationFallback(systemPrompt, userPrompt);
         }
       }
